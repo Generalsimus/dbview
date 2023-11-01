@@ -1,0 +1,17 @@
+{
+  "": {
+    "prefix": "tsxcomponent",
+    "body": [
+      "import React, { useState } from \"react\";",
+      "",
+      "interface IProps {",
+      "}",
+      "export const $1: React.FC<IProps> = React.memo(({}) => {",
+      "	$0",
+      "	return <></>;",
+      "});",
+      ""
+    ],
+    "description": "Create a TypeScript React Functional Component"
+  }
+}
