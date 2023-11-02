@@ -1,10 +1,14 @@
 "use client";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
 import React, { useState } from "react";
 import SaveIcon from '@mui/icons-material/SaveAs';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
-import { useMemoCall, useSetProps, useToggleBool } from "@/app/utils/hooks";
+import { useMemoCall, useSetProps, useToggleBool, useValidation } from "@/app/utils/hooks";
+import { RequestMethodType, requestMethods } from "@/types/request";
+import { PathDoc, PathDocType } from "@/types/models/path";
+import { ConvertPureType } from "@/types/generics";
+
 
 
 interface IProps {
@@ -17,26 +21,22 @@ export const AddRoutePath: React.FC<IProps> = React.memo(({ routePath }) => {
     const handleClickOpen = setModalStatus(true);
     const handleClose = setModalStatus(false);
 
-    const [formState, setValue, setValueProps, getPropState] = useSetProps({
-        name: "",
-        path: "",
-    })
+
+
+
+    const [formState, setValue, setValueProps, getPropState] = useSetProps<Partial<ConvertPureType<PathDocType>>>({})
+    
 
     const [name, setName, setNameProp] = getPropState("name");
-    // const [path, setPath] = getPropState("path");
-
-
-    // const onChangeName = () => {
-
-    // }
-
-    // const [name1, setName2, getNAmeState2] = getNAmeState("eee");
-
-    // const [name31, setName32] = getNAmeState2("ss");
+    const [path, setPath, setPathProp] = getPropState("path");
+    const [method, setMethod, setMethodProp] = getPropState("method");
+    const [description, setDescription, setDescriptionProp] = getPropState("description");
 
 
 
-    // console.log({ formState, name, name1, name31 })
+    const getError = useValidation(formState, PathDoc);
+
+
     return <>
 
         <Button variant="contained" onClick={handleClickOpen} startIcon={<CreateIcon />}>
@@ -73,10 +73,7 @@ export const AddRoutePath: React.FC<IProps> = React.memo(({ routePath }) => {
             <DialogContent>
                 <TextField
                     value={name}
-                    // onChange={e => {
-                    //     e.target.value
-                    // }}
-                    // onChange={setNameProp("target", "value")}
+                    onChange={setNameProp("target", "value")}
                     autoFocus
                     margin="dense"
                     id="name"
@@ -84,26 +81,49 @@ export const AddRoutePath: React.FC<IProps> = React.memo(({ routePath }) => {
                     type="text"
                     fullWidth
                     variant="filled"
+                    {...getError("name")}
                 />
+                <FormControl variant="filled" fullWidth>
+                    <InputLabel id="demo-simple-select-label">Method</InputLabel>
+                    <Select
+                        labelId="method"
+                        id="method"
+                        fullWidth
+                        value={method}
+                        label="Method"
+                        onChange={setMethodProp("target", "value")}
+                        {...getError("method")}
+                    >
+                        {requestMethods.map((method: RequestMethodType[number]) => {
+                            return <MenuItem value={method.toLowerCase()}>{method.toUpperCase()}</MenuItem>
+                        })}
+                    </Select>
+                </FormControl>
                 <TextField
                     autoFocus
                     margin="dense"
                     id="path"
+                    value={path}
+                    onChange={setPathProp("target", "value")}
                     label="Path"
                     type="text"
                     fullWidth
                     variant="filled"
+                    {...getError("path")}
                 />
                 <TextField
                     autoFocus
                     margin="dense"
                     id="description"
                     label="Description"
+                    value={description}
+                    onChange={setDescriptionProp("target", "value")}
                     rows={2}
                     type="text"
                     fullWidth
                     variant="standard"
                     multiline
+                    {...getError("description")}
                 />
             </DialogContent>
             <DialogActions>
