@@ -1,6 +1,7 @@
-
 import React, { useState, useMemo, useCallback, useRef, SetStateAction, Dispatch, useEffect } from "react";
 import { ValidationError, ValidatorOptions, validate, validateSync } from 'class-validator';
+import { getValidationErrorToString } from "@/utils";
+import { ConvertPureType } from "@/types/generics";
 
 
 export const useMemoCall = <FN extends ((...args: any[]) => any)>(value: FN): FN => {
@@ -135,45 +136,40 @@ export const useSetProps = <State extends Record<any, any>>(initialState: State)
 }
 
 
-const getErrorString = (errors: ValidationError[]) => {
-    let errorStr = "";
-    for (const error of errors) {
-        if (error.constraints) {
-            errorStr = errorStr + Object.values(error.constraints).join("\n");
-        }
-        if (error.children) {
-            errorStr = errorStr + "\n" + getErrorString(error.children);
-        }
-    }
 
-    return errorStr.trim();
-}
 
-export const useValidation = <V extends object, C extends (new () => Partial<V>)>(value: V, schema: C, options?: ValidatorOptions) => {
+export const useValidation = <V extends object>(value: Partial<ConvertPureType<V>>, schema: new (...args: any[]) => V, options?: ValidatorOptions) => {
     const schemaValue = useMemo(() => {
         return new schema();
     }, []);
-    const refCaChe = useRef<V>(value)
+    const refCaChe = useRef(value)
     const errors = useMemo(() => {
         Object.assign(schemaValue, value);
         return validateSync(schemaValue, options);
     }, [value, schemaValue])
 
-    return useMemoCall((name: keyof V) => {
-        if (refCaChe.current[name] != value[name]) {
-            for (const error of errors) {
-                if (error.property == name) {
-                    return {
-                        error: true,
-                        helperText: getErrorString([error])
+    return {
+        getIfValid: useMemoCall(() => {
+            if (errors.length == 0) {
+                return schemaValue
+            }
+        }),
+        getError: useMemoCall((name: keyof typeof value) => {
+            if (refCaChe.current[name] != value[name]) {
+                for (const error of errors) {
+                    if (error.property == name) {
+                        return {
+                            error: true,
+                            helperText: getValidationErrorToString([error])
+                        }
                     }
                 }
             }
-        }
-        return {
-            error: false,
-            helperText: "",
-        }
+            return {
+                error: false,
+                helperText: "",
+            }
 
-    })
+        })
+    }
 }

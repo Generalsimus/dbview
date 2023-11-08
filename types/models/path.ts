@@ -1,9 +1,7 @@
-import { Allow, IsEmpty, IsEnum, IsIn, IsString, MinLength } from "class-validator";
+import { Allow, IsDate, IsEmpty, IsEnum, IsIn, IsNumber, IsString, MinLength, isDate, isNumber } from "class-validator";
 import { RequestTypeEnum, requestMethods } from "@/types/request";
 
-
-
-export class PathDoc {
+export class PathMinValidation {
     @IsString()
     @MinLength(1)
     name: string;
@@ -19,4 +17,21 @@ export class PathDoc {
     method: RequestTypeEnum;
 }
 
-export type PathDocType = InstanceType<typeof PathDoc>;
+
+export class PathValidation extends PathMinValidation {
+    @IsNumber()
+    id: number
+
+    @IsDate()
+    createdAt: Date
+
+    @IsDate()
+    updatedAt: Date
+
+    @IsString()
+    deletedAt: Date | undefined
+}
+
+// export type PathDocType = InstanceType<typeof PathDoc>;
+// export type PathBasicDocType = InstanceType<typeof PathBasicDoc>;
+
