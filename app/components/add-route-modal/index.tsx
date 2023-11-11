@@ -5,17 +5,19 @@ import SaveIcon from '@mui/icons-material/SaveAs';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
 import { useMemoCall, useSetProps, useToggleBool, useValidation } from "@/app/utils/hooks";
-import { RequestMethodType, requestMethods } from "@/types/request";
-import { PathMinValidation, PathValidation } from "@/types/models/path";
-import { ClassToObject, ConvertPureType } from "@/types/generics";
+import { RequestMethodType, requestMethods } from "@/basic/request";
+import {  Route, RouteSchema } from "@/basic/models/route";
+import { ClassToObject, ConvertPureType, DeepPartial } from "@/basic/generics";
+import { useRouter } from "next/navigation";
+import { ExtendDbKeys, PartialDbKeys, partialDbKeySchema } from "@/basic/db-basic-schema";
 
 
 interface IProps {
     routePath: string;
-    saveDocument: (value: Partial<ClassToObject<typeof PathValidation>>) => Promise<void>
+    createRouteDoc: (value: PartialDbKeys<ExtendDbKeys<Route>>) => Promise<void>
 }
-export const AddRoutePath: React.FC<IProps> = React.memo(({ routePath, saveDocument }) => {
-    const [formState, setValue, setValueProps, getPropState] = useSetProps<Partial<ConvertPureType<ClassToObject<typeof PathValidation>>>>({})
+export const AddRouteModal: React.FC<IProps> = React.memo(({ routePath, createRouteDoc }) => {
+    const [formState, setValue, setValueProps, getPropState] = useSetProps<DeepPartial<ExtendDbKeys<Route>>>({})
 
 
 
@@ -39,15 +41,17 @@ export const AddRoutePath: React.FC<IProps> = React.memo(({ routePath, saveDocum
     const [method, setMethod, setMethodProp] = getPropState("method");
     const [description, setDescription, setDescriptionProp] = getPropState("description");
 
-    const { getIfValid, getError } = useValidation(formState, PathMinValidation);
+    const { getIfValid, getError } = useValidation(formState, partialDbKeySchema(RouteSchema));
+    const router = useRouter();
+
 
     const onSave = useMemoCall(() => {
         const value = getIfValid();
         if (value) {
-            const { ...object } = value
-            saveDocument(object).then(() => {
+            createRouteDoc(value).then(() => {
                 setIsSavingProcess(false);
                 handleClose();
+                router.refresh()
             })
         }
     })

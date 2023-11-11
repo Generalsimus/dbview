@@ -13,13 +13,12 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.16",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.0",
+    "joi": "^17.11.0",
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
-    "sqlite3": "^5.1.6",
-    "typeorm": "^0.3.17"
+    "sequelize": "^6.34.0",
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -30,6 +29,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.1",
     "eslint-plugin-prettier": "^5.0.1",
+    "sequelize-cli": "^6.6.2",
     "typescript": "^5"
   }
 }

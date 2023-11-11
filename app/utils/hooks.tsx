@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useCallback, useRef, SetStateAction, Dispatch, useEffect } from "react";
-import { ValidationError, ValidatorOptions, validate, validateSync } from 'class-validator';
-import { getValidationErrorToString } from "@/utils";
-import { ConvertPureType } from "@/types/generics";
+// import { ValidationError, ValidatorOptions, validateSync } from 'class-validator';
+import { ErrorsObject, validate, validateErrorToObject } from "@/utils";
+import { ConvertPureType, DeepPartial } from "@/basic/generics";
+import { ObjectSchema } from "joi";
 
 
 export const useMemoCall = <FN extends ((...args: any[]) => any)>(value: FN): FN => {
@@ -136,35 +137,29 @@ export const useSetProps = <State extends Record<any, any>>(initialState: State)
 }
 
 
+// <V extends object>(value: DeepPartial<V>, schema: ObjectSchema<V>) => {
 
+export const useValidation = <V extends object>(testValue: DeepPartial<V>, schema: ObjectSchema<V>) => {
+    const validationResult = useMemo(() => {
+        // const { value, error, warning } = ;
 
-export const useValidation = <V extends object>(value: Partial<ConvertPureType<V>>, schema: new (...args: any[]) => V, options?: ValidatorOptions) => {
-    const schemaValue = useMemo(() => {
-        return new schema();
-    }, []);
-    const refCaChe = useRef(value)
-    const errors = useMemo(() => {
-        Object.assign(schemaValue, value);
-        return validateSync(schemaValue, options);
-    }, [value, schemaValue])
-
+        return validate(testValue, schema)
+    }, [testValue, schema])
+    console.log(validationResult)
     return {
-        getIfValid: useMemoCall(() => {
-            if (errors.length == 0) {
-                return schemaValue
+        getIfValid: useMemoCall((): V | undefined => {
+            if (!validationResult.error) {
+                return validationResult.value
             }
         }),
-        getError: useMemoCall((name: keyof typeof value) => {
-            if (refCaChe.current[name] != value[name]) {
-                for (const error of errors) {
-                    if (error.property == name) {
-                        return {
-                            error: true,
-                            helperText: getValidationErrorToString([error])
-                        }
-                    }
-                }
-            }
+        getError: useMemoCall((name: keyof V) => {
+            // const error = errors[String(name)]
+            // if (error) {
+            //     return {
+            //         error: true,
+            //         helperText: error.error,
+            //     }
+            // }
             return {
                 error: false,
                 helperText: "",

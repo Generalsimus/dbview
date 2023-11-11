@@ -1,19 +1,20 @@
-import "reflect-metadata"
-import { DataSource } from "typeorm"
-import { Path } from "./models/path"
+import { Sequelize } from "sequelize";
+import * as  sqlite3 from "sqlite3"
 
-export const AppDataSource = new DataSource({
-    type: "sqlite",
-    database: "dbView.db",
-    entities: [
-        Path
-        // "./models/**/*. ts"
-    ],
-    synchronize: true,
-    logging: false,
-})
+export const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './database.sqlite',
+    dialectModule: sqlite3,
+    define: {
+        timestamps: true,
 
+        paranoid: true,
 
-AppDataSource.initialize().then(() => {
-    // console.log(v)
-}).catch((error) => console.log(error))
+        createdAt: true,
+        updatedAt: true,
+        deletedAt: true,
+    },
+    logging: false
+
+});
+
