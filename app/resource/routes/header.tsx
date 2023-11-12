@@ -1,15 +1,14 @@
 "use client"
-import { AddRouteModal } from "@/app/components/add-route-modal";
+import { SaveRouteView } from "@/app/resource/routes/save";
 import { Stack } from "@mui/material";
-import React, { useState } from "react";
-import { useResourceTabs } from "../tabs";
-import { ExtendDbKeys, PartialDbKeys } from "@/basic/db-basic-schema";
+import React, { ReactNode, useState } from "react";
+import { useResourceTabs } from "../tabs-content";
 import { Route } from "@/basic/models/route";
 
 interface IProps {
-    createRouteDoc: (value: PartialDbKeys<ExtendDbKeys<Route>>) => Promise<void>
+    rightSideContent?: ReactNode
 }
-export const HeaderContent: React.FC<IProps> = React.memo(({ createRouteDoc }) => {
+export const HeaderContent: React.FC<IProps> = React.memo(({ rightSideContent }) => {
     const tabs = useResourceTabs()
 
     return <>
@@ -21,7 +20,7 @@ export const HeaderContent: React.FC<IProps> = React.memo(({ createRouteDoc }) =
             padding="10px"
         >
             {tabs}
-            <AddRouteModal routePath="/" createRouteDoc={createRouteDoc} />
+            {rightSideContent ? rightSideContent : <div />}
         </Stack>
     </>;
 });

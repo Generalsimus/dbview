@@ -5,6 +5,10 @@ import { RoutesTable } from "./routes-table";
 import { ExtendDbKeys, PartialDbKeys, partialDbKeySchema } from "@/basic/db-basic-schema";
 import { RouteModel } from "@/db/models/route";
 import { HeaderContent } from "./header";
+import { SaveRouteView } from "@/app/resource/routes/save";
+import { Button } from "@mui/material";
+import CreateIcon from '@mui/icons-material/Create';
+import { AddRouteButton } from "./save/add-button";
 
 async function getRoutes(startIndex: number, endIndex: number) {
   const { rows, count } = await RouteModel.findAndCountAll({
@@ -37,7 +41,7 @@ const Routes = async ({ searchParams }: IProps) => {
   // endIndex: string
   const { routes, maxPathCount } = await getRoutes(start, end)
 
-  async function createRouteDoc(value: PartialDbKeys<ExtendDbKeys<Route>>): Promise<void> {
+  async function saveRouteDoc(value: PartialDbKeys<ExtendDbKeys<Route>>): Promise<void> {
     'use server'
     const validateRes = validate(value, partialDbKeySchema(RouteSchema))
 
@@ -85,15 +89,17 @@ const Routes = async ({ searchParams }: IProps) => {
     }
 
   }
-  // console.log({ start, end, maxPathCount, searchParams })
+
   return <>
+
     <RoutesTable
       headerContent={
-        <HeaderContent createRouteDoc={createRouteDoc} />
+        <HeaderContent rightSideContent={<AddRouteButton saveRouteDoc={saveRouteDoc} />} />
       }
       routes={routes}
       start={start}
       end={end}
+      saveRouteDoc={saveRouteDoc}
       maxRowSize={maxPathCount}
     />
 

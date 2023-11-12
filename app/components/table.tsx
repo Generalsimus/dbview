@@ -7,8 +7,8 @@ type TablePaginationProps = React.ComponentProps<typeof TablePagination>
 type TableCellProps = React.ComponentProps<typeof TableCell>
 
 type IProps<O extends Record<any, ReactNode>> = {
-    columns: { headerName: ReactNode, field: keyof O | string }[]
-    rows: O[]
+    columns: { headerName: ReactNode, field: keyof O | string, columnCellProps?: TableCellProps }[]
+    rows: (O & { rowCellProps?: TableCellProps })[]
 
     rowsPerPageOptions: TablePaginationProps["rowsPerPageOptions"]
     start: number,
@@ -21,8 +21,8 @@ type IProps<O extends Record<any, ReactNode>> = {
     headerContent?: ReactNode
     footerContent?: ReactNode
 
-    headerColumnProps?: TableCellProps
-    rowColumnProps?: TableCellProps
+    // headerColumnProps?: TableCellProps
+    // rowColumnProps?: TableCellProps
     // onPageChange: TablePaginationProps["onPageChange"]
     // onRowsPerPageChange: TablePaginationProps["onRowsPerPageChange"]
 
@@ -40,8 +40,6 @@ export const Table = <O extends Record<any, any>>(props: IProps<O>) => {
         stickyHeader,
         headerContent,
         footerContent,
-        headerColumnProps = {},
-        rowColumnProps = {},
     } = props;
     const page = Math.floor(start / (end - start))
     // console.log({ page })
@@ -65,7 +63,7 @@ export const Table = <O extends Record<any, any>>(props: IProps<O>) => {
     const stickyFooterSx = stickyHeader ? { position: "sticky", bottom: 0 } : {}
 
     return <>
-        <TableMaterialUi aria-label="table" sx={{ bgcolor: theme.palette.background.paper, }}>
+        <TableMaterialUi aria-label="table" sx={{ bgcolor: theme.palette.background.paper }}>
             <TableHead sx={{ ...stickyHeaderSx, bgcolor: theme.palette.background.paper, width: "100%" }}>
                 {headerContent && <TableRow>
                     <TableCell colSpan={columns.length} padding="none">
@@ -73,8 +71,8 @@ export const Table = <O extends Record<any, any>>(props: IProps<O>) => {
                     </TableCell>
                 </TableRow>}
                 <TableRow>
-                    {columns.map(({ headerName }) => {
-                        return <TableCell {...headerColumnProps} >
+                    {columns.map(({ headerName, columnCellProps }) => {
+                        return <TableCell  {...(columnCellProps || {})}>
                             {headerName}
                         </TableCell>
                     })}
@@ -84,7 +82,7 @@ export const Table = <O extends Record<any, any>>(props: IProps<O>) => {
                 {rows.map(row => {
                     return <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                         {columns.map(column => {
-                            return <TableCell {...rowColumnProps}>
+                            return <TableCell {...(row.rowCellProps || {})}>
                                 {row[column.field]}
                             </TableCell>
                         })}

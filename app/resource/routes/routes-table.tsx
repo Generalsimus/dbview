@@ -1,10 +1,11 @@
 "use client"
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import { Table } from "../../components/table";
 import { Route } from "@/basic/models/route";
-import { ExtendDbKeys } from "@/basic/db-basic-schema";
-import { useMemoCall } from "../../utils/hooks";
+import { ExtendDbKeys, PartialDbKeys } from "@/basic/db-basic-schema";
+import { useMemoCall, useToggleBool } from "../../utils/hooks";
 import { useRouter } from "next/navigation";
+import { SaveRouteForm } from "./save/form";
 
 interface IProps {
     routes: ExtendDbKeys<Route>[]
@@ -13,40 +14,47 @@ interface IProps {
     end: number
     headerContent?: ReactNode
     footerContent?: ReactNode
+    saveRouteDoc: (value: PartialDbKeys<ExtendDbKeys<Route>>) => Promise<void>
 }
-export const RoutesTable: React.FC<IProps> = React.memo(({ routes, start, end, maxRowSize, headerContent, footerContent }) => {
+export const RoutesTable: React.FC<IProps> = React.memo(({ routes, start, end, maxRowSize, headerContent, footerContent, saveRouteDoc }) => {
 
-    const columns = [
+    const columns = useMemo(() => [
         { field: 'name', headerName: 'name' },
         { field: 'method', headerName: 'method' },
         { field: 'path', headerName: 'path' },
         { field: 'description', headerName: 'description' },
-    ]
-    const rows = routes.map(({ ...obj }) => {
-        return obj
+    ], [])
+    const [editModalValue, setEditModalValue] = useState<undefined | ExtendDbKeys<Route>>()
+    const closEditModal = useMemoCall(() => {
+        setEditModalValue(undefined)
     })
+    const rows = useMemo(() => routes.map((obj) => {
+        return {
+            ...obj, rowCellProps: {
+                sx: { cursor: "pointer" },
+                onClick: () => {
+                    setEditModalValue(obj)
+                }
+            }
+        }
+    }), [routes])
     const router = useRouter()
-    // const onPageChange = useMemoCall((event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, page: number) => {
-    //     // let page = parseInt(params?.page + "") || 1;
-    //     console.log({ page })
-    //     // let docsPerPage = parseInt(params?.docsPerPage + "") || 15;
-    //     // router.push(`/?page=${page}&docsPerPage=${docsPerPage}`)
-    // })
-    // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //   setRowsPerPage(parseInt(event.target.value, 10));
-    //   setPage(0);
-    // };
-    // const onRowsPerPageChange = useMemoCall((event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const newRowsPerPage = parseInt(event.target.value)
-    //     console.log({ newRowsPerPage })
-    //     // router.push(`/?page=${page}&docsPerPage=${docsPerPage}`)
-    // })
+
+
     const onPagination = useMemoCall((start: number, end: number) => {
 
-        router.push(`/route/?start=${start}&end=${end}`)
+        router.push(`/resources/routes/?start=${start}&end=${end}`)
     })
 
+
     return <>
+        {editModalValue && <SaveRouteForm
+            title="Edit Route Path"
+            initialStateValue={editModalValue}
+            status={editModalValue != undefined}
+            onClose={closEditModal}
+            saveRouteDoc={saveRouteDoc}
+        />}
         <Table
             headerContent={headerContent}
             footerContent={footerContent}
@@ -59,20 +67,7 @@ export const RoutesTable: React.FC<IProps> = React.memo(({ routes, start, end, m
             stickyFooter={true}
             start={start}
             end={end}
-            headerColumnProps={{ sx: { fontWeight: "bold", textTransform: "Capitalize" } }}
 
-        // rowsPerPage={200}
-        // checkboxSelection={false}
-        // initialState={{
-        //   pagination: {
-        //     paginationModel: { page: 1, pageSize: 50 },
-        //   },
-        // }}
-        // pageSizeOptions={[5, 10, 30, 60, 100, 120]}
-        // autoPageSize={true}
-        // autoHeight={true}
-        // disableColumnMenu={true}
-        // disableColumnFilter={true}
         />
     </>;
 });

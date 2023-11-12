@@ -57,5 +57,3 @@ export const TabsContextContainer: React.FC<IProps> = React.memo(({ children }) 
         {children}
     </TabsContext.Provider>
 })
-
-

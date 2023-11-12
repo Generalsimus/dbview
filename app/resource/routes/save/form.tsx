@@ -1,34 +1,49 @@
 "use client"
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormGroup, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
-import React, { MouseEvent, MouseEventHandler, useState } from "react";
+import { Button, CircularProgress, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import React, { useState, ReactNode } from "react";
 import SaveIcon from '@mui/icons-material/SaveAs';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
 import { useMemoCall, useSetProps, useToggleBool, useValidation } from "@/app/utils/hooks";
 import { RequestMethodType, requestMethods } from "@/basic/request";
-import {  Route, RouteSchema } from "@/basic/models/route";
-import { ClassToObject, ConvertPureType, DeepPartial } from "@/basic/generics";
+import { Route, RouteSchema } from "@/basic/models/route";
+import { DeepPartial } from "@/basic/generics";
 import { useRouter } from "next/navigation";
 import { ExtendDbKeys, PartialDbKeys, partialDbKeySchema } from "@/basic/db-basic-schema";
+import { DrawerView } from "./drawer-view";
 
 
 interface IProps {
-    routePath: string;
-    createRouteDoc: (value: PartialDbKeys<ExtendDbKeys<Route>>) => Promise<void>
+    saveRouteDoc: (value: PartialDbKeys<ExtendDbKeys<Route>>) => Promise<void>;
+    initialStateValue?: DeepPartial<ExtendDbKeys<Route>>;
+
+    title: string;
+    getViewControllerContent: (arg: {
+        onOpen: () => void;
+        onClose: () => void;
+        setStateValue: (value: DeepPartial<ExtendDbKeys<Route>>) => void;
+    }) => ReactNode;
+    // onClose: () => void
 }
-export const AddRouteModal: React.FC<IProps> = React.memo(({ routePath, createRouteDoc }) => {
-    const [formState, setValue, setValueProps, getPropState] = useSetProps<DeepPartial<ExtendDbKeys<Route>>>({})
+export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, initialStateValue, title, getViewControllerContent }) => {
+    const [formState, setValue, setValueProps, getPropState] = useSetProps(initialStateValue || {})
 
 
+    const [status, setModalStatus, setModalStatusValue] = useToggleBool(false)
 
 
-    const [modalStatus, setModalStatus, setModalStatusValue] = useToggleBool(false)
+    const onOpen = setModalStatus(true);
+    const onClose = setModalStatus(false);
 
 
-    const handleClickOpen = setModalStatus(true);
+    // const [modalStatus, setModalStatus, setModalStatusValue] = useToggleBool(false)
+
+
+    // const handleClickOpen = setModalStatus(true);
     const handleClose = useMemoCall(() => {
         setValue({});
-        setModalStatusValue(false)
+
+        onClose()
     });
 
     const [isSavingProcess, setIsSavingProcess] = useState(false);
@@ -48,7 +63,7 @@ export const AddRouteModal: React.FC<IProps> = React.memo(({ routePath, createRo
     const onSave = useMemoCall(() => {
         const value = getIfValid();
         if (value) {
-            createRouteDoc(value).then(() => {
+            saveRouteDoc(value).then(() => {
                 setIsSavingProcess(false);
                 handleClose();
                 router.refresh()
@@ -59,36 +74,14 @@ export const AddRouteModal: React.FC<IProps> = React.memo(({ routePath, createRo
 
 
     return <>
-
-        <Button variant="contained" onClick={handleClickOpen} startIcon={<CreateIcon />}>
-            Add Route Path
-        </Button>
-
-        <Dialog
-            open={modalStatus || isSavingProcess}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
+        <DrawerView
+            title={title}
+            // 
+            status={status || isSavingProcess}
+            onClose={onClose}
         >
-
-            <DialogTitle id="alert-dialog-title" >
-                <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    spacing={2}>
-                    Add New Route Path
-                    <IconButton
-                        aria-label="close"
-                        onClick={handleClose}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                </Stack>
-
-            </DialogTitle>
-            <form action={onSave}>
-                <DialogContent>
+            <Stack display={"flex"} flexDirection={"column"} justifyContent={"space-between"} flex={1}>
+                <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
                     <TextField
                         value={name}
                         onChange={setNameProp("target", "value")}
@@ -139,15 +132,16 @@ export const AddRouteModal: React.FC<IProps> = React.memo(({ routePath, createRo
                         name="description"
                         value={description}
                         onChange={setDescriptionProp("target", "value")}
-                        rows={2}
+                        minRows={2}
                         type="text"
                         fullWidth
-                        variant="standard"
+                        variant="filled"
                         multiline
                         {...getError("description")}
                     />
-                </DialogContent>
-                <DialogActions>
+
+                </Stack>
+                <Stack display={"flex"} flexDirection={"row"} gap={2} justifyContent={"flex-end"} padding={2}>
                     <Button onClick={handleClose} disabled={isSavingProcess} variant="outlined">Cancel</Button>
                     <Button
                         variant="contained"
@@ -159,14 +153,18 @@ export const AddRouteModal: React.FC<IProps> = React.memo(({ routePath, createRo
                                 variant="indeterminate"
                             /> : <SaveIcon />}
                         disabled={isSavingProcess}
-                    // onClick={onSave}
+                        onClick={onSave}
                     >
                         Save
                     </Button>
-                </DialogActions>
-            </form>
-
-        </Dialog >
+                </Stack>
+            </Stack>
+        </DrawerView>
+        {getViewControllerContent({
+            onOpen,
+            onClose,
+            setStateValue: getPropState
+        })}
     </>
 });
 
