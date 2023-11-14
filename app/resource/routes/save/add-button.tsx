@@ -1,21 +1,24 @@
 "use client"
 import React, { useState } from "react";
-import { SaveRouteView } from ".";
 import { Button } from "@mui/material";
 import CreateIcon from '@mui/icons-material/Create';
-import { ExtendDbKeys, PartialDbKeys } from "@/basic/db-basic-schema";
+import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Route } from "@/basic/models/route";
+import { SaveRouteForm } from ".";
 
 interface IProps {
-    saveRouteDoc: (value: PartialDbKeys<ExtendDbKeys<Route>>) => Promise<void>
+    saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>
+    deleteRouteDoc: (ids: number) => Promise<void>
 }
-export const AddRouteButton: React.FC<IProps> = React.memo(({ saveRouteDoc }) => {
+export const AddRouteButton: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc }) => {
 
-    return <SaveRouteView
+    return <SaveRouteForm
+        title="Add Route"
         saveRouteDoc={saveRouteDoc}
-        getViewButton={(onOpen) => {
+        deleteRouteDoc={deleteRouteDoc}
+        getViewControllerContent={({ onOpen }) => {
             return <Button variant="contained" onClick={onOpen} startIcon={<CreateIcon />}>
-                Add Route Path
+                Add Route
             </Button>
         }}
     />

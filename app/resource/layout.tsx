@@ -1,11 +1,11 @@
-import { ReactNode } from "react"
-import { TabsContextContainer } from "./tabs-content"
+import { ReactNode } from "react" 
+import { ResourceTabsProvider } from "./resources-tabs"
 
 
 
 export default function Layout({ children }: {
     children: ReactNode
 }) {
-    return <TabsContextContainer>{children}</TabsContextContainer>
+    return <ResourceTabsProvider>{children}</ResourceTabsProvider>
 
 }

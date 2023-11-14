@@ -1,4 +1,4 @@
-import { ObjectSchema } from "joi";
+import { AnySchema, ObjectSchema, extend } from "joi";
 
 
 
@@ -18,9 +18,10 @@ export type ClassToObject<C extends abstract new (...args: any) => any, T = Inst
 };
 
 
-export type ValueOf<O extends object> = {
-    [K in keyof O]: O[K]
-}[keyof O]
+// export type ValueOf<O extends object> = {
+//     [K in keyof O]: O[K]
+// }[keyof O]
+export type ValueOf<O extends object> = O[keyof O] 
 
 
 export type OptionalKeys<T, K extends PropertyKey = PropertyKey> =
@@ -33,4 +34,5 @@ export type DeepPartial<T> = T extends object ? {
 } : T;
 
 
-export type JoiSchemaValue<S extends ObjectSchema> = S extends ObjectSchema<infer T> ? T : never
+export type JoiSchemaValue<S extends ObjectSchema> = S extends AnySchema<infer T> ? T : never
+

@@ -1,13 +1,13 @@
 import { requestMethods } from "@/basic/request";
 import { sequelize } from "../init";
 import { DataTypes, ModelDefined } from "sequelize";
-import { ExtendDbKeys } from "@/basic/db-basic-schema";
+import { MakeAsDbDoc } from "@/basic/db-basic-schema";
 import { Route } from "@/basic/models/route";
 
 
 
 export const RouteModel: ModelDefined<
-    ExtendDbKeys<Route>,
+    MakeAsDbDoc<Route>,
     {}
 > = sequelize.define('path', {
     id: {

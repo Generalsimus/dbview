@@ -2,13 +2,9 @@ import { Route, RouteSchema } from "@/basic/models/route";
 import React from "react";
 import { validate } from "@/utils";
 import { RoutesTable } from "./routes-table";
-import { ExtendDbKeys, PartialDbKeys, partialDbKeySchema } from "@/basic/db-basic-schema";
+import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { RouteModel } from "@/db/models/route";
-import { HeaderContent } from "./header";
-import { SaveRouteView } from "@/app/resource/routes/save";
-import { Button } from "@mui/material";
-import CreateIcon from '@mui/icons-material/Create';
-import { AddRouteButton } from "./save/add-button";
+import { Header } from "./header";
 
 async function getRoutes(startIndex: number, endIndex: number) {
   const { rows, count } = await RouteModel.findAndCountAll({
@@ -41,51 +37,26 @@ const Routes = async ({ searchParams }: IProps) => {
   // endIndex: string
   const { routes, maxPathCount } = await getRoutes(start, end)
 
-  async function saveRouteDoc(value: PartialDbKeys<ExtendDbKeys<Route>>): Promise<void> {
+  async function SaveRouteDoc(value: MakeCreateOrUpdate<Route>): Promise<void> {
     'use server'
-    const validateRes = validate(value, partialDbKeySchema(RouteSchema))
+    const validateRes = validate(value, getCreateOrUpdateSchema(RouteSchema))
 
     if (!validateRes.error) {
       const { value } = validateRes;
 
       const [instance, created] = await RouteModel.upsert(value);
-      // if (value.id) {
-      // const res = await PathModel.update(value, {
-      //   where: {
-      //     id: value.id
-      //   }
-      // })
-      // res.
-      // 
-      // // }
-      // const res = await PathModel.create(value)
-      // console.log({ value, res })
 
-      // return instance.dataValues
-      // const val = PathModel.create(value)
-      // console.log({val})
-      // const path = await PathModel.findOne({ id: value.id });
-      // if (value.id) {
-      // const [path, created] = await PathModel.findOrCreate<PathModel>({
-      //   where: { id: value.id },
-      //   defaults: {
-      //     ...value
-      //   }
-      // });
-      // const res = await PathModel.upsert({
-      //   ...value
-      //   // name: src.name,
-      //   // titanId: src.id,
-      // }, { id: value.id })
-      // return
-      // }
-      // return await PathModel.create(value);
-      // return PathModel.findOrCreate({
-      //   where: {
-      //     id: value.id,
-      //   },
-      //   transaction: t
-      // })
+    }
+
+  }
+  async function DeleteRouteDoc(id: number): Promise<void> {
+    'use server'
+    if (typeof id === "number") {
+      await RouteModel.destroy({
+        where: {
+          id: id
+        },
+      });
     }
 
   }
@@ -94,12 +65,16 @@ const Routes = async ({ searchParams }: IProps) => {
 
     <RoutesTable
       headerContent={
-        <HeaderContent rightSideContent={<AddRouteButton saveRouteDoc={saveRouteDoc} />} />
+        <Header
+          saveRouteDoc={SaveRouteDoc}
+          deleteRouteDoc={DeleteRouteDoc}
+        />
       }
       routes={routes}
       start={start}
       end={end}
-      saveRouteDoc={saveRouteDoc}
+      deleteRouteDoc={DeleteRouteDoc}
+      saveRouteDoc={SaveRouteDoc}
       maxRowSize={maxPathCount}
     />
 

@@ -1,26 +1,22 @@
 "use client"
-import { SaveRouteView } from "@/app/resource/routes/save";
-import { Stack } from "@mui/material";
-import React, { ReactNode, useState } from "react";
-import { useResourceTabs } from "../tabs-content";
+import React, { useState } from "react";
+import { ResourceTabsEnum } from "../resources-tabs";
+import { AddRouteButton } from "./save/add-button";
+import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"; 
+import { ResourcesHeaderContent } from "../resources-header";
 import { Route } from "@/basic/models/route";
 
 interface IProps {
-    rightSideContent?: ReactNode
+    saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>
+    deleteRouteDoc: (ids: number) => Promise<void>
 }
-export const HeaderContent: React.FC<IProps> = React.memo(({ rightSideContent }) => {
-    const tabs = useResourceTabs()
+export const Header: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc }) => {
 
-    return <>
-        <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="baseline"
-            spacing={2}
-            padding="10px"
-        >
-            {tabs}
-            {rightSideContent ? rightSideContent : <div />}
-        </Stack>
-    </>;
+    return <ResourcesHeaderContent
+        tab={ResourceTabsEnum.Routes}
+        rightSideContent={<AddRouteButton
+            saveRouteDoc={saveRouteDoc}
+            deleteRouteDoc={deleteRouteDoc}
+        />}
+    />;
 });

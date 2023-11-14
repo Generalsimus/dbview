@@ -2,7 +2,7 @@
 import { RequestTypeEnum, requestMethods } from "@/basic/request";
 import { Children } from "react";
 import { ClassToObject, ConvertPureType, DeepPartial } from "./basic/generics";
-import { ObjectSchema } from "joi";
+import { AnySchema, ObjectSchema } from "joi";
 import { RouteSchema } from "./basic/models/route";
 
 
@@ -47,9 +47,9 @@ export const validateErrorToObject = (errors: any[]): ErrorsObject => {
 }
 
 // export function validate<T>(value: T, schema: TypedSchemaLike<T>): ValidationResult<T>;
-export const validate = <V extends object>(value: DeepPartial<V>, schema: ObjectSchema<V>) => {
+export const validate = <V extends object>(value: DeepPartial<V>, schema: AnySchema<V>) => {
 
-    return schema.validate(value)
+    return schema.validate(value, {})
 }
 // const validavalite = validate({}, PathSchema)
 
