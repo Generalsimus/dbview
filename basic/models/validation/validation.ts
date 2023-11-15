@@ -5,8 +5,8 @@
 // interface {
 
 import Joi from "joi"
-import { NumberValidationSchema, NumberValidationType } from "./number"
-import { StringValidationSchema, StringValidationType } from "./string"
+import { NumberValidationSchema, NumberValidationType, numberValidations } from "./number"
+import { StringValidationSchema, StringValidationType, stringValidations } from "./string"
 import { ObjectValidationSchema, ObjectValidationType } from "./object"
 
 
@@ -23,11 +23,12 @@ const enum ValidateValueTypes {
     Object = "Object"
 }
 
-const validateValueNames = [
+export const validateValueNames = [
     ValidateValueTypes.Number,
     ValidateValueTypes.String,
     ValidateValueTypes.Object,
 ]
+
 type ValidateValueTypeGen<T extends ValidateValueTypes, V> = {
     type: T
     value: V
@@ -53,16 +54,25 @@ const ValidateValueSchema = Joi.object({
     })
 })
 
-export type ValidationBlockType = [string, ValidateValueType]
-export const ValidationBlockSchema = Joi.array().ordered(Joi.string().required(), ValidateValueSchema.required())
+
+export interface ValidationBlockType {
+    name: string,
+    schema: ValidateValueType
+}
+export const ValidationBlockSchema = Joi.object({
+    name: Joi.string().required(),
+    schema: ValidateValueSchema.required(),
+})
 
 
 export interface Validation {
     name: string
+    description: string
     validations: ValidationBlockType[]
 }
 
 export const ValidationSchema = Joi.object({
     name: Joi.string().required(),
+    description: Joi.string().required(),
     validations: Joi.array().items(ValidationBlockSchema),
 })

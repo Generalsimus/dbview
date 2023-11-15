@@ -6,7 +6,7 @@ import { NumberValidationSchema, NumberValidationType } from "./number";
 
 const enum ObjectValidationEnums {
 }
-const validations = [
+const objectValidations: ObjectValidationEnums[] = [
 ]
 export type NumberValidationTypes = MinType | MaxType;
 

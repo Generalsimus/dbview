@@ -3,83 +3,89 @@ import { ValidationBlockType } from "@/basic/models/validation/validation";
 import { IconButton, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { OptionalKeys } from "@/basic/generics";
+import { NameInput } from "./name=input";
+import { AddValidationButton } from "./add-validation-button";
 
 
-
-interface IProps<P = ValidationBlockType[0], S = ValidationBlockType[1], EditCall = (
-    ((originalName: P, newPropertyName: P, schema: S) => void) | undefined
-)> {
-    onEdit: EditCall
-    onAdd: EditCall extends undefined ? ((propertyName: P, schema: S) => void) : undefined
-
-    propertyName: EditCall extends undefined ? undefined : P,
-    initialSchema: EditCall extends undefined ? undefined : S
-    onDestroy?: () => void
+type initialValueType = OptionalKeys<ValidationBlockType, "schema">
+interface IProps {
+    onChange: (newValue: initialValueType, prevName: initialValueType["name"]) => void,
+    onRemove: (name: initialValueType["name"]) => void,
+    startNameEdit: boolean
+    propertyName: initialValueType["name"],
+    initialSchema?: initialValueType["schema"]
 }
 
-export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onAdd, onEdit, propertyName, initialSchema, onDestroy }) => {
+export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onChange, onRemove, startNameEdit, propertyName, initialSchema }) => {
     const {
         value: {
             name,
             schema,
-            isNameEdit
-
         },
         initSetProps,
         setProps
     } = useSetProps({
-        isNameEdit: true,
         name: propertyName || "",
         schema: initialSchema
-    })
+    });
 
-    console.log({ isNameEdit })
-    const onBlurPropertyName = useMemoCall(() => {
-        if (name.length === 0) {
-            onDestroy?.()
-        } else {
-            setProps("isNameEdit")(false)
-            console.log("{isNameEdit}")
-        }
-    })
-    const onBlurValidation = useMemoCall(() => {
-        if (schema == null) {
-            return null
-        }
-        onDestroy?.()
-    })
+    const onBlur = useMemoCall(() => {
+        onChange({
+            name: name,
+            schema: schema,
+        }, propertyName.trim());
+    });
+    const onRemoveHandler = useMemoCall(() => {
+        onRemove(propertyName)
+    });
+    // const onStartEdit = useMemoCall(() => {
+    //     setProps("isNameEdit")(true);
+    // });
+    // console.log({ propertyName, name, isNameEdit })
+    // name: ValidationBlockType["name"],
+    // onChange: (newName: ValidationBlockType["name"]) => void
+    // onBlur: () => void
+    // startEditing: boolean
+    const isNewProperty = propertyName.length === 0
     return <>
         <Stack display={"flex"} flexDirection={"row"} flexWrap={"wrap"} alignItems={"center"} gap={1} justifyContent={"flex-start"}>
-            {isNameEdit ? <TextField
+            <IconButton size="small" color="error" onClick={onRemoveHandler}>
+                <DeleteIcon fontSize="small" />
+            </IconButton>
+            {<NameInput
                 name={name}
+                onBlur={onBlur}
+                onChange={initSetProps("name")("target", "value")}
+                startEditing={isNewProperty}
+            />}
+            {/* {isNameEdit ? <TextField
+                value={name}
                 variant="outlined"
                 size="small"
                 onChange={initSetProps("name")("target", "value")}
-                onBlur={onBlurPropertyName}
+                onBlur={onBlur}
                 autoFocus
                 onKeyDown={(ev) => {
                     if (ev.key === 'Enter') {
-                        onBlurPropertyName()
+                        onBlur()
                     }
                 }}
-                hiddenLabel /> : <Typography>{name}</Typography>}
+                hiddenLabel /> : <Typography onClick={onStartEdit}>{name}</Typography>} */}
             <strong>:</strong>
-            {!isNameEdit && <IconButton size="small" onClick={() => { }}>
+            {/* {!isNameEdit && <IconButton size="small" onClick={() => { }}>
                 <AddIcon fontSize="small" />
-            </IconButton>}
-            {/* {!isNameEdit && <Select
-                value={null}
-                onBlur={onBlurValidation}
-                size="small"
-            // onChange={handleChange}
-            >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-            </Select>} */}
+            </IconButton>}  */}
+            <AddValidationButton
+                schema={schema}
+                onChange={setProps("schema")}
+            // schema?: ValidationBlockType["name"]
+            // onChange: (newValue: ValidationBlockType["name"]) => void
+            />
+            {/* <IconButton size="small" onClick={() => { }}>
+                <AddIcon fontSize="small" />
+            </IconButton> */}
         </Stack>
     </>;
-});
-const getValidationNameToName = (prevName: string) => {
-
-}
+}); 

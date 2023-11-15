@@ -6,7 +6,7 @@ const enum NumberValidationEnums {
     Min = "Min",
     Max = "Max"
 }
-const validations = [
+export const numberValidations = [
     NumberValidationEnums.Min,
     NumberValidationEnums.Max,
 ]
@@ -17,7 +17,7 @@ export interface NumberValidationType {
     schema: NumberValidationTypes
 }
 export const NumberValidationSchema = {
-    type: Joi.string().allow(...validations),
+    type: Joi.string().allow(...numberValidations),
     schema: Joi.when('type', {
         is: NumberValidationEnums.Min,
         then: Joi.object(MinSchema),

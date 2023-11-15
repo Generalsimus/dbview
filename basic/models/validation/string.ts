@@ -7,7 +7,7 @@ const enum StringValidationEnums {
     MaxLength = "MaxLength",
     Date = "Date"
 }
-const validations = [
+export const stringValidations = [
     StringValidationEnums.MinLength,
     StringValidationEnums.MaxLength,
     StringValidationEnums.Date,
@@ -19,7 +19,7 @@ export interface StringValidationType {
     schema: StringValidationTypes
 }
 export const StringValidationSchema = {
-    type: Joi.string().allow(...validations),
+    type: Joi.string().allow(...stringValidations),
     schema: Joi.when('type', {
         is: StringValidationEnums.MaxLength,
         then: Joi.object(MaxLengthSchema),
