@@ -5,87 +5,70 @@ import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { OptionalKeys } from "@/basic/generics";
-import { NameInput } from "./name=input";
+import { PropertyNameInput } from "./name=input";
 import { AddValidationButton } from "./add-validation-button";
 
 
 type initialValueType = OptionalKeys<ValidationBlockType, "schema">
 interface IProps {
-    onChange: (newValue: initialValueType, prevName: initialValueType["name"]) => void,
-    onRemove: (name: initialValueType["name"]) => void,
-    startNameEdit: boolean
-    propertyName: initialValueType["name"],
+    onChange: (newValue: initialValueType, prevName: initialValueType["property"]) => void,
+    onRemove: (name: initialValueType["property"]) => void,
+    // startNameEdit: boolean
+    initialProperty: initialValueType["property"],
     initialSchema?: initialValueType["schema"]
 }
 
-export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onChange, onRemove, startNameEdit, propertyName, initialSchema }) => {
+export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onChange, onRemove, initialProperty, initialSchema }) => {
     const {
         value: {
-            name,
+            property,
             schema,
         },
         initSetProps,
         setProps
     } = useSetProps({
-        name: propertyName || "",
+        property: initialProperty || "",
         schema: initialSchema
     });
 
     const onBlur = useMemoCall(() => {
         onChange({
-            name: name,
+            property: property,
             schema: schema,
-        }, propertyName.trim());
+        }, initialProperty.trim());
     });
     const onRemoveHandler = useMemoCall(() => {
-        onRemove(propertyName)
+        onRemove(initialProperty)
     });
     // const onStartEdit = useMemoCall(() => {
     //     setProps("isNameEdit")(true);
     // });
-    // console.log({ propertyName, name, isNameEdit })
+    console.log({ property })
     // name: ValidationBlockType["name"],
     // onChange: (newName: ValidationBlockType["name"]) => void
     // onBlur: () => void
     // startEditing: boolean
-    const isNewProperty = propertyName.length === 0
+    const isNewProperty = initialProperty.length === 0
+    // const sss = initSetProps("name")("target", "value")
+    // property
     return <>
         <Stack display={"flex"} flexDirection={"row"} flexWrap={"wrap"} alignItems={"center"} gap={1} justifyContent={"flex-start"}>
             <IconButton size="small" color="error" onClick={onRemoveHandler}>
                 <DeleteIcon fontSize="small" />
             </IconButton>
-            {<NameInput
-                name={name}
+            {<PropertyNameInput
+                property={property}
                 onBlur={onBlur}
-                onChange={initSetProps("name")("target", "value")}
+                onChange={initSetProps("property")("target", "value")}
                 startEditing={isNewProperty}
             />}
-            {/* {isNameEdit ? <TextField
-                value={name}
-                variant="outlined"
-                size="small"
-                onChange={initSetProps("name")("target", "value")}
-                onBlur={onBlur}
-                autoFocus
-                onKeyDown={(ev) => {
-                    if (ev.key === 'Enter') {
-                        onBlur()
-                    }
-                }}
-                hiddenLabel /> : <Typography onClick={onStartEdit}>{name}</Typography>} */}
             <strong>:</strong>
-            {/* {!isNameEdit && <IconButton size="small" onClick={() => { }}>
-                <AddIcon fontSize="small" />
-            </IconButton>}  */}
             <AddValidationButton
                 schema={schema}
                 onChange={setProps("schema")}
-            // schema?: ValidationBlockType["name"]
-            // onChange: (newValue: ValidationBlockType["name"]) => void
+
             />
-            {/* <IconButton size="small" onClick={() => { }}>
-                <AddIcon fontSize="small" />
-            </IconButton> */}
+
         </Stack>
     </>;
 }); 

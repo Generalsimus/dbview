@@ -1,12 +1,10 @@
-import { useMemoCall, useSetProps, useToggleBool } from "@/app/utils/hooks";
-import { ValidateValueType, ValidationBlockType } from "@/basic/models/validation/validation";
-import { OutlinedFlag } from "@mui/icons-material";
-import { Autocomplete, Button, FormControl, IconButton, MenuItem, OutlinedInput, Select, Stack, TextField, Typography, useTheme } from "@mui/material";
-import React, { ReactNode, useMemo, useState } from "react";
+import { useMemoCall, useToggleBool } from "@/app/utils/hooks";
+import { ValidationBlockType } from "@/basic/models/validation/validation";
+import { IconButton, Stack, useTheme } from "@mui/material";
+import React, { } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import { OptionalKeys, ValueOf } from "@/basic/generics";
+import { OptionalKeys } from "@/basic/generics";
 import { BlockPropertyInput } from "./block-property-input";
-import { ViewBlockProperty } from "./view-block-property";
 
 interface IProps<V = (OptionalKeys<ValidationBlockType, "schema">[])> {
     value?: V,
@@ -20,19 +18,19 @@ export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value: prope
     const onHideAddInput = initDefaultValue(false);
 
 
-    const onRemoveItem = useMemoCall((name: ValidationBlockType["name"]) => {
-        onChange(propertyAndSchema.filter(e => (e.name !== name)));
+    const onRemoveItem = useMemoCall((property: ValidationBlockType["property"]) => {
+        onChange(propertyAndSchema.filter(e => (e.property !== property)));
     });
     const onChangeValidation = useMemoCall((newValue: OptionalKeys<ValidationBlockType, "schema">, prevPropertyName: string) => {
-        if (newValue.name.length !== 0) {
+        if (newValue.property.length !== 0) {
             if (prevPropertyName.length == 0) {
                 onChange([
-                    ...propertyAndSchema.filter(e => (e.name !== newValue.name)),
+                    ...propertyAndSchema.filter(e => (e.property !== newValue.property)),
                     newValue
                 ])
             } else {
                 onChange(propertyAndSchema.map(el => {
-                    if (el.name == prevPropertyName) {
+                    if (el.property == prevPropertyName) {
                         return newValue
                     }
                     return el;
@@ -41,7 +39,6 @@ export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value: prope
         }
         onHideAddInput()
     })
-    console.log({ theme })
 
 
 
@@ -58,20 +55,18 @@ export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value: prope
         {propertyAndSchema.length ? <Stack display={"flex"} justifyContent={"flex-start"}>
             {propertyAndSchema.map(item => {
                 return <BlockPropertyInput
-                    key={item.name}
+                    key={item.property}
                     onChange={onChangeValidation}
                     onRemove={onRemoveItem}
-                    propertyName={item.name}
+                    initialProperty={item.property}
                     initialSchema={item.schema}
-                    startNameEdit={false}
                 />
             })}
         </Stack> : null}
         {isAddingProcess && <BlockPropertyInput
             onChange={onChangeValidation}
             onRemove={onHideAddInput}
-            propertyName={""}
-            startNameEdit={true}
+            initialProperty={""}
         // initialSchema={item.schema}
         />}
         <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>

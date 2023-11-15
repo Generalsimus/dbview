@@ -17,37 +17,37 @@ import { ObjectValidationSchema, ObjectValidationType } from "./object"
 //     "MinLength",
 //     "Default"
 // ] as const
-const enum ValidateValueTypes {
+export const enum ValidateValueEnums {
     String = "String",
     Number = "Number",
     Object = "Object"
 }
 
 export const validateValueNames = [
-    ValidateValueTypes.Number,
-    ValidateValueTypes.String,
-    ValidateValueTypes.Object,
+    ValidateValueEnums.Number,
+    ValidateValueEnums.String,
+    ValidateValueEnums.Object,
 ]
 
-type ValidateValueTypeGen<T extends ValidateValueTypes, V> = {
+type ValidateValueTypeGen<T extends ValidateValueEnums, V> = {
     type: T
     value: V
 }
 
 
-export type ValidateValueType = ValidateValueTypeGen<ValidateValueTypes.String, StringValidationType> |
-    ValidateValueTypeGen<ValidateValueTypes.Number, NumberValidationType> |
-    ValidateValueTypeGen<ValidateValueTypes.Object, ObjectValidationType>
-const ValidateValueSchema = Joi.object({
+export type ValidateValueType = ValidateValueTypeGen<ValidateValueEnums.String, StringValidationType> |
+    ValidateValueTypeGen<ValidateValueEnums.Number, NumberValidationType> |
+    ValidateValueTypeGen<ValidateValueEnums.Object, ObjectValidationType>
+export const ValidateValueSchema = Joi.object({
     type: Joi.string().allow(...validateValueNames).required(),
     schema: Joi.when('type', {
-        is: ValidateValueTypes.String,
+        is: ValidateValueEnums.String,
         then: Joi.object(StringValidationSchema),
         otherwise: Joi.when('type', {
-            is: ValidateValueTypes.Number,
+            is: ValidateValueEnums.Number,
             then: Joi.object(NumberValidationSchema),
             otherwise: Joi.when('type', {
-                is: ValidateValueTypes.Object,
+                is: ValidateValueEnums.Object,
                 then: Joi.object(ObjectValidationSchema),
             })
         })
@@ -56,11 +56,11 @@ const ValidateValueSchema = Joi.object({
 
 
 export interface ValidationBlockType {
-    name: string,
+    property: string,
     schema: ValidateValueType
 }
 export const ValidationBlockSchema = Joi.object({
-    name: Joi.string().required(),
+    property: Joi.string().required(),
     schema: ValidateValueSchema.required(),
 })
 

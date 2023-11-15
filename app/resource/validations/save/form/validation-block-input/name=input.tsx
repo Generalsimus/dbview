@@ -4,12 +4,12 @@ import { TextField, Typography } from "@mui/material";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
 interface IProps {
-    name: ValidationBlockType["name"],
+    property: ValidationBlockType["property"],
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
     onBlur: () => void
     startEditing: boolean
 }
-export const NameInput: React.FC<IProps> = React.memo(({ name, onChange, startEditing, onBlur }) => {
+export const PropertyNameInput: React.FC<IProps> = React.memo(({ property, onChange, startEditing, onBlur }) => {
     const [editStarted, setEditIsStarted] = useState(startEditing)
 
     const onEndEditing = useMemoCall(() => {
@@ -27,13 +27,13 @@ export const NameInput: React.FC<IProps> = React.memo(({ name, onChange, startEd
     })
     return <>
         {editStarted ? <TextField
-            value={name}
+            value={property}
             variant="outlined"
             size="small"
             onChange={onChange}
             onBlur={onEndEditing}
             autoFocus
             onKeyDown={onOnKeyDown}
-            hiddenLabel /> : <Typography onClick={onStartEditing}>{name}</Typography>}
+            hiddenLabel /> : <Typography onClick={onStartEditing}>{property}</Typography>}
     </>;
 });

@@ -2,12 +2,12 @@ import Joi from "joi";
 import { MaxLengthSchema, MaxLengthType, MinLengthSchema, MinLengthType } from "./entities"
 
 
-const enum StringValidationEnums {
+export const enum StringValidationEnums {
     MinLength = "MinLength",
     MaxLength = "MaxLength",
     Date = "Date"
 }
-export const stringValidations = [
+export const stringValidations: StringValidationEnums[] = [
     StringValidationEnums.MinLength,
     StringValidationEnums.MaxLength,
     StringValidationEnums.Date,
@@ -27,5 +27,5 @@ export const StringValidationSchema = {
             is: StringValidationEnums.MinLength,
             then: Joi.object(MinLengthSchema),
         }),
-    }),
+    }).optional(),
 }

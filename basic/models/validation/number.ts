@@ -2,11 +2,11 @@ import Joi from "joi";
 import { MaxSchema, MaxType, MinSchema, MinType } from "./entities"
 
 
-const enum NumberValidationEnums {
+export const enum NumberValidationEnums {
     Min = "Min",
     Max = "Max"
 }
-export const numberValidations = [
+export const numberValidations: NumberValidationEnums[] = [
     NumberValidationEnums.Min,
     NumberValidationEnums.Max,
 ]
@@ -14,7 +14,7 @@ export type NumberValidationTypes = MinType | MaxType;
 
 export interface NumberValidationType {
     key: NumberValidationEnums,
-    schema: NumberValidationTypes
+    schema?: NumberValidationTypes
 }
 export const NumberValidationSchema = {
     type: Joi.string().allow(...numberValidations),
@@ -26,5 +26,5 @@ export const NumberValidationSchema = {
             then: Joi.object(MaxSchema),
 
         }),
-    }),
+    }).optional(),
 }
