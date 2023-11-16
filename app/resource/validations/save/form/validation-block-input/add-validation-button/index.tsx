@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
-import { useToggleBool } from '@/app/utils/hooks';
+import { useMemoCall, useToggleBool } from '@/app/utils/hooks';
 import { ValidateAllEnums, getValidateHierarchy } from '@/basic/models/validation/utils';
 import { ValidationsList } from './validations-list';
 
@@ -24,10 +24,10 @@ import { ValidationsList } from './validations-list';
 // }
 
 interface IProps {
-    schema?: ValidationBlockType["schema"]
-    onChange: (newValue: ValidationBlockType["schema"]) => void
+    schemas?: ValidationBlockType["schemas"]
+    onChange: (newValue: ValidationBlockType["schemas"]) => void
 }
-export const AddValidationButton: React.FC<IProps> = React.memo(({ schema, onChange }) => {
+export const AddValidationButton: React.FC<IProps> = React.memo(({ schemas, onChange }) => {
     const anchorElRef = useRef<HTMLButtonElement | null>(null);
 
 
@@ -36,22 +36,11 @@ export const AddValidationButton: React.FC<IProps> = React.memo(({ schema, onCha
     const handleClose = initDefaultValue(false)
     const handleOpen = initDefaultValue(true)
 
-    const type = useMemo(() => {
 
-        // if (schema) {
-        //     let initSchema: any = schema.value;
-        //     while (true) {
-        //         if (initSchema.type) {
+    const onChangeType = useMemoCall((type: ValidateAllEnums) => {
 
-        //         }
-        //         // //     currentSchema.value
-        //     }
-        //     // return schema.value
-        // }
-        // if (schema.]) {
-
-        // }
-    }, [schema])
+    });
+    console.log({ schemas })
     return <>
         <Menu
             id="fade-menu"
@@ -63,10 +52,9 @@ export const AddValidationButton: React.FC<IProps> = React.memo(({ schema, onCha
             onClose={handleClose}
             TransitionComponent={Fade}
         >
-            <ValidationsList />
-            {/* {getValidateHierarchy().map(validateName => {
-                return <MenuItem onClick={handleClose}>{validateName}</MenuItem>
-            })} */}
+            {schemas ? schemas.map(el => {
+                return <ValidationsList type={el.type} onChange={onChangeType} />
+            }) : <ValidationsList type={undefined} onChange={onChangeType} />}
         </Menu>
         <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
             <IconButton ref={anchorElRef} onClick={handleOpen}>

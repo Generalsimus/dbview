@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { OptionalKeys } from "@/basic/generics";
 import { BlockPropertyInput } from "./block-property-input";
 
-interface IProps<V = (OptionalKeys<ValidationBlockType, "schema">[])> {
+interface IProps<V = (OptionalKeys<ValidationBlockType, "schemas">[])> {
     value?: V,
     onChange: (newValue: V) => void
 }
@@ -21,7 +21,7 @@ export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value: prope
     const onRemoveItem = useMemoCall((property: ValidationBlockType["property"]) => {
         onChange(propertyAndSchema.filter(e => (e.property !== property)));
     });
-    const onChangeValidation = useMemoCall((newValue: OptionalKeys<ValidationBlockType, "schema">, prevPropertyName: string) => {
+    const onChangeValidation = useMemoCall((newValue: OptionalKeys<ValidationBlockType, "schemas">, prevPropertyName: string) => {
         if (newValue.property.length !== 0) {
             if (prevPropertyName.length == 0) {
                 onChange([
@@ -59,7 +59,7 @@ export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value: prope
                     onChange={onChangeValidation}
                     onRemove={onRemoveItem}
                     initialProperty={item.property}
-                    initialSchema={item.schema}
+                    initialSchemas={item.schemas}
                 />
             })}
         </Stack> : null}

@@ -5,74 +5,69 @@
 // interface {
 
 import Joi from "joi"
-import { NumberValidationSchema, NumberValidationType, numberValidations } from "./number"
-import { StringValidationSchema, StringValidationType, stringValidations } from "./string"
+import { NumberValidationSchema, NumberValidationType } from "./number"
+import { StringValidationSchema, StringValidationType } from "./string"
 import { ObjectValidationSchema, ObjectValidationType } from "./object"
 
 
 
-
-// const ArrayValidations = [
-//     "MaxLength",
-//     "MinLength",
-//     "Default"
-// ] as const
-export const enum ValidateValueEnums {
+export const enum ValidateDataTypesEnums {
     String = "String",
     Number = "Number",
     Object = "Object"
 }
 
-export const validateValueNames = [
-    ValidateValueEnums.Number,
-    ValidateValueEnums.String,
-    ValidateValueEnums.Object,
+export const validateDataTypes = [
+    ValidateDataTypesEnums.Number,
+    ValidateDataTypesEnums.String,
+    ValidateDataTypesEnums.Object,
 ]
 
-type ValidateValueTypeGen<T extends ValidateValueEnums, V> = {
+type ValidateValueTypeGen<T extends ValidateDataTypesEnums, V> = {
     type: T
     value: V
 }
 
 
-export type ValidateValueType = ValidateValueTypeGen<ValidateValueEnums.String, StringValidationType> |
-    ValidateValueTypeGen<ValidateValueEnums.Number, NumberValidationType> |
-    ValidateValueTypeGen<ValidateValueEnums.Object, ObjectValidationType>
+export type ValidateValueType = ValidateValueTypeGen<ValidateDataTypesEnums.String, StringValidationType> |
+    ValidateValueTypeGen<ValidateDataTypesEnums.Number, NumberValidationType> |
+    ValidateValueTypeGen<ValidateDataTypesEnums.Object, ObjectValidationType>
 export const ValidateValueSchema = Joi.object({
-    type: Joi.string().allow(...validateValueNames).required(),
+    type: Joi.string().allow(...validateDataTypes).required(),
     schema: Joi.when('type', {
-        is: ValidateValueEnums.String,
+        is: ValidateDataTypesEnums.String,
         then: Joi.object(StringValidationSchema),
         otherwise: Joi.when('type', {
-            is: ValidateValueEnums.Number,
+            is: ValidateDataTypesEnums.Number,
             then: Joi.object(NumberValidationSchema),
             otherwise: Joi.when('type', {
-                is: ValidateValueEnums.Object,
+                is: ValidateDataTypesEnums.Object,
                 then: Joi.object(ObjectValidationSchema),
             })
         })
     })
 })
+/////////////////////////////////////////////////////////
 
-
-export interface ValidationBlockType {
+export interface ValidationPropertyType {
     property: string,
     schema: ValidateValueType
 }
-export const ValidationBlockSchema = Joi.object({
+export const ValidationPropertySchema = Joi.object({
     property: Joi.string().required(),
-    schema: ValidateValueSchema.required(),
+    schema: ValidateValueSchema
 })
 
+/////////////////////////////////////////////////////////
 
 export interface Validation {
     name: string
     description: string
-    validations: ValidationBlockType[]
+    validations: ValidationPropertyType[]
 }
 
 export const ValidationSchema = Joi.object({
     name: Joi.string().required(),
     description: Joi.string().required(),
-    validations: Joi.array().items(ValidationBlockSchema),
+    validations: Joi.array().items(ValidationPropertySchema),
 })

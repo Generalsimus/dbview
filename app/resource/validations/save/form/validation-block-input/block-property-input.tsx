@@ -9,32 +9,32 @@ import { PropertyNameInput } from "./name=input";
 import { AddValidationButton } from "./add-validation-button";
 
 
-type initialValueType = OptionalKeys<ValidationBlockType, "schema">
+type initialValueType = OptionalKeys<ValidationBlockType, "schemas">
 interface IProps {
     onChange: (newValue: initialValueType, prevName: initialValueType["property"]) => void,
     onRemove: (name: initialValueType["property"]) => void,
     // startNameEdit: boolean
     initialProperty: initialValueType["property"],
-    initialSchema?: initialValueType["schema"]
+    initialSchemas?: initialValueType["schemas"]
 }
 
-export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onChange, onRemove, initialProperty, initialSchema }) => {
+export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onChange, onRemove, initialProperty, initialSchemas }) => {
     const {
         value: {
             property,
-            schema,
+            schemas,
         },
         initSetProps,
         setProps
     } = useSetProps({
         property: initialProperty || "",
-        schema: initialSchema
+        schemas: initialSchemas
     });
 
     const onBlur = useMemoCall(() => {
         onChange({
             property: property,
-            schema: schema,
+            schemas: schemas,
         }, initialProperty.trim());
     });
     const onRemoveHandler = useMemoCall(() => {
@@ -64,8 +64,8 @@ export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onChange, onRe
             />}
             <strong>:</strong>
             <AddValidationButton
-                schema={schema}
-                onChange={setProps("schema")}
+                schemas={schemas}
+                onChange={setProps("schemas")}
 
             />
 

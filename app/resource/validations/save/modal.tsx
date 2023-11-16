@@ -13,7 +13,7 @@ import { OptionalKeys } from "@/basic/generics";
 interface StateValue {
     name: Validation["name"],
     description: Validation["description"],
-    validations: OptionalKeys<Validation["validations"][number], "schema">[],
+    validations: OptionalKeys<Validation["validations"][number], "schemas">[],
 }
 interface IProps {
     title: string
