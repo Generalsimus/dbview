@@ -17,7 +17,11 @@ import { ValidateAllEnums, getValidateHierarchy } from '@/basic/models/validatio
 import { ValidationsList } from './validations-list';
 
 
-
+// const gget = <O extends unknown>(obj?: O) => {
+//     if (obj) {
+//         if (obj.s)
+//     }
+// }
 
 interface IProps {
     schema?: ValidationBlockType["schema"]
@@ -33,17 +37,17 @@ export const AddValidationButton: React.FC<IProps> = React.memo(({ schema, onCha
     const handleOpen = initDefaultValue(true)
 
     const type = useMemo(() => {
-        const getLastValue = <T extends unknown>(type: { type: T }) => { }
-        if (schema) {
-            let initSchema: any = schema.value;
-            while (true) {
-                if (initSchema.type) {
 
-                }
-                // //     currentSchema.value
-            }
-            // return schema.value
-        }
+        // if (schema) {
+        //     let initSchema: any = schema.value;
+        //     while (true) {
+        //         if (initSchema.type) {
+
+        //         }
+        //         // //     currentSchema.value
+        //     }
+        //     // return schema.value
+        // }
         // if (schema.]) {
 
         // }

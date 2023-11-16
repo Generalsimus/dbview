@@ -16,7 +16,7 @@ export type StringValidationTypes = MinLengthType | MaxLengthType
 
 export interface StringValidationType {
     type: StringValidationEnums,
-    schema: StringValidationTypes
+    schemas: StringValidationTypes
 }
 export const StringValidationSchema = {
     type: Joi.string().allow(...stringValidations),
@@ -29,3 +29,8 @@ export const StringValidationSchema = {
         }),
     }).optional(),
 }
+
+/**
+ * 
+ * 
+ */
