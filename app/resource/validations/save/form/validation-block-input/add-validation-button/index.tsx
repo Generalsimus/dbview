@@ -4,8 +4,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import { ValidationBlockType, validateValueNames } from "@/basic/models/validation/validation";
-import { IconButton, Stack } from "@mui/material";
+import { ValidationPropertyType } from "@/basic/models/validation/validation";
+import { IconButton, Stack, Typography } from "@mui/material";
 // import React, { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
@@ -13,53 +13,29 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import { useMemoCall, useToggleBool } from '@/app/utils/hooks';
-import { ValidateAllEnums, getValidateHierarchy } from '@/basic/models/validation/utils';
-import { ValidationsList } from './validations-list';
+// import { ValidateAllEnums, getValidateHierarchy } from '@/basic/models/validation/utils';
+// import { AddValidationList, ValidationsList } from './add-validation-list';
+import { ValidateDataTypesEnums, ValidateValueType, validateDataTypes } from '@/basic/models/validation/data-types';
+import { getDataTypeEntities } from '@/basic/models/validation/utils';
+import { AddValidationsList } from './validation-list';
+import { DataTypeView } from './data-types';
+import { InputChange } from '@/basic/generics';
 
 
-// const gget = <O extends unknown>(obj?: O) => {
-//     if (obj) {
-//         if (obj.s)
-//     }
-// }
-
-interface IProps {
-    schemas?: ValidationBlockType["schemas"]
-    onChange: (newValue: ValidationBlockType["schemas"]) => void
+interface IProps extends InputChange<ValidateValueType> {
 }
-export const AddValidationButton: React.FC<IProps> = React.memo(({ schemas, onChange }) => {
-    const anchorElRef = useRef<HTMLButtonElement | null>(null);
+export const AddValidationButton: React.FC<IProps> = React.memo(({ value = {}, onChange }) => {
 
-
-    const [open, initDefaultValue] = useToggleBool(false)
-
-    const handleClose = initDefaultValue(false)
-    const handleOpen = initDefaultValue(true)
-
-
-    const onChangeType = useMemoCall((type: ValidateAllEnums) => {
-
+    const addDataType = useMemoCall((type: ValidateDataTypesEnums) => {
+        onChange({
+            type: type,
+            entities: []
+        })
     });
-    console.log({ schemas })
     return <>
-        <Menu
-            id="fade-menu"
-            MenuListProps={{
-                'aria-labelledby': 'fade-button',
-            }}
-            anchorEl={anchorElRef.current}
-            open={open}
-            onClose={handleClose}
-            TransitionComponent={Fade}
-        >
-            {schemas ? schemas.map(el => {
-                return <ValidationsList type={el.type} onChange={onChangeType} />
-            }) : <ValidationsList type={undefined} onChange={onChangeType} />}
-        </Menu>
-        <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
-            <IconButton ref={anchorElRef} onClick={handleOpen}>
-                <AddIcon />
-            </IconButton>
-        </Stack>
-    </>;
-}); 
+        {
+            value.type ? <DataTypeView value={value} onChange={onChange} /> :
+                <AddValidationsList entityTypes={validateDataTypes} onChange={addDataType} />
+        }
+    </>
+})

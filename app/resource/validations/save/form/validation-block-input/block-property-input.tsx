@@ -1,73 +1,74 @@
-import { useMemoCall, useSetProps } from "@/app/utils/hooks";
-import { ValidationBlockType } from "@/basic/models/validation/validation";
+import { useChangeSetProps, useMemoCall, useSetProps } from "@/app/utils/hooks";
+import { ValidationPropertyType } from "@/basic/models/validation/validation";
 import { IconButton, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { OptionalKeys } from "@/basic/generics";
+import { InputChange, MakeStateValue, OptionalKeys } from "@/basic/generics";
 import { PropertyNameInput } from "./name=input";
 import { AddValidationButton } from "./add-validation-button";
+import { ValidateValueType } from "@/basic/models/validation/data-types";
 
-
-type initialValueType = OptionalKeys<ValidationBlockType, "schemas">
-interface IProps {
-    onChange: (newValue: initialValueType, prevName: initialValueType["property"]) => void,
-    onRemove: (name: initialValueType["property"]) => void,
+//   InputChange<ValidateValueType> 
+// type initialValueType = MakeStateValue<ValidationPropertyType>
+interface IProps extends InputChange<ValidationPropertyType> {
+    // onChange: (newValue: initialValueType, prevName: initialValueType["property"]) => void,
+    onRemove: (name: ValidationPropertyType["property"]) => void,
     // startNameEdit: boolean
-    initialProperty: initialValueType["property"],
-    initialSchemas?: initialValueType["schemas"]
+    // initialProperty: initialValueType["property"],
+    // initialValue?: MakeStateValue<ValidationPropertyType["value"]>
+    //  initialValueType["value"]
 }
 
-export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onChange, onRemove, initialProperty, initialSchemas }) => {
+export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onChange, onRemove, value = {} }) => {
+    const onChangeMiddleware = useMemoCall((newValue: IProps["value"] = {}) => {
+        const { property = "", value: propertyValue = {} } = newValue || {};
+
+        if (property.length !== 0) {
+            onChange(newValue)
+            return
+        }
+        for (const key in propertyValue) {
+            onChange(newValue)
+            return
+        }
+
+        onRemove(value.property || "");
+    })
+
     const {
-        value: {
-            property,
-            schemas,
+        state: {
+            property = "",
+            value: propertyValue
         },
-        initSetProps,
         setProps
-    } = useSetProps({
-        property: initialProperty || "",
-        schemas: initialSchemas
+    } = useChangeSetProps(value, onChangeMiddleware)
+
+    const onRemoveHandler = useMemoCall(() => {
+        onRemove(property)
     });
 
-    const onBlur = useMemoCall(() => {
-        onChange({
-            property: property,
-            schemas: schemas,
-        }, initialProperty.trim());
-    });
-    const onRemoveHandler = useMemoCall(() => {
-        onRemove(initialProperty)
-    });
-    // const onStartEdit = useMemoCall(() => {
-    //     setProps("isNameEdit")(true);
-    // });
-    console.log({ property })
-    // name: ValidationBlockType["name"],
-    // onChange: (newName: ValidationBlockType["name"]) => void
-    // onBlur: () => void
-    // startEditing: boolean
-    const isNewProperty = initialProperty.length === 0
-    // const sss = initSetProps("name")("target", "value")
-    // property
     return <>
         <Stack display={"flex"} flexDirection={"row"} flexWrap={"wrap"} alignItems={"center"} gap={1} justifyContent={"flex-start"}>
             <IconButton size="small" color="error" onClick={onRemoveHandler}>
                 <DeleteIcon fontSize="small" />
             </IconButton>
-            {<PropertyNameInput
-                property={property}
-                onBlur={onBlur}
-                onChange={initSetProps("property")("target", "value")}
-                startEditing={isNewProperty}
-            />}
+            <PropertyNameInput
+                value={property}
+                onChange={setProps("property")}
+            // startEditing={!property}
+            />
             <strong>:</strong>
             <AddValidationButton
-                schemas={schemas}
-                onChange={setProps("schemas")}
+                value={propertyValue}
+                onChange={setProps("value")}
 
             />
+            {/* <AddValidationButton
+                schema={schema}
+                onChange={setProps("schema")}
+
+            /> */}
 
         </Stack>
     </>;

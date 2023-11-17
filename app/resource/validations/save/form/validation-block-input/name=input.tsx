@@ -1,39 +1,48 @@
-import { useMemoCall } from "@/app/utils/hooks";
-import { ValidationBlockType } from "@/basic/models/validation/validation";
+import { useChangeSetProps, useMemoCall, useSetProps } from "@/app/utils/hooks";
+import { InputChange } from "@/basic/generics";
+import { ValidationPropertyType } from "@/basic/models/validation/validation";
 import { TextField, Typography } from "@mui/material";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
-interface IProps {
-    property: ValidationBlockType["property"],
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void
-    onBlur: () => void
-    startEditing: boolean
+interface IProps extends InputChange<ValidationPropertyType["property"]> {
+    // startEditing: boolean
 }
-export const PropertyNameInput: React.FC<IProps> = React.memo(({ property, onChange, startEditing, onBlur }) => {
-    const [editStarted, setEditIsStarted] = useState(startEditing)
+export const PropertyNameInput: React.FC<IProps> = React.memo(({ value: initialValue = "", onChange }) => {
+    const {
+        state: {
+            value,
+            isEditing
+        },
+        setProps,
+        initSetProps
+    } = useSetProps({
+        value: initialValue,
+        isEditing: initialValue.length === 0
+    });
 
-    const onEndEditing = useMemoCall(() => {
-        setEditIsStarted(false);
-        onBlur()
-    })
-    const onStartEditing = useMemoCall(() => {
-        onBlur()
-        setEditIsStarted(true);
-    })
+    const onBlur = useMemoCall(() => {
+        onChange(value);
+        setProps("isEditing")(false)
+    });
+
     const onOnKeyDown = useMemoCall((event: KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter') {
-            onEndEditing()
+            onBlur()
         }
     })
+    const onStartEditing = useMemoCall(() => {
+        setProps("isEditing")(true)
+    })
+
     return <>
-        {editStarted ? <TextField
-            value={property}
+        {isEditing ? <TextField
+            value={value}
             variant="outlined"
             size="small"
-            onChange={onChange}
-            onBlur={onEndEditing}
+            onChange={initSetProps("target", "value")("value")}
+            onBlur={onBlur}
             autoFocus
             onKeyDown={onOnKeyDown}
-            hiddenLabel /> : <Typography onClick={onStartEditing}>{property}</Typography>}
+            hiddenLabel /> : <Typography onClick={onStartEditing}>{value}</Typography>}
     </>;
 });

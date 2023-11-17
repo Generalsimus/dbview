@@ -32,8 +32,8 @@ interface IProps {
 // ConvertPureType
 export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc, initialStateValue, title, getViewControllerContent }) => {
     const {
-        value: formState,
-        setValue,
+        state: formState,
+        setState,
         initSetProps
     } = useSetProps(initialStateValue || {})
 
@@ -47,7 +47,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
 
 
     const handleClose = useMemoCall(() => {
-        setValue({});
+        setState({});
 
         onClose()
     });
@@ -76,7 +76,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
     const openController = useMemo(() => getViewControllerContent({
         onOpen,
         onClose,
-        setStateValue: setValue
+        setStateValue: setState
     }), [])
 
 
@@ -92,7 +92,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
                 <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
                     <TextField
                         value={name}
-                        onChange={initSetProps("name")("target", "value")}
+                        onChange={initSetProps("target", "value")("name")}
                         autoFocus
                         margin="dense"
                         id="name"
@@ -111,7 +111,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
                             name="method"
                             value={method}
                             label="Method"
-                            onChange={initSetProps("method")("target", "value")}
+                            onChange={initSetProps("target", "value")("method")}
                             {...getError("method")}
                         >
                             {requestMethods.map((method: RequestMethodType[number]) => {
@@ -125,7 +125,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
                         id="path"
                         name="path"
                         value={path}
-                        onChange={initSetProps("path")("target", "value")}
+                        onChange={initSetProps("target", "value")("path")}
                         label="Path"
                         type="text"
                         fullWidth
@@ -139,7 +139,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
                         label="Description"
                         name="description"
                         value={description}
-                        onChange={initSetProps("description")("target", "value")}
+                        onChange={initSetProps("target", "value")("description")}
                         minRows={2}
                         type="text"
                         fullWidth
