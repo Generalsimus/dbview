@@ -38,7 +38,7 @@ export const Max: React.FC<IProps> = React.memo(({ value = {}, setValue, getVali
                 size="small"
                 onChange={onChangeMAxValue}
                 autoFocus
-                sx={{ minHeight: "1em", minWidth: "1em" }}
+                sx={{ minHeight: "1.5em", minWidth: "1em" }}
                 hiddenLabel
                 {...getError()}
 
