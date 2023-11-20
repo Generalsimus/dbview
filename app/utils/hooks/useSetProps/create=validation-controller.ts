@@ -47,7 +47,7 @@ export const createValidationController =
 
             getIfValid(showError = false) {
                 const stateController = stateRefCache.cache;
-                const stateValue = stateRefCache.cache?.value;
+                // const stateValue = stateRefCache.cache?.value;
                 let validationResult = refCache.validateResult;
 
 
