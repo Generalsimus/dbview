@@ -2,7 +2,7 @@ import { requestMethods } from "@/basic/request";
 import { sequelize } from "../init";
 import { DataTypes, ModelDefined } from "sequelize";
 import { MakeAsDbDoc } from "@/basic/db-basic-schema";
-import { Route } from "@/basic/models/route";
+import { Route } from "@/basic/models/route/route";
 
 
 

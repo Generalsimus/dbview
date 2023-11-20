@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@mui/material";
 import CreateIcon from '@mui/icons-material/Create';
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
-import { Route } from "@/basic/models/route";
+import { Route } from "@/basic/models/route/route";
 import { SaveRouteForm } from ".";
 
 interface IProps {

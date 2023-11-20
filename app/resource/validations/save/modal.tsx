@@ -6,9 +6,12 @@ import SaveIcon from '@mui/icons-material/Save';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
 import { ValidationBlockInput } from "./form/validation-block-input";
-import { useSetProps } from "@/app/utils/hooks";
-import { Validation } from "@/basic/models/validation/validation";
+// import { useSetProps, useValidation } from "@/app/utils/hooks";/
+import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
 import { MakeStateValue, OptionalKeys } from "@/basic/generics";
+import { getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
+// import { useValidation } from "@/app/utils/hooks/useValidatio";
+import { useSetProps } from "@/app/utils/hooks/useSetProps";
 
 
 interface IProps {
@@ -16,18 +19,24 @@ interface IProps {
 }
 export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
     const {
-        state: {
-            name,
-            description,
-            validations
-        },
+        state,
         setProps,
         initSetProps,
+        getValidation,
+        getPropState
     } = useSetProps<MakeStateValue<Validation>>({
-        name: "",
-        description: "",
-        validations: []
-    })
+        // name: "",
+        // description: "",
+        // validations: []
+    });
+    const {
+        name,
+        description,
+        validations
+    } = state;
+
+
+    const { getIfValid, getError } = getValidation(getCreateOrUpdateSchema(ValidationSchema));
 
     return <>
         <Dialog
@@ -63,9 +72,6 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
                 }}>
                     <TextField
                         value={name}
-                        // onChange={(e) => {
-                        //     e.target.value
-                        // }} 
                         onChange={initSetProps("target", "value")("name")}
                         autoFocus
                         margin="dense"
@@ -74,7 +80,7 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
                         type="text"
                         fullWidth
                         variant="filled"
-                    // {...getError("name")}
+                        {...getError("name")}
                     />
                     <TextField
                         autoFocus
@@ -89,11 +95,13 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
                         fullWidth
                         variant="filled"
                         multiline
+                        {...getError("description")}
                     />
-                    <ValidationBlockInput value={validations || []} onChange={setProps("validations")} />
-                    {/* <ValidationBlockInput value={ } /> */}
-                    {/* <ValidationBlockInput /> */}
-                    {/* <Typography variant="h5">Delete "{deleteRouteDoc?.name}" Route?</Typography> */}
+                    <ValidationBlockInput
+                        value={validations}
+                        onChange={setProps("validations")}
+                        getError={getError}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => { }} disabled={false} variant="outlined">Cancel</Button>

@@ -13,8 +13,8 @@ export interface Route {
 }
 
 export const RouteSchema = Joi.object<Route>({
-    name: Joi.string(),
-    path: Joi.string(),
-    description: Joi.string(),
-    method: Joi.string(),
+    name: Joi.string().required(),
+    path: Joi.string().required(),
+    description: Joi.string().allow("").default(""),
+    method: Joi.string().required(),
 }) 

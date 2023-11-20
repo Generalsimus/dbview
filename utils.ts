@@ -1,9 +1,9 @@
 // import { Allow, IsDate, IsEmpty, IsEnum, IsIn, IsNumber, IsString, MinLength, isDate, isNumber, ValidationError, validateSync } from "class-validator";
 import { RequestTypeEnum, requestMethods } from "@/basic/request";
 import { Children } from "react";
-import { ClassToObject, ConvertPureType, DeepPartial } from "./basic/generics";
-import { AnySchema, ObjectSchema } from "joi";
-import { RouteSchema } from "./basic/models/route";
+import { ClassToObject, ConvertPureType, DeepPartial, MakeStateValue } from "./basic/generics";
+import { AnySchema, ObjectSchema, ValidationOptions, ValidationResult } from "joi";
+import { RouteSchema } from "./basic/models/route/route";
 
 
 // export const getValidationErrorToString = (errors: ValidationError[]) => {
@@ -47,9 +47,9 @@ export const validateErrorToObject = (errors: any[]): ErrorsObject => {
 }
 
 // export function validate<T>(value: T, schema: TypedSchemaLike<T>): ValidationResult<T>;
-export const validate = <V extends object>(value: DeepPartial<V>, schema: AnySchema<V>) => {
+export const validate = <V extends object>(value: any, schema: AnySchema<V>, options: ValidationOptions = {}): ValidationResult<V> => {
 
-    return schema.validate(value, {})
+    return schema.validate(value, options)
 }
 // const validavalite = validate({}, PathSchema)
 

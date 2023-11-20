@@ -4,9 +4,11 @@ import { Typography } from "@mui/material";
 import React, { useMemo, useState } from "react";
 import { AddValidationsList } from "../validation-list";
 import { StringValidateDataTypesEnums, StringValidateEntitiesTypes } from "@/basic/models/validation/data-types/string";
-import { useMemoCall } from "@/app/utils/hooks";
+// import { useMemoCall } from "@/app/utils/hooks";
 import { InputChange } from "@/basic/generics";
 import { map } from "lodash";
+import { TypeNameViewContainer } from "./type-name-container";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 // import {   } from "./string-type";
 
 interface IProps extends InputChange<StringDataTypeValidationType> {
@@ -20,7 +22,7 @@ export const StringTypeView: React.FC<IProps> = React.memo(({ value = {}, onChan
         onChange({
             type: type,
             entities: [
-                ...(entities || []),
+                ...entities,
                 {
                     type: type,
                 }
@@ -28,15 +30,13 @@ export const StringTypeView: React.FC<IProps> = React.memo(({ value = {}, onChan
         })
     });
     const entitiesTypes = useMemo(() => {
-        const exitedEntities = map(entities, "type")
-        // entities.map(e => e?.type);
+        const exitedEntities = map(entities, "type");
+
         return StringValidateEntitiesTypes.filter(e => !exitedEntities.includes(e))
     }, [entities])
 
     return <>
-        <Typography>
-            .{type}()
-        </Typography>
+        <TypeNameViewContainer type={type} />
         <AddValidationsList entityTypes={entitiesTypes} onChange={addDataType} />
     </>;
 });

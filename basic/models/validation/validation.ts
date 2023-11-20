@@ -28,7 +28,6 @@ export interface Validation {
 
 export const ValidationSchema = Joi.object({
     name: Joi.string().required(),
-    description: Joi.string().required(),
+    description: Joi.string().allow("").default(""),
     validations: Joi.array().items(ValidationPropertySchema),
 })
- 

@@ -11,11 +11,12 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
-import { useMemoCall, useToggleBool } from '@/app/utils/hooks';
+// import { useMemoCall, useToggleBool } from '@/app/utils/hooks';
 import { ValidateDataTypesEnums, ValidateValueType, validateDataTypes } from '@/basic/models/validation/data-types';
 import { DataTypeEntitiesGeneric, getDataTypeEntities } from '@/basic/models/validation/utils';
 import { StringValidateDataTypesEnums } from '@/basic/models/validation/data-types/string';
 import { NumberValidateDataTypesEnums } from '@/basic/models/validation/data-types/number';
+import { useToggleBool } from '@/app/utils/hooks/useToggleBool';
 
 
 type AllValidateEnums = ValidateDataTypesEnums[] | StringValidateDataTypesEnums[] | NumberValidateDataTypesEnums[]
@@ -36,28 +37,30 @@ export const AddValidationsList = <T extends AllValidateEnums>({ entityTypes, on
 
 
     return <>
-        <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
-            <IconButton ref={anchorElRef} onClick={handleOpen}>
-                <AddIcon />
-            </IconButton>
-        </Stack>
-        <Menu
-            id="fade-menu"
-            MenuListProps={{
-                'aria-labelledby': 'fade-button',
-            }}
-            anchorEl={anchorElRef.current}
-            open={open}
-            onClose={handleClose}
-            TransitionComponent={Fade}
-        >
-            {entityTypes.map(entityType => {
-                return <MenuItem onClick={() => {
-                    onChange(entityType)
-                    handleClose()
-                }}>{entityType + ""}</MenuItem>
+        {entityTypes.length ? <>
+            <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
+                <IconButton ref={anchorElRef} onClick={handleOpen}>
+                    <AddIcon />
+                </IconButton>
+            </Stack>
+            <Menu
+                id="fade-menu"
+                MenuListProps={{
+                    'aria-labelledby': 'fade-button',
+                }}
+                anchorEl={anchorElRef.current}
+                open={open}
+                onClose={handleClose}
+                TransitionComponent={Fade}
+            >
+                {entityTypes.map(entityType => {
+                    return <MenuItem onClick={() => {
+                        onChange(entityType)
+                        handleClose()
+                    }}>{entityType + ""}</MenuItem>
 
-            })}
-        </Menu>
+                })}
+            </Menu>
+        </> : null}
     </>;
 } 

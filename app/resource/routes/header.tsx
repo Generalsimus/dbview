@@ -4,7 +4,7 @@ import { ResourceTabsEnum } from "../resources-tabs";
 import { AddRouteButton } from "./save/add-button";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"; 
 import { ResourcesHeaderContent } from "../resources-header";
-import { Route } from "@/basic/models/route";
+import { Route } from "@/basic/models/route/route";
 
 interface IProps {
     saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>

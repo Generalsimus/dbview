@@ -1,4 +1,7 @@
-import { useChangeSetProps, useMemoCall, useSetProps } from "@/app/utils/hooks";
+import { AutoResizeField } from "@/app/components/aut0-resize-field";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { useSetProps } from "@/app/utils/hooks/useSetProps";
+// import { useChangeSetProps, useMemoCall, useSetProps } from "@/app/utils/hooks";
 import { InputChange } from "@/basic/generics";
 import { ValidationPropertyType } from "@/basic/models/validation/validation";
 import { TextField, Typography } from "@mui/material";
@@ -29,13 +32,14 @@ export const PropertyNameInput: React.FC<IProps> = React.memo(({ value: initialV
         if (event.key === 'Enter') {
             onBlur()
         }
-    })
-    const onStartEditing = useMemoCall(() => {
-        setProps("isEditing")(true)
-    })
-
+    });
+    
     return <>
-        {isEditing ? <TextField
+        <AutoResizeField
+            sx={{
+                minWidth: "1em",
+                minHeight: "1.5em",
+            }}
             value={value}
             variant="outlined"
             size="small"
@@ -43,6 +47,6 @@ export const PropertyNameInput: React.FC<IProps> = React.memo(({ value: initialV
             onBlur={onBlur}
             autoFocus
             onKeyDown={onOnKeyDown}
-            hiddenLabel /> : <Typography onClick={onStartEditing}>{value}</Typography>}
+            hiddenLabel />
     </>;
 });

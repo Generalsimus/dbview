@@ -3,10 +3,13 @@ import { MinType } from "@/basic/models/validation/data-types/entities";
 import { NumberMinLengthEntityType } from "@/basic/models/validation/data-types/number";
 import { StringMinLengthEntityType } from "@/basic/models/validation/data-types/string";
 import React, { useState } from "react";
+import { TypeNameViewContainer } from "../type-name-container";
 
 interface IProps extends InputChange<StringMinLengthEntityType | NumberMinLengthEntityType> {
 }
-export const Min: React.FC<IProps> = React.memo(({ value, onChange }) => {
+export const Min: React.FC<IProps> = React.memo(({ value = {}, onChange }) => {
 
-    return <>MIn</>;
+    return <>
+        <TypeNameViewContainer type={value.type} />
+    </>;
 });

@@ -5,27 +5,32 @@ import SaveIcon from '@mui/icons-material/SaveAs';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
-import { useMemoCall, useSetProps, useToggleBool, useValidation } from "@/app/utils/hooks";
+// import { useMemoCall, useSetProps, useToggleBool, useValidation } from "@/app/utils/hooks";
 import { RequestMethodType, requestMethods } from "@/basic/request";
-import { Route, RouteSchema } from "@/basic/models/route";
+import { Route, RouteSchema } from "@/basic/models/route/route";
 import { DeepPartial } from "@/basic/generics";
 import { useRouter } from "next/navigation";
 import { MakeCreateOrUpdate, MakeForState, getCreateOrUpdateSchema, } from "@/basic/db-basic-schema";
 import { DrawerView } from "./drawer-view";
 import { DeleteRoute } from "./delete-route";
+// import { useToggleBool } from "@/app/utils/hooks";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { useSetProps } from "@/app/utils/hooks/useSetProps";
+import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
+// import { useValidation } from "@/app/utils/hooks/useValidatio";
 
 
-// type StateValueType = MakeCreateOrUpdate<Route>
+// type StateValueType = MakeUpdate<Route> | MakeCreate<M>
 interface IProps {
     saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>;
     deleteRouteDoc: (id: number) => Promise<void>;
-    initialStateValue?: MakeForState<Route>;
+    initialStateValue?: MakeCreateOrUpdate<Route>;
 
     title: string;
     getViewControllerContent: (arg: {
         onOpen: () => void;
         onClose: () => void;
-        setStateValue: (value: MakeForState<Route>) => void;
+        setStateValue: (value: MakeCreateOrUpdate<MakeForState<Route>>) => void;
     }) => ReactNode;
     // onClose: () => void
 }
@@ -34,8 +39,9 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
     const {
         state: formState,
         setState,
-        initSetProps
-    } = useSetProps(initialStateValue || {})
+        initSetProps,
+        getValidation
+    } = useSetProps<MakeCreateOrUpdate<MakeForState<Route>>>(initialStateValue || {})
 
     const { name, path, method, description } = formState
 
@@ -56,14 +62,14 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
 
 
 
+    const { getIfValid, getError } = getValidation(getCreateOrUpdateSchema(RouteSchema));
 
 
-    const { getIfValid, getError } = useValidation(formState, getCreateOrUpdateSchema(RouteSchema));
     const router = useRouter();
 
 
     const onSave = useMemoCall(() => {
-        const value = getIfValid();
+        const value = getIfValid(true);
         if (value) {
             saveRouteDoc(value).then(() => {
                 setIsSavingProcess(false);
@@ -166,8 +172,9 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
                                     /> : <DeleteIcon />}
                                 disabled={isSavingProcess}
                                 onClick={() => {
-                                    if ("id" in formState) {
-                                        setDeleteRoute(formState)
+                                    const isValid = getIfValid();
+                                    if (isValid && "id" in isValid) {
+                                        setDeleteRoute(isValid)
                                     }
                                 }}
                             >

@@ -1,8 +1,9 @@
 "use client"
 import React, { ReactNode, useMemo } from "react";
 import { Table } from "../../components/table";
-import { useMemoCall } from "../../utils/hooks";
+// import { useMemoCall } from "../../utils/hooks";
 import { useRouter } from "next/navigation";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 interface IProps {
     headerContent?: ReactNode

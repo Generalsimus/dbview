@@ -1,11 +1,12 @@
-import { useMemoCall, useToggleBool } from "@/app/utils/hooks";
+// import { useMemoCall, useToggleBool } from "@/app/utils/hooks";
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, Typography } from "@mui/material";
 import React, { ReactNode, useMemo, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { MakeAsDbDoc } from "@/basic/db-basic-schema";
-import { Route } from "@/basic/models/route";
+import { MakeAsDbDoc, MakeForState } from "@/basic/db-basic-schema";
+import { Route } from "@/basic/models/route/route";
 import { useRouter } from "next/navigation";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 interface IProps {
     deleteRouteDoc: (id: number) => Promise<void>
@@ -16,7 +17,7 @@ interface IProps {
     }) => ReactNode
 }
 export const DeleteRoute: React.FC<IProps> = React.memo(({ deleteRouteDoc, getActionElement }) => {
-    const [deleteRoute, setDeleteRoute] = useState<MakeAsDbDoc<Route> | undefined>(undefined)
+    const [deleteRoute, setDeleteRoute] = useState<MakeForState<MakeAsDbDoc<Route>> | undefined>(undefined)
     const [isSavingProcess, setIsSavingProcess] = useState(false);
 
     const status = deleteRoute !== undefined
@@ -33,11 +34,11 @@ export const DeleteRoute: React.FC<IProps> = React.memo(({ deleteRouteDoc, getAc
     const onDelete = useMemoCall(() => {
         if (deleteRoute) {
             setIsSavingProcess(true)
-            deleteRouteDoc(deleteRoute.id).then(() => {
-                setDeleteRoute(undefined)
-                setIsSavingProcess(false)
-                router.refresh()
-            }).catch(() => setIsSavingProcess(false))
+            // deleteRouteDoc(deleteRoute.id).then(() => {
+            //     setDeleteRoute(undefined)
+            //     setIsSavingProcess(false)
+            //     router.refresh()
+            // }).catch(() => setIsSavingProcess(false))
         }
     })
     const actionContent = useMemo(() => getActionElement({ onClose, setDeleteRoute }), [])

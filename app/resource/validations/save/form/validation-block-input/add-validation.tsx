@@ -2,9 +2,10 @@ import { InputChange } from "@/basic/generics";
 import { ValidationPropertyType } from "@/basic/models/validation/validation";
 import React, { useState } from "react";
 import { BlockPropertyInput } from "./block-property-input";
-import { useToggleBool } from "@/app/utils/hooks";
+// import { useToggleBool } from "@/app/utils/hooks";
 import { IconButton, Stack } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
 
 interface IProps extends InputChange<ValidationPropertyType> {
 

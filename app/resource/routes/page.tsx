@@ -1,4 +1,4 @@
-import { Route, RouteSchema } from "@/basic/models/route";
+import { Route, RouteSchema } from "@/basic/models/route/route";
 import React from "react";
 import { validate } from "@/utils";
 import { RoutesTable } from "./routes-table";

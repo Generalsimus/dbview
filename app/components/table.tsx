@@ -1,8 +1,9 @@
 "use client"
 import { Paper, TableBody, Table as TableMaterialUi, TableContainer, TableHead, TablePagination, TableRow, TableCell, Stack, SxProps, TableFooter } from '@mui/material';
 import React, { ReactNode, useState } from "react";
-import { useMemoCall } from '../utils/hooks';
+// import { useMemoCall } from '../utils/hooks';
 import { useTheme } from '@mui/material/styles';
+import { useMemoCall } from '../utils/hooks/useMemoCall';
 type TablePaginationProps = React.ComponentProps<typeof TablePagination>
 type TableCellProps = React.ComponentProps<typeof TableCell>
 
