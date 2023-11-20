@@ -19,7 +19,7 @@ interface IProps {
 }
 export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
     const {
-        state,
+        value = {},
         setProps,
         initSetProps,
         getValidation,
@@ -33,7 +33,7 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
         name,
         description,
         validations
-    } = state;
+    } = value;
 
 
     const { getIfValid, getError } = getValidation(getCreateOrUpdateSchema(ValidationSchema));
@@ -98,9 +98,10 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
                         {...getError("description")}
                     />
                     <ValidationBlockInput
-                        value={validations}
-                        onChange={setProps("validations")}
-                        getError={getError}
+                        {...getPropState("validations")}
+                    // value={validations}
+                    // onChange={setProps("validations")}
+                    // getError={getError}
                     />
                 </DialogContent>
                 <DialogActions>

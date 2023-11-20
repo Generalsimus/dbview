@@ -16,7 +16,7 @@ export const useInitialSetProps = <S extends any>(
         childRefCache: {}
     }).current;
     const controller = refCache.cache ||= createSetPropController(staveValue, setValue, refCache);
-    controller.state = staveValue;
+    controller.value = staveValue;
     return controller;
 }
 

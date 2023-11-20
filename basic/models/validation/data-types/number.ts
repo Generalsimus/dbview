@@ -32,9 +32,9 @@ export const NumberEntityValidationSchema = {
         is: NumberValidateDataTypesEnums.Min,
         then: Joi.object(MinSchema),
         otherwise: Joi.when('type', {
-            is: NumberValidateDataTypesEnums.Min,
+            is: NumberValidateDataTypesEnums.Max,
             then: Joi.object(MaxSchema),
 
         }),
-    }),
+    }).required(),
 }

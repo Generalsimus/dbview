@@ -3,17 +3,16 @@ import { NumberValidateDataTypesEnums } from "@/basic/models/validation/data-typ
 import React, { useState } from "react";
 import { Min } from "./min";
 import { Max } from "./max";
-import { InputChange } from "@/basic/generics";
+import { InputProps } from "@/basic/generics";
 
-interface IProps extends InputChange<ValidateValueType["entities"][number]> {
-    // value: V,.
+interface IProps extends InputProps<ValidateValueType["entities"][number]> { 
 }
-export const Entities: React.FC<IProps> = React.memo(({ value, onChange }) => {
-    switch (value?.type) {
+export const Entities: React.FC<IProps> = React.memo((props) => {
+    switch (props.value?.type) {
         case NumberValidateDataTypesEnums.Max:
-            return <Max value={value} onChange={onChange} />
+            return <Max {...props} />
         case NumberValidateDataTypesEnums.Min:
-            return <Min value={value} onChange={onChange} />
+            return <Min {...props} />
     }
     return <></>;
 });

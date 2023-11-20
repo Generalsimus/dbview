@@ -19,16 +19,17 @@ import { ValidateDataTypesEnums, ValidateValueType, validateDataTypes } from '@/
 import { getDataTypeEntities } from '@/basic/models/validation/utils';
 import { AddValidationsList } from './validation-list';
 import { DataTypeView } from './data-types';
-import { InputChange } from '@/basic/generics';
+import { InputProps } from '@/basic/generics';
 import { useMemoCall } from '@/app/utils/hooks/useMemoCall';
 
 
-interface IProps extends InputChange<ValidateValueType> {
+interface IProps extends InputProps<ValidateValueType> {
 }
-export const AddValidationButton: React.FC<IProps> = React.memo(({ value = {}, onChange }) => {
+export const AddValidationButton: React.FC<IProps> = React.memo((props) => {
+    const { value = {}, setValue } = props;
 
     const addDataType = useMemoCall((type: ValidateDataTypesEnums) => {
-        onChange({
+        setValue({
             type: type,
             entities: []
         })
@@ -36,7 +37,7 @@ export const AddValidationButton: React.FC<IProps> = React.memo(({ value = {}, o
     return <>
         {
             // <DataTypeView value={value} onChange={onChange} />
-            value.type ? <DataTypeView value={value} onChange={onChange} /> :
+            value.type ? <DataTypeView {...props} /> :
                 <AddValidationsList entityTypes={validateDataTypes} onChange={addDataType} />
         }
     </>

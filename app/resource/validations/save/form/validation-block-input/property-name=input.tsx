@@ -2,17 +2,17 @@ import { AutoResizeField } from "@/app/components/aut0-resize-field";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
 // import { useChangeSetProps, useMemoCall, useSetProps } from "@/app/utils/hooks";
-import { InputChange } from "@/basic/generics";
+import { InputProps } from "@/basic/generics";
 import { ValidationPropertyType } from "@/basic/models/validation/validation";
 import { TextField, Typography } from "@mui/material";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
-interface IProps extends InputChange<ValidationPropertyType["property"]> {
+interface IProps extends InputProps<ValidationPropertyType["property"]> {
     // startEditing: boolean
 }
-export const PropertyNameInput: React.FC<IProps> = React.memo(({ value: initialValue = "", onChange }) => {
+export const PropertyNameInput: React.FC<IProps> = React.memo(({ value: initialValue = "", setValue }) => {
     const {
-        state: {
+        value: {
             value,
             isEditing
         },
@@ -24,7 +24,7 @@ export const PropertyNameInput: React.FC<IProps> = React.memo(({ value: initialV
     });
 
     const onBlur = useMemoCall(() => {
-        onChange(value);
+        setValue(value);
         setProps("isEditing")(false)
     });
 

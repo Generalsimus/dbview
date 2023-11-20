@@ -5,21 +5,22 @@ import React, { useMemo, useState } from "react";
 import { AddValidationsList } from "../validation-list";
 import { StringValidateDataTypesEnums, StringValidateEntitiesTypes } from "@/basic/models/validation/data-types/string";
 // import { useMemoCall } from "@/app/utils/hooks";
-import { InputChange } from "@/basic/generics";
+import { InputProps } from "@/basic/generics";
 import { map } from "lodash";
 import { TypeNameViewContainer } from "./type-name-container";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 // import {   } from "./string-type";
 
-interface IProps extends InputChange<StringDataTypeValidationType> {
+interface IProps extends InputProps<StringDataTypeValidationType> {
     // value: 
     // onChange: (newValue: StringDataTypeValidationType) => void
 }
-export const StringTypeView: React.FC<IProps> = React.memo(({ value = {}, onChange }) => {
+export const StringTypeView: React.FC<IProps> = React.memo((props) => {
+    const { value = {}, setValue } = props;
     const { entities = [], type } = value;
 
     const addDataType = useMemoCall((type: StringValidateDataTypesEnums) => {
-        onChange({
+        setValue({
             type: type,
             entities: [
                 ...entities,

@@ -29,13 +29,12 @@ export const createValidationController =
         schema: schemaType,
         showErrorAfterChange: boolean
     ): Validator<JoiSchemaValue<schemaType>> => {
-        const stateValue = stateRefCache.cache?.state;
+        const stateValue = stateRefCache.cache?.value;
         let refCache = stateRefCache.validationCache ||= {
             cache: undefined,
             validateResult: validate(stateValue, schema, { abortEarly: false })
         };
 
-        // refCache.prevStateValue = stateValue;
         refCache.validateResult = validate(stateValue, schema, { abortEarly: false });
 
         if (refCache.cache) {
@@ -48,14 +47,14 @@ export const createValidationController =
 
             getIfValid(showError = false) {
                 const stateController = stateRefCache.cache;
-                const stateValue = stateRefCache.cache?.state;
+                const stateValue = stateRefCache.cache?.value;
                 let validationResult = refCache.validateResult;
 
                 if (validationResult.error) {
 
                     if (showError) {
                         showErrorAfterChange = false;
-                        stateController?.setState((v: any): any => {
+                        stateController?.setValue((v: any): any => {
                             if (typeof v === "object") {
                                 if (v instanceof Array) {
                                     return [...v]
@@ -75,12 +74,16 @@ export const createValidationController =
             getError(...errorPaths) {
                 let validationResult = refCache.validateResult;
 
+                if (!showErrorAfterChange) {
+
+                    console.log({ showErrorAfterChange, EEEEE: validationResult, schema })
+                }
                 if (validationResult?.error) {
                     const key = errorPaths.join("|");
                     if (showErrorAfterChange && !isKeyChangeEffect[key]) {
                         if (isEqual(
                             get(stateValue, errorPaths),
-                            get(stateRefCache.cache?.state, errorPaths)
+                            get(stateRefCache.cache?.value, errorPaths)
                         )) {
 
                             return {
@@ -108,6 +111,7 @@ export const createValidationController =
                             helperText: detail.message,
                         } as const
                     }
+
                 }
 
                 return {

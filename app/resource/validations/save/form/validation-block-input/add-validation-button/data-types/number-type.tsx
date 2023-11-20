@@ -7,26 +7,28 @@ import { StringValidateDataTypesEnums, StringValidateEntitiesTypes } from "@/bas
 import { NumberValidateDataTypesEnums, numberValidateEntitiesTypes } from "@/basic/models/validation/data-types/number";
 // import { useChangeSetProps, useMemoCall } from "@/app/utils/hooks";
 import { Entities } from "./entities";
-import { InputChange } from "@/basic/generics";
+import { InputProps } from "@/basic/generics";
 import { map } from "lodash";
 import { TypeNameViewContainer } from "./type-name-container";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useChangeSetProps } from "@/app/utils/hooks/useSetProps";
 
 
-interface IProps extends InputChange<NumberDataTypeValidationType> {
+interface IProps extends InputProps<NumberDataTypeValidationType> {
 }
-export const NumberTypeView: React.FC<IProps> = React.memo(({ value = {}, onChange }) => {
+export const NumberTypeView: React.FC<IProps> = React.memo((props) => {
+    const { value = {}, setValue, setProps, getPropState } = props;
     const { entities = [], type } = value;
-    const { setProps } = useChangeSetProps(value, onChange)
+    // const { setProps } = useChangeSetProps(value, onChange)
 
     const addDataType = useMemoCall((newType: NumberValidateDataTypesEnums) => {
-        onChange({
+        setValue({
             ...value,
             entities: [
                 ...entities,
                 {
-                    type: newType
+                    type: newType,
+                    entity: {}
                 }
             ]
         })
@@ -42,7 +44,7 @@ export const NumberTypeView: React.FC<IProps> = React.memo(({ value = {}, onChan
     return <>
         <TypeNameViewContainer type={type} />
         {entities.map((item, index) => {
-            return <Entities value={item} onChange={setProps("entities", index)} />
+            return <Entities  {...getPropState("entities", index)} />
         })}
         <AddValidationsList entityTypes={entitiesTypes} onChange={addDataType} />
     </>;

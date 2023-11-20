@@ -1,10 +1,11 @@
+import { SetPropsRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller";
 import { AnySchema, ObjectSchema, ValidationResult, extend } from "joi";
 
 
 
 
 
-export type ConvertPureType<T> = T extends object ? {
+export type ConvertPureType<T> = T extends any[] ? ConvertPureType<T[number]>[] : T extends object ? {
     [K in keyof T]: ConvertPureType<T[K]>
 } : T extends string ? T | string :
     T extends number ? T | number :
@@ -23,21 +24,21 @@ export type OptionalKeys<T extends object, K extends keyof T, V = Omit<T, K>> = 
 
 
 
-export type MakeStateValue<T, O = ConvertPureType<T>> = O extends any[] ? MakeStateValue<O[number]>[] : O extends object ? {
-    [K in keyof O]?: MakeStateValue<O[K]> | undefined
-} : O
+export type MakeStateValue<T, O = ConvertPureType<T>> = (O extends any[] ? MakeStateValue<O[number]>[] : O extends object ? {
+    [K in keyof O]?: MakeStateValue<O[K]>
+} : O) | undefined
 
 
-export interface InputChange<T, V = MakeStateValue<T>> {
-    value?: V
-    onChange: (newValue: V) => void
-    getError?: (...errorPaths: PropertyKey[]) => {
-        error: boolean;
-        helperText: string;
-    } | {
-        error: boolean;
-        helperText: undefined;
-    }
+export interface InputProps<T> extends SetPropsRes<MakeStateValue<T>> {
+    // value?: V
+    // onChange: (newValue: V) => void
+    // getError?: (...errorPaths: PropertyKey[]) => {
+    //     error: boolean;
+    //     helperText: string;
+    // } | {
+    //     error: boolean;
+    //     helperText: undefined;
+    // }
 }
 
 

@@ -6,8 +6,8 @@ import { Validator } from "./create=validation-controller"
 // import { Validator } from "sequelize"
 
 export interface SetPropsRes<S> {
-    state: S
-    setState: Dispatch<SetStateAction<S>>
+    value: S
+    setValue: Dispatch<SetStateAction<S>>
     setDefault: (defaultValue: SetStateAction<S>) => void
 
 
@@ -31,20 +31,20 @@ export type NewRefCacheType<T extends any> = {
 
 
 export const createSetPropController = <State extends unknown>(
-    state: State,
+    value: State,
     originalSetState: Dispatch<SetStateAction<State>>,
     refCache: NewRefCacheType<State>
 ): SetPropsRes<State> => {
 
     let currentSetPropController: SetPropsRes<State> = refCache.cache ||= {
-        state: state,
-        setState: (newValue) => {
+        value: value,
+        setValue: (newValue) => {
 
             return originalSetState((oldValue) => {
                 const newValueRes = newValue instanceof Function ? newValue(oldValue) : newValue;
                 refCache.cache = currentSetPropController = {
                     ...currentSetPropController,
-                    state: newValueRes
+                    value: newValueRes
                 };
 
                 return newValueRes;
@@ -52,7 +52,7 @@ export const createSetPropController = <State extends unknown>(
         },
         setDefault(defaultValue: SetStateAction<State>) {
             return () => {
-                currentSetPropController.setState(defaultValue);
+                currentSetPropController.setValue(defaultValue);
             }
         },
         initSetProps(...initialValueKeys) {
@@ -71,7 +71,7 @@ export const createSetPropController = <State extends unknown>(
             }
         },
         setProps(...setPropKeys) {
-            return currentSetPropController.getPropState(...setPropKeys).setState
+            return currentSetPropController.getPropState(...setPropKeys).setValue
         },
         getPropState(...propertyKeys) {
 
@@ -86,9 +86,9 @@ export const createSetPropController = <State extends unknown>(
 
                 propertyRefCache = propertyLocalRefCache;
 
-                propertySetPropController = propertyLocalRefCache.cache ||= createSetPropController(propertyLocalSetPropController.state[property], (newValue) => {
+                propertySetPropController = propertyLocalRefCache.cache ||= createSetPropController(propertyLocalSetPropController.value[property], (newValue) => {
 
-                    propertyLocalSetPropController.setState((old: any): any => {
+                    propertyLocalSetPropController.setValue((old: any): any => {
                         old[property] = newValue instanceof Function ? newValue(old[property]) : newValue;
 
                         if (old instanceof Array) {
@@ -100,7 +100,7 @@ export const createSetPropController = <State extends unknown>(
                     });
 
                 }, propertyLocalRefCache);
-                propertySetPropController.state = propertyLocalSetPropController.state[property]
+                propertySetPropController.value = propertyLocalSetPropController.value[property]
             }
 
             return propertySetPropController;

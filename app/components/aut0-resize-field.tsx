@@ -1,14 +1,18 @@
 import { Stack, TextField, Typography, styled } from "@mui/material";
 import React, { ComponentProps, useState } from "react";
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 
 interface IProps extends ComponentProps<typeof TextField> {
 }
-export const AutoResizeField: React.FC<IProps> = React.memo(styled(({ className, ...props }: IProps) => {
+export const AutoResizeField: React.FC<IProps> = React.memo(styled(({ className, helperText, ...props }: IProps) => {
 
-    return <Stack minWidth={5} position="relative" className={className}>
-        <Typography sx={{ opacity: 0, pointerEvents: "none", padding: "0 .2em" }}>{(props?.value ?? "") + ""}</Typography>
-        <TextField {...props} />
-    </Stack>
+
+    return <HelperTextToolTip title={helperText} placement="top" open={!!helperText}>
+        <Stack minWidth={5} position="relative" className={className}>
+            <Typography sx={{ opacity: 0, pointerEvents: "none", padding: "0 .2em" }}>{(props?.value ?? "") + ""}</Typography>
+            <TextField {...props} />
+        </Stack>
+    </HelperTextToolTip>
 })(({ theme }) => {
 
     return ({
@@ -38,11 +42,15 @@ export const AutoResizeField: React.FC<IProps> = React.memo(styled(({ className,
     })
 }))
 
-//   input[type="number"]::-webkit-outer-spin-button,
-// input[type="number"]::-webkit-inner-spin-button {
-//     -webkit-appearance: none;
-//     margin: 0;
-// }
-// input[type="number"] {
-//     -moz-appearance: textfield;
-// }
+const HelperTextToolTip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#f5f5f9',
+        maxWidth: 220,
+        color: "red",
+        fontSize: theme.typography.pxToRem(12),
+        textAlign: "center",
+        border: '1px solid #dadde9',
+    },
+})); 

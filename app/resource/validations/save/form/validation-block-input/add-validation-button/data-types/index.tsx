@@ -2,20 +2,21 @@ import { NumberDataTypeValidationType, StringDataTypeValidationType, ValidateDat
 import React, { useState } from "react";
 import { StringTypeView } from "./string-type";
 import { NumberTypeView } from "./number-type";
-import { InputChange } from "@/basic/generics";
+import { InputProps } from "@/basic/generics";
 
-interface IProps extends InputChange<ValidateValueType> {
+interface IProps extends InputProps<ValidateValueType> {
     // value: ValidateValueType
     // value: 
     // onChange: (newValue: ValidateValueType) => void
 }
-export const DataTypeView: React.FC<IProps> = React.memo(({ value, onChange }) => {
+export const DataTypeView: React.FC<IProps> = React.memo((props) => {
+    // const { value,   } = props;
 
-    switch (value?.type) {
+    switch (props.value?.type) {
         case ValidateDataTypesEnums.String:
-            return <StringTypeView value={value} onChange={onChange} />
+            return <StringTypeView  {...props} />
         case ValidateDataTypesEnums.Number:
-            return <NumberTypeView value={value} onChange={onChange} />
+            return <NumberTypeView  {...props} />
     }
 
     return <></>;

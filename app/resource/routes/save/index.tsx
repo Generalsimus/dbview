@@ -37,8 +37,8 @@ interface IProps {
 // ConvertPureType
 export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc, initialStateValue, title, getViewControllerContent }) => {
     const {
-        state: formState,
-        setState,
+        value: formState,
+        setValue,
         initSetProps,
         getValidation
     } = useSetProps<MakeCreateOrUpdate<MakeForState<Route>>>(initialStateValue || {})
@@ -53,7 +53,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
 
 
     const handleClose = useMemoCall(() => {
-        setState({});
+        setValue({});
 
         onClose()
     });
@@ -82,7 +82,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
     const openController = useMemo(() => getViewControllerContent({
         onOpen,
         onClose,
-        setStateValue: setState
+        setStateValue: setValue
     }), [])
 
 
