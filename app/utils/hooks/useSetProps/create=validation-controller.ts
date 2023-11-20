@@ -29,7 +29,7 @@ export const createValidationController =
         schema: schemaType,
         showErrorAfterChange: boolean
     ): Validator<JoiSchemaValue<schemaType>> => {
-        const stateValue = stateRefCache.cache?.value;
+        const stateValue = stateRefCache.cache?.value || {};
         let refCache = stateRefCache.validationCache ||= {
             cache: undefined,
             validateResult: validate(stateValue, schema, { abortEarly: false })
@@ -49,6 +49,7 @@ export const createValidationController =
                 const stateController = stateRefCache.cache;
                 const stateValue = stateRefCache.cache?.value;
                 let validationResult = refCache.validateResult;
+
 
                 if (validationResult.error) {
 
@@ -74,11 +75,14 @@ export const createValidationController =
             getError(...errorPaths) {
                 let validationResult = refCache.validateResult;
 
-                if (!showErrorAfterChange) {
+                // if (!showErrorAfterChange) {
 
-                    console.log({ showErrorAfterChange, EEEEE: validationResult, schema })
-                }
+                //     // console.log({ showErrorAfterChange, EEEEE: validationResult, schema })
+                // }
+                // console.log({ showErrorAfterChange, validationResult });
                 if (validationResult?.error) {
+                    console.log({ showErrorAfterChange });
+
                     const key = errorPaths.join("|");
                     if (showErrorAfterChange && !isKeyChangeEffect[key]) {
                         if (isEqual(

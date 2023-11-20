@@ -16,7 +16,6 @@ export const AutoResizeField: React.FC<IProps> = React.memo(styled(({ className,
         </Stack>
     </HelperTextToolTip>
 })(({ theme }) => {
-    console.log(theme)
     return ({
         "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
             WebkitAppearance: "none",
@@ -48,7 +47,6 @@ const HelperTextToolTip = styled(({ className, ...props }: TooltipProps) => (
 ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: theme.palette.background.default,
-        // color: "red",
         color: theme.palette.error.light,
         maxWidth: 220,
         fontSize: theme.typography.pxToRem(12),
@@ -56,9 +54,7 @@ const HelperTextToolTip = styled(({ className, ...props }: TooltipProps) => (
         border: `1px solid ${theme.palette.error.light}`,
     },
     [`& .${tooltipClasses.arrow}::before`]: {
-        // backgroundColor: theme.palette.info.main,
         border: `1px solid ${theme.palette.error.light}`,
         color: theme.palette.background.default,
     }
-    // }
 })); 

@@ -9,6 +9,7 @@ interface IProps {
 export default ({ }) => {
     async function SaveValidationDoc(value: MakeCreateOrUpdate<Validation>): Promise<void> {
         'use server'
+        console.log(value)
 
 
     }

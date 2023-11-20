@@ -15,10 +15,14 @@ interface IProps extends InputProps<ValidationPropertyType> {
     onRemove: (name: ValidationPropertyType["property"]) => void,
 }
 export const BlockPropertyInput: React.FC<IProps> = React.memo((props) => {
-    const { setValue, onRemove, value = {}, getPropState } = props;
+    const { setValue, onRemove, value = {} } = props;
+
+    const onRemoveHandler = useMemoCall(() => {
+        onRemove(value.property + "")
+    });
     const onChangeMiddleware = useMemoCall((newValue: IProps["value"] = {}) => {
         const { property = "", value: propertyValue = {} } = newValue || {};
-
+        // console.log({ property })
         if (property.length !== 0) {
             setValue(newValue)
             return
@@ -27,22 +31,12 @@ export const BlockPropertyInput: React.FC<IProps> = React.memo((props) => {
             setValue(newValue)
             return
         }
-
-        onRemove(value.property || "");
-    })
-
-    // const {
-    //     state: {
-    //         property = "",
-    //         value: propertyValue
-    //     },
-    //     setProps
-    // } = useChangeSetProps(value, onChangeMiddleware)
-
-    const onRemoveHandler = useMemoCall(() => {
-
-        onRemove(value.property + "")
+        onRemoveHandler()
     });
+
+
+    const { getPropState } = useChangeSetProps(value, onChangeMiddleware);
+
 
     return <>
         <Stack display={"flex"} flexDirection={"row"} flexWrap={"wrap"} alignItems={"center"} justifyContent={"flex-start"}>
@@ -50,9 +44,7 @@ export const BlockPropertyInput: React.FC<IProps> = React.memo((props) => {
                 <DeleteIcon fontSize="small" />
             </IconButton>
             <PropertyNameInput
-                // value={property}
                 {...getPropState("property")}
-            // onChange={setProps("property")}
             />
             <Typography variant="h5" sx={{ padding: "0 0.3em" }}>:</Typography>
             <AddValidationButton

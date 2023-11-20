@@ -21,6 +21,5 @@ export const Header: React.FC<IProps> = React.memo(({ saveValidationDoc, deleteV
                 deleteValidationDoc={deleteValidationDoc}
             />}
         />
-        <ValidationFormModal title="Add Validation" />
     </>;
 }); 

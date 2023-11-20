@@ -86,10 +86,12 @@ export const createSetPropController = <State extends unknown>(
 
                 propertyRefCache = propertyLocalRefCache;
 
-                propertySetPropController = propertyLocalRefCache.cache ||= createSetPropController(propertyLocalSetPropController.value[property], (newValue) => {
+                propertySetPropController = propertyLocalRefCache.cache ||= createSetPropController(propertyLocalSetPropController.value?.[property], (newValue) => {
 
                     propertyLocalSetPropController.setValue((old: any): any => {
-                        old[property] = newValue instanceof Function ? newValue(old[property]) : newValue;
+                        if (old) {
+                            old[property] = newValue instanceof Function ? newValue(old[property]) : newValue;
+                        }
 
                         if (old instanceof Array) {
                             return [...old];
@@ -100,7 +102,7 @@ export const createSetPropController = <State extends unknown>(
                     });
 
                 }, propertyLocalRefCache);
-                propertySetPropController.value = propertyLocalSetPropController.value[property]
+                propertySetPropController.value = propertyLocalSetPropController.value?.[property];
             }
 
             return propertySetPropController;

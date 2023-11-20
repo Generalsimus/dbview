@@ -19,7 +19,7 @@ interface IProps extends InputProps<ValidationPropertyType[] | undefined> {
     // onChange: (newValue: V) => void
 }
 export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value = [], setValue, setProps, getPropState }) => {
-    const theme = useTheme()
+    // const theme = useTheme()
 
     // const { setProps } = useChangeSetProps(value, onChange)
     // 

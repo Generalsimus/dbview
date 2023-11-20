@@ -9,41 +9,41 @@ import { ValidationBlockInput } from "./form/validation-block-input";
 // import { useSetProps, useValidation } from "@/app/utils/hooks";/
 import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
 import { MakeStateValue, OptionalKeys } from "@/basic/generics";
-import { getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
+import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 // import { useValidation } from "@/app/utils/hooks/useValidatio";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
+import { ValidationForm } from "./form/form";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 
 interface IProps {
-    title: string
+    // title: string
+    isOpen: boolean
+    onClose: () => void
+    onOpen: () => void
+    initialValue?: MakeStateValue<MakeCreateOrUpdate<Validation>>
 }
-export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
-    const {
-        value = {},
-        setProps,
-        initSetProps,
-        getValidation,
-        getPropState
-    } = useSetProps<MakeStateValue<Validation>>({
-        // name: "",
-        // description: "",
-        // validations: []
-    });
-    const {
-        name,
-        description,
-        validations
-    } = value;
+export const ValidationFormModal: React.FC<IProps> = React.memo(({ isOpen, onOpen, onClose, initialValue = {} }) => {
+    const stateController = useSetProps<MakeStateValue<MakeCreateOrUpdate<Validation>>>(initialValue);
 
 
-    const { getIfValid, getError } = getValidation(getCreateOrUpdateSchema(ValidationSchema));
+    const { getValidation } = stateController;
+
+    const validator = getValidation(getCreateOrUpdateSchema(ValidationSchema));
+
+    const { getIfValid, getError } = validator;
+    const onSaveData = useMemoCall(() => {
+        const validDoc = getIfValid(true);
+        // console.log({ stateController, validDoc })
+        if (validDoc) {
+
+        }
+    })
 
     return <>
         <Dialog
-            open={true}
-            onClose={() => {
-
-            }}
+            open={isOpen}
+            onClose={onClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
@@ -55,10 +55,10 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
                         alignItems="center"
                         spacing={2}
                     >
-                        {title}
+                        {"title"}
                         <IconButton
                             aria-label="close"
-                            onClick={() => { }}
+                            onClick={onClose}
                         >
                             <CloseIcon />
                         </IconButton>
@@ -70,49 +70,18 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({ title }) => {
                     flexDirection: "column",
                     gap: 1
                 }}>
-                    <TextField
-                        value={name}
-                        onChange={initSetProps("target", "value")("name")}
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Name"
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                        {...getError("name")}
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="description"
-                        label="Description"
-                        name="description"
-                        value={description}
-                        onChange={initSetProps("target", "value")("description")}
-                        minRows={2}
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                        multiline
-                        {...getError("description")}
-                    />
-                    <ValidationBlockInput
-                        {...getPropState("validations")}
-                    // value={validations}
-                    // onChange={setProps("validations")}
-                    // getError={getError}
-                    />
+                    <ValidationForm validator={validator} {...stateController} />
+
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => { }} disabled={false} variant="outlined">Cancel</Button>
+                    <Button onClick={onClose} disabled={false} variant="outlined">Cancel</Button>
                     <Button
                         variant="contained"
                         autoFocus
                         type="submit"
                         startIcon={<SaveIcon />}
-                    // disabled={isSavingProcess}
-                    // onClick={onDelete}
+                        // disabled={isSavingProcess}
+                        onClick={onSaveData}
                     >
 
                         Save
