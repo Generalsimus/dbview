@@ -21,6 +21,12 @@ export const AddValidationButton: React.FC<IProps> = React.memo(({ saveValidatio
         <Button variant="contained" onClick={onOpen} startIcon={<CreateIcon />}>
             Add Validation
         </Button>
-        <ValidationFormModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
-    </> 
+        <ValidationFormModal
+            isOpen={isOpen}
+            onClose={onClose}
+            onOpen={onOpen}
+            saveValidationDoc={saveValidationDoc}
+            deleteValidationDoc={deleteValidationDoc}
+        />
+    </>
 });

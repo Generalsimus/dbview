@@ -6,14 +6,13 @@ import SaveIcon from '@mui/icons-material/Save';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
 import { ValidationBlockInput } from "./form/validation-block-input";
-// import { useSetProps, useValidation } from "@/app/utils/hooks";/
 import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
 import { MakeStateValue, OptionalKeys } from "@/basic/generics";
-import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
-// import { useValidation } from "@/app/utils/hooks/useValidatio";
+import { MakeCreateOrUpdate, MakeForState, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
 import { ValidationForm } from "./form/form";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 
 
 interface IProps {
@@ -22,21 +21,35 @@ interface IProps {
     onClose: () => void
     onOpen: () => void
     initialValue?: MakeStateValue<MakeCreateOrUpdate<Validation>>
+    saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>
+    deleteValidationDoc: (ids: number) => Promise<void>
 }
-export const ValidationFormModal: React.FC<IProps> = React.memo(({ isOpen, onOpen, onClose, initialValue = {} }) => {
-    const stateController = useSetProps<MakeStateValue<MakeCreateOrUpdate<Validation>>>(initialValue);
+export const ValidationFormModal: React.FC<IProps> = React.memo(({
+    isOpen,
+    onOpen,
+    onClose,
+    initialValue = {},
+    saveValidationDoc,
+    deleteValidationDoc
+}) => {
+
+    const stateController = useSetProps<MakeForState<Validation>>(initialValue);
 
 
-    const { getValidation } = stateController;
+    const { getValidation, value } = stateController;
 
     const validator = getValidation(getCreateOrUpdateSchema(ValidationSchema));
 
     const { getIfValid, getError } = validator;
+
     const onSaveData = useMemoCall(() => {
         const validDoc = getIfValid(true);
-        // console.log({ stateController, validDoc })
         if (validDoc) {
+            saveValidationDoc(validDoc).then(() => {
+                onClose()
+            }).catch(() => {
 
+            })
         }
     })
 
@@ -75,6 +88,11 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({ isOpen, onOpe
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onClose} disabled={false} variant="outlined">Cancel</Button>
+                    {value && "id" in value && <DeleteButtonModal
+                        title={`Delete "${value.name}" Validation?`}
+                        docId={value.id}
+                        deleteFn={deleteValidationDoc}
+                    />}
                     <Button
                         variant="contained"
                         autoFocus

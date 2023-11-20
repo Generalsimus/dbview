@@ -5,45 +5,42 @@ import SaveIcon from '@mui/icons-material/SaveAs';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
-// import { useMemoCall, useSetProps, useToggleBool, useValidation } from "@/app/utils/hooks";
 import { RequestMethodType, requestMethods } from "@/basic/request";
 import { Route, RouteSchema } from "@/basic/models/route/route";
 import { DeepPartial } from "@/basic/generics";
 import { useRouter } from "next/navigation";
 import { MakeCreateOrUpdate, MakeForState, getCreateOrUpdateSchema, } from "@/basic/db-basic-schema";
 import { DrawerView } from "./drawer-view";
-import { DeleteRoute } from "./delete-route";
-// import { useToggleBool } from "@/app/utils/hooks";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
 import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
-// import { useValidation } from "@/app/utils/hooks/useValidatio";
+import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 
 
-// type StateValueType = MakeUpdate<Route> | MakeCreate<M>
+
+type StateValue = MakeForState<Route>;
 interface IProps {
     saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>;
     deleteRouteDoc: (id: number) => Promise<void>;
-    initialStateValue?: MakeCreateOrUpdate<Route>;
+    initialStateValue?: StateValue;
 
     title: string;
     getViewControllerContent: (arg: {
         onOpen: () => void;
         onClose: () => void;
-        setStateValue: (value: MakeCreateOrUpdate<MakeForState<Route>>) => void;
+        setStateValue: (value: StateValue) => void;
     }) => ReactNode;
-    // onClose: () => void
 }
-// ConvertPureType
-export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc, initialStateValue, title, getViewControllerContent }) => {
+
+export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc, initialStateValue = {}, title, getViewControllerContent }) => {
     const {
-        value: formState,
+        value,
         setValue,
         initSetProps,
         getValidation
-    } = useSetProps<MakeCreateOrUpdate<MakeForState<Route>>>(initialStateValue || {})
-
-    const { name, path, method, description } = formState
+    } = useSetProps<MakeForState<Route>>(initialStateValue);
+    
+    const { name, path, method, description } = value || {};
 
     const [status, setModalStatus, setModalStatusValue] = useToggleBool(false)
 
@@ -54,12 +51,12 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
 
     const handleClose = useMemoCall(() => {
         setValue({});
-
-        onClose()
+        onClose();
     });
 
-    const [isSavingProcess, setIsSavingProcess] = useState(false);
 
+
+    const [isSavingProcess, setIsSavingProcess] = useState(false);
 
 
     const { getIfValid, getError } = getValidation(getCreateOrUpdateSchema(RouteSchema));
@@ -90,7 +87,6 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
     return <>
         <DrawerView
             title={title}
-            // 
             status={status || isSavingProcess}
             onClose={onClose}
         >
@@ -157,38 +153,10 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
                 </Stack>
                 <Stack display={"flex"} flexDirection={"row"} gap={2} justifyContent={"flex-end"} padding={2}>
                     <Button onClick={handleClose} disabled={isSavingProcess} variant="outlined">Cancel</Button>
-                    {"id" in formState && <DeleteRoute
-                        deleteRouteDoc={deleteRouteDoc}
-                        getActionElement={({ setDeleteRoute }) => {
-                            return <Button
-                                variant="contained"
-                                autoFocus
-                                type="submit"
-                                color="error"
-                                startIcon={
-                                    isSavingProcess ? <CircularProgress
-                                        size={20}
-                                        variant="indeterminate"
-                                    /> : <DeleteIcon />}
-                                disabled={isSavingProcess}
-                                onClick={() => {
-                                    const isValid = getIfValid();
-                                    if (isValid && "id" in isValid) {
-                                        setDeleteRoute(isValid)
-                                    }
-                                }}
-                            >
-                                Delete
-                            </Button>
-
-                            // <Button
-                            //     onClick={handleClose}
-                            //     disabled={isSavingProcess}
-                            //     variant="contained"
-                            //     color="error">
-                            //     Delete
-                            // </Button>
-                        }}
+                    {value && "id" in value && <DeleteButtonModal
+                        title={`Delete "${value.name}" deleteRouteDoc?`}
+                        docId={value.id}
+                        deleteFn={deleteRouteDoc}
                     />}
                     <Button
                         variant="contained"

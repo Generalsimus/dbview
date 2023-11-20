@@ -22,16 +22,17 @@ export const BlockPropertyInput: React.FC<IProps> = React.memo((props) => {
     });
     const onChangeMiddleware = useMemoCall((newValue: IProps["value"] = {}) => {
         const { property = "", value: propertyValue = {} } = newValue || {};
-        // console.log({ property })
+
         if (property.length !== 0) {
-            setValue(newValue)
+            setValue(newValue);
             return
         }
         for (const key in propertyValue) {
-            setValue(newValue)
+            setValue(newValue);
             return
         }
-        onRemoveHandler()
+        
+        onRemoveHandler();
     });
 
 
@@ -43,16 +44,12 @@ export const BlockPropertyInput: React.FC<IProps> = React.memo((props) => {
             <IconButton size="small" color="error" onClick={onRemoveHandler}>
                 <DeleteIcon fontSize="small" />
             </IconButton>
-            <PropertyNameInput
-                {...getPropState("property")}
-            />
-            <Typography variant="h5" sx={{ padding: "0 0.3em" }}>:</Typography>
-            <AddValidationButton
-                {...getPropState("value")}
-            // value={propertyValue}
-            // onChange={setProps("value")}
 
-            />
+            <PropertyNameInput {...getPropState("property")} />
+
+            <Typography variant="h5" sx={{ padding: "0 0.3em" }}>:</Typography>
+
+            <AddValidationButton {...getPropState("value")} />
         </Stack>
     </>;
 }); 

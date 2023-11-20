@@ -29,13 +29,12 @@ interface IProps {
     end: string;
   }
 }
-const Routes = async ({ searchParams }: IProps) => {
+export default async ({ searchParams }: IProps) => {
   let start = Number(searchParams?.start) || 0;
   let end = Number(searchParams?.end) || 15;
 
-  // startIndex: string
-  // endIndex: string
-  const { routes, maxPathCount } = await getRoutes(start, end)
+
+  const { routes, maxPathCount } = await getRoutes(start, end);
 
   async function SaveRouteDoc(value: MakeCreateOrUpdate<Route>): Promise<void> {
     'use server'
@@ -48,7 +47,8 @@ const Routes = async ({ searchParams }: IProps) => {
 
     }
 
-  }
+  };
+
   async function DeleteRouteDoc(id: number): Promise<void> {
     'use server'
     if (typeof id === "number") {
@@ -79,7 +79,4 @@ const Routes = async ({ searchParams }: IProps) => {
     />
 
   </>;
-};
-
-export default Routes
-
+}; 

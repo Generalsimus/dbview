@@ -4,8 +4,14 @@ import { Table } from "../../components/table";
 // import { useMemoCall } from "../../utils/hooks";
 import { useRouter } from "next/navigation";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { MakeAsDbDoc } from "@/basic/db-basic-schema";
+import { Validation } from "@/basic/models/validation/validation";
 
 interface IProps {
+    validations: MakeAsDbDoc<Validation>[]
+    maxRowSize: number
+    start: number
+    end: number
     headerContent?: ReactNode
     footerContent?: ReactNode
 }
@@ -13,7 +19,8 @@ export const ValidationsTable: React.FC<IProps> = React.memo(({ headerContent, f
 
     const columns = useMemo(() => [
         { field: 'name', headerName: 'name' },
-        { field: 'properties', headerName: 'Properties' },
+        { field: 'description', headerName: 'description' },
+        { field: 'properties', headerName: 'properties' },
         // { field: 'path', headerName: 'path' },
         // { field: 'description', headerName: 'description' },
     ], [])

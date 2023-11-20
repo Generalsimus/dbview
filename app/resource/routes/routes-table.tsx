@@ -32,7 +32,7 @@ export const RoutesTable: React.FC<IProps> = React.memo(({ routes, start, end, m
     const onPagination = useMemoCall((start: number, end: number) => {
 
         router.push(`/resources/routes/?start=${start}&end=${end}`)
-    })
+    });
 
 
     return <>

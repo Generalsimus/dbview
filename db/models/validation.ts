@@ -7,7 +7,7 @@ import { Validation } from "@/basic/models/validation/validation";
 
 
 
-export const RouteModel: ModelDefined<
+export const ValidationModel: ModelDefined<
     MakeAsDbDoc<Validation>,
     {}
 > = sequelize.define('validation', {
@@ -28,4 +28,4 @@ export const RouteModel: ModelDefined<
         type: DataTypes.JSON,
     }
 });
-RouteModel.sync({ alter: true })
+ValidationModel.sync({ alter: true })
