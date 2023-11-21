@@ -5,6 +5,7 @@ import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-sc
 import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
 import { validate } from "@/utils";
 import { ValidationModel } from "@/db/models/validation";
+import { map } from "lodash";
 
 
 
@@ -16,11 +17,11 @@ async function getValidations(startIndex: number, endIndex: number) {
             ['createdAt', 'DESC']
         ],
         limit: endIndex - startIndex,
-        offset: startIndex
+        offset: startIndex,
     })
 
     return {
-        validations: rows.map(el => el.dataValues),
+        validations: map(rows, "dataValues"),
         maxPathCount: count
     }
 }
@@ -36,7 +37,8 @@ export default async ({ searchParams }: IProps) => {
     let end = Number(searchParams?.end) || 15;
 
 
-    const { validations, maxPathCount } = await getValidations(start, end)
+    const { validations, maxPathCount } = await getValidations(start, end);
+
 
     async function SaveValidationDoc(value: MakeCreateOrUpdate<Validation>): Promise<void> {
         'use server'
@@ -68,6 +70,8 @@ export default async ({ searchParams }: IProps) => {
             end={end}
             maxRowSize={maxPathCount}
             validations={validations}
+            saveValidationDoc={SaveValidationDoc}
+            deleteValidationDoc={DeleteValidationDoc}
             headerContent={
                 <Header
                     saveValidationDoc={SaveValidationDoc}

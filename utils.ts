@@ -2,8 +2,9 @@
 import { RequestTypeEnum, requestMethods } from "@/basic/request";
 import { Children } from "react";
 import { ClassToObject, ConvertPureType, DeepPartial, MakeStateValue } from "./basic/generics";
-import { AnySchema, ObjectSchema, ValidationOptions, ValidationResult } from "joi";
+import { AnySchema, ObjectSchema, ValidationOptions, ValidationResult, any } from "joi";
 import { RouteSchema } from "./basic/models/route/route";
+import { mapValues } from "lodash";
 
 
 // export const getValidationErrorToString = (errors: ValidationError[]) => {
@@ -63,3 +64,31 @@ export const stringToRoutePath = (stringArg: string) => {
 
     return (`/${stringArg}/`).toLowerCase().trim().replace(/\s+/gm, "-").replace(/[^\w\-]+/gm, "/");
 }
+// const deepReplace = <O extends any, K extends keyof O, V extends O[K], CALL extends <EDIT extends any>(property: K, value: V) => [K, EDIT], R extends ReturnType<CALL>>(object: O, call: CALL): O extends object ? {
+//     [k in R[0]]: R[0]
+// } : O => {
+//     // return null as any
+// }
+
+
+
+// const eee = {
+//     eee: {
+//         qqq: 2,
+//         ww: ""
+//     },
+//     www: 1
+// }
+// type NoNull<V extends any> = V extends null ? undefined : V;
+
+// const eeee = mapValues(eee, <V extends any>(value: V, property: string): NoNull<V> => {
+//     return null as any
+// })
+// const www = deepReplace(eee, <P extends any, V extends any>(property: P, value: V): [P, V] => {
+//     // if (value === null) {
+//     //     return [property, undefined]
+//     // }
+//     // mapValues
+
+//     return [property, value];
+// });

@@ -81,7 +81,7 @@ export const createValidationController =
                 // }
                 // console.log({ showErrorAfterChange, validationResult });
                 if (validationResult?.error) {
-                    console.log({ showErrorAfterChange });
+                    // console.log({ showErrorAfterChange });
 
                     const key = errorPaths.join("|");
                     if (showErrorAfterChange && !isKeyChangeEffect[key]) {

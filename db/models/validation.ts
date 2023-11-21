@@ -25,7 +25,7 @@ export const ValidationModel: ModelDefined<
         allowNull: false
     },
     validations: {
-        type: DataTypes.JSON,
+        type: DataTypes.JSON 
     }
 });
 ValidationModel.sync({ alter: true })

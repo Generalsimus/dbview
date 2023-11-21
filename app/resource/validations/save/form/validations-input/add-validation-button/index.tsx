@@ -36,7 +36,7 @@ export const AddValidationButton: React.FC<IProps> = React.memo((props) => {
     });
     return <>
         {
-            // <DataTypeView value={value} onChange={onChange} />
+
             value.type ? <DataTypeView {...props} /> :
                 <AddValidationsList entityTypes={validateDataTypes} onChange={addDataType} />
         }

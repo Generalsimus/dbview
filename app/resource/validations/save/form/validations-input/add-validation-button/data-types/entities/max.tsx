@@ -7,7 +7,7 @@ import { TypeNameViewContainer } from "../type-name-container";
 import { TextField, Typography, styled } from "@mui/material";
 // import { useChangeSetProps, useMemoCall } from "@/app/utils/hooks";
 import { IconButton, Stack } from "@mui/material";
-import { AutoResizeField } from "@/app/components/aut0-resize-field";
+import { AutoResizeField } from "@/app/components/auto-resize-field";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import Joi from "joi";
 

@@ -1,42 +1,34 @@
-// import { useChangeSetProps, useMemoCall, useSetProps } from "@/app/utils/hooks";
-import { ValidationPropertyType } from "@/basic/models/validation/validation";
+import { ValidationPropertySchema, ValidationPropertyType } from "@/basic/models/validation/validation";
 import { IconButton, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { InputProps, MakeStateValue, OptionalKeys } from "@/basic/generics";
-import { PropertyNameInput } from "./property-name=input";
 import { AddValidationButton } from "./add-validation-button";
 import { ValidateValueType } from "@/basic/models/validation/data-types";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useChangeSetProps } from "@/app/utils/hooks/useSetProps";
+import { EditPropertyNameInput } from "./property-name-input";
+import { ErrorText } from "@/app/components/error-text";
 
 interface IProps extends InputProps<ValidationPropertyType> {
     onRemove: (name: ValidationPropertyType["property"]) => void,
 }
-export const BlockPropertyInput: React.FC<IProps> = React.memo((props) => {
-    const { setValue, onRemove, value = {} } = props;
+export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onRemove, getPropState, getValidation, value = {} }) => {
 
     const onRemoveHandler = useMemoCall(() => {
-        onRemove(value.property + "")
+        onRemove(value.property + "");
     });
-    const onChangeMiddleware = useMemoCall((newValue: IProps["value"] = {}) => {
-        const { property = "", value: propertyValue = {} } = newValue || {};
-
-        if (property.length !== 0) {
-            setValue(newValue);
-            return
+    const onRemoveSafeHandler = useMemoCall(() => {
+        const propertyName = (value.property + "").trim();
+        if (propertyName.length === 0) {
+            for (const _ in (value.value || {})) {
+                return;
+            }
+            onRemoveHandler()
         }
-        for (const key in propertyValue) {
-            setValue(newValue);
-            return
-        }
-        
-        onRemoveHandler();
     });
-
-
-    const { getPropState } = useChangeSetProps(value, onChangeMiddleware);
+    const { getError } = getValidation(ValidationPropertySchema, false)
 
 
     return <>
@@ -45,11 +37,12 @@ export const BlockPropertyInput: React.FC<IProps> = React.memo((props) => {
                 <DeleteIcon fontSize="small" />
             </IconButton>
 
-            <PropertyNameInput {...getPropState("property")} />
+            <EditPropertyNameInput {...getPropState("property")} onBlur={onRemoveSafeHandler} />
 
             <Typography variant="h5" sx={{ padding: "0 0.3em" }}>:</Typography>
 
             <AddValidationButton {...getPropState("value")} />
+            <ErrorText error={getError("value").helperText} />
         </Stack>
     </>;
 }); 

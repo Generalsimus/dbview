@@ -37,7 +37,7 @@ export const useChangeSetProps = <S extends any>(
 
 
 
-export const useSetProps = <S extends any>(initialValue: S) => {
+export const useSetProps = <S extends any>(initialValue: S | (() => S)) => {
     return useInitialSetProps(...useState(initialValue))
 }
 

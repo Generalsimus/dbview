@@ -3,6 +3,7 @@ import React, { ComponentProps, useState } from "react";
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import TextField, { textFieldClasses } from '@mui/material/TextField';
 import { formControlClasses } from '@mui/material/FormControl';
+import { ErrorText } from "./error-text";
 
 interface IProps extends ComponentProps<typeof TextField> {
 }
@@ -42,14 +43,12 @@ export const AutoResizeField: React.FC<IProps> = React.memo(styled(({ className,
     })
 }))
 
-const HelperTextToolTip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
+const HelperTextToolTip = styled(({ className, title, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} title={<ErrorText error={title} />} />
 ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: theme.palette.background.default,
-        color: theme.palette.error.light,
         maxWidth: 220,
-        fontSize: theme.typography.pxToRem(12),
         textAlign: "center",
         border: `1px solid ${theme.palette.error.light}`,
     },

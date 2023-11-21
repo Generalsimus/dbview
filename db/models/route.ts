@@ -33,3 +33,6 @@ export const RouteModel: ModelDefined<
     }
 });
 RouteModel.sync({ alter: true })
+// RouteModel.toJSON({
+//     omitNull: true
+// })

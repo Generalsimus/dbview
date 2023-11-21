@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
-import { ValidationBlockInput } from "./form/validation-block-input";
+// import { ValidationBlockInput } from "./form/validation-block-input";
 import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
 import { MakeStateValue, OptionalKeys } from "@/basic/generics";
 import { MakeCreateOrUpdate, MakeForState, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
@@ -13,10 +13,11 @@ import { useSetProps } from "@/app/utils/hooks/useSetProps";
 import { ValidationForm } from "./form/form";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { DeleteButtonModal } from "@/app/components/delete-button-modal";
+import { useRouter } from "next/navigation";
 
 
 interface IProps {
-    // title: string
+    title: string
     isOpen: boolean
     onClose: () => void
     onOpen: () => void
@@ -24,7 +25,8 @@ interface IProps {
     saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>
     deleteValidationDoc: (ids: number) => Promise<void>
 }
-export const ValidationFormModal: React.FC<IProps> = React.memo(({
+export const ValidationFormModal: React.FC<IProps> = React.memo(({ 
+    title,
     isOpen,
     onOpen,
     onClose,
@@ -42,11 +44,14 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({
 
     const { getIfValid, getError } = validator;
 
+    const router = useRouter();
+
     const onSaveData = useMemoCall(() => {
         const validDoc = getIfValid(true);
         if (validDoc) {
             saveValidationDoc(validDoc).then(() => {
-                onClose()
+                onClose();
+                router.refresh();
             }).catch(() => {
 
             })
@@ -68,7 +73,7 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({
                         alignItems="center"
                         spacing={2}
                     >
-                        {"title"}
+                        {title}
                         <IconButton
                             aria-label="close"
                             onClick={onClose}

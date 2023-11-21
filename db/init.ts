@@ -13,8 +13,11 @@ export const sequelize = new Sequelize({
         createdAt: true,
         updatedAt: true,
         deletedAt: true,
+        omitNull: true,
+        // rejectOnEmpty: true // Specifying true here removes `null` from the return type!
     },
-    logging: false
+    logging: false,
+    omitNull: true,
 
 });
 

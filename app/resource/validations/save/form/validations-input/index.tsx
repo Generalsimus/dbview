@@ -6,17 +6,16 @@ import { InputProps, MakeStateValue, OptionalKeys } from "@/basic/generics";
 import { BlockPropertyInput } from "./block-property-input";
 import { filter, find, negate, remove } from "lodash"
 import { ValidateValueType } from "@/basic/models/validation/data-types";
-import { AddValidation } from "./add-validation";
+// import { AddValidation } from "./add-validation";
 import { useChangeSetProps } from "@/app/utils/hooks/useSetProps";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 interface IProps extends InputProps<ValidationPropertyType[]> {
 
 }
-export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value = [], setValue, setProps, getPropState }) => {
+export const ValidationsInput: React.FC<IProps> = React.memo(({ value = [], setValue, setProps, getPropState }) => {
 
     const onRemoveItem = useMemoCall((property: ValidationPropertyType["property"]) => {
-
         setValue(
             value.filter(e => e?.property !== property)
         );
@@ -31,8 +30,7 @@ export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value = [], 
                 value: {}
             }
         ]);
-    })
-
+    });
 
     return <Stack
         display={"flex"}
@@ -43,7 +41,8 @@ export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value = [], 
     >
         {value.length ? <Stack display={"flex"} justifyContent={"flex-start"}>
             {value.map((item, index) => {
-                return <BlockPropertyInput {...getPropState(index)} onRemove={onRemoveItem} />
+
+                return <BlockPropertyInput  {...getPropState(index)} onRemove={onRemoveItem} />
             })}
         </Stack> : null}
         <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -53,3 +52,4 @@ export const ValidationBlockInput: React.FC<IProps> = React.memo(({ value = [], 
         </Stack>
     </Stack>;
 });
+// continue

@@ -3,7 +3,7 @@ import { InputProps } from "@/basic/generics";
 import { Validation } from "@/basic/models/validation/validation";
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
-import { ValidationBlockInput } from "./validation-block-input";
+import { ValidationsInput } from "./validations-input";
 
 interface IProps extends InputProps<Validation> {
     validator: Validator<Validation>
@@ -39,6 +39,6 @@ export const ValidationForm: React.FC<IProps> = React.memo(({ value = {}, valida
             multiline
             {...getError("description")}
         />
-        <ValidationBlockInput {...getPropState("validations")} />
+        <ValidationsInput {...getPropState("validations")} />
     </>;
 });
