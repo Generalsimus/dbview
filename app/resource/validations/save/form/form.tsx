@@ -10,6 +10,8 @@ interface IProps extends InputProps<Validation> {
 }
 export const ValidationForm: React.FC<IProps> = React.memo(({ value = {}, validator: { getError }, initSetProps, getPropState }) => {
     const { name, description } = value
+    
+
     return <>
 
         <TextField

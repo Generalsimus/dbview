@@ -15,7 +15,7 @@ export interface ValidationPropertyType {
 }
 export const ValidationPropertySchema = Joi.object({
     property: Joi.string().required(),
-    value: ValidateValueSchema
+    value: ValidateValueSchema.required()
 })
 
 /////////////////////////////////////////////////////////

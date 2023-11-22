@@ -12,11 +12,13 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 // import { useMemoCall, useToggleBool } from '@/app/utils/hooks';
-import { ValidateDataTypesEnums, ValidateValueType, validateDataTypes } from '@/basic/models/validation/data-types';
-import { DataTypeEntitiesGeneric, getDataTypeEntities } from '@/basic/models/validation/utils';
+import { ValidateDataTypesEnums, ValidateValueType, ValidateDataTypes } from '@/basic/models/validation/data-types';
+// import { DataTypeEntitiesGeneric, getDataTypeEntities } from '@/basic/models/validation/utils';
 import { StringValidateDataTypesEnums } from '@/basic/models/validation/data-types/string';
 import { NumberValidateDataTypesEnums } from '@/basic/models/validation/data-types/number';
 import { useToggleBool } from '@/app/utils/hooks/useToggleBool';
+import { SmallIconButton } from '@/app/components/small-icon-button';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 
 type AllValidateEnums = ValidateDataTypesEnums[] | StringValidateDataTypesEnums[] | NumberValidateDataTypesEnums[]
@@ -39,9 +41,12 @@ export const AddValidationsList = <T extends AllValidateEnums>({ entityTypes, on
     return <>
         {entityTypes.length ? <>
             <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
-                <IconButton ref={anchorElRef} onClick={handleOpen}>
+                <SmallIconButton ref={anchorElRef} onClick={handleOpen}>
                     <AddIcon />
-                </IconButton>
+                </SmallIconButton>
+                {/* <IconButton ref={anchorElRef} onClick={handleOpen}>
+                    <AddIcon />
+                </IconButton> */}
             </Stack>
             <Menu
                 id="fade-menu"

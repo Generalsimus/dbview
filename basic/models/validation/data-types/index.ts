@@ -1,6 +1,6 @@
 import Joi from "joi"
-import { NumberEntityValidationType, numberValidateEntitiesTypes } from "./number"
-import { StringEntityValidationType, StringValidateEntitiesTypes } from "./string"
+import { NumberEntityValidationSchema, NumberEntityValidationType, NumberValidateEntitiesTypes } from "./number"
+import { StringEntityValidationSchema, StringEntityValidationType, StringValidateEntitiesTypes } from "./string"
 
 
 
@@ -10,7 +10,7 @@ export const enum ValidateDataTypesEnums {
     Number = "Number",
 }
 
-export const validateDataTypes = [
+export const ValidateDataTypes = [
     ValidateDataTypesEnums.Number,
     ValidateDataTypesEnums.String,
 ]
@@ -31,17 +31,19 @@ export type NumberDataTypeValidationType = ValidateValueTypeGen<ValidateDataType
 
 export type ValidateValueType = StringDataTypeValidationType | NumberDataTypeValidationType;
 
-// |
-// ValidateValueTypeGen<ValidateDataTypesEnums.Object, ObjectValidationType>
-export const ValidateValueSchema = Joi.object({
-    type: Joi.string().allow(...validateDataTypes).required(),
-    entities: Joi.array().items(Joi.when('type', {
-        is: ValidateDataTypesEnums.String,
-        then: Joi.object(StringValidateEntitiesTypes),
-        otherwise: Joi.when('type', {
-            is: ValidateDataTypesEnums.Number,
-            then: Joi.object(numberValidateEntitiesTypes)
-        })
-    }))
-})
-/////////////////////////////////////////////////////////
+
+export const ValidateValueSchema = Joi.object<ValidateValueType>({
+    type: Joi.string().valid(...ValidateDataTypes).required(),
+    entities: Joi.when('type', {
+        switch: [
+            {
+                is: ValidateDataTypesEnums.Number,
+                then: Joi.array().items(NumberEntityValidationSchema)
+            },
+            {
+                is: ValidateDataTypesEnums.String,
+                then: Joi.array().items(StringEntityValidationSchema),
+            },
+        ],
+    }).default([]),
+}); 

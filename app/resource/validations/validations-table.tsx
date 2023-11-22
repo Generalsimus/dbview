@@ -39,7 +39,7 @@ export const ValidationsTable: React.FC<IProps> = React.memo(({
 
     const onPagination = useMemoCall((start: number, end: number) => {
 
-        router.push(`/resources/validations/?start=${start}&end=${end}`)
+        router.push(`/resource/validations/?start=${start}&end=${end}`)
     })
 
 

@@ -14,7 +14,7 @@ import { ErrorText } from "@/app/components/error-text";
 interface IProps extends InputProps<ValidationPropertyType> {
     onRemove: (name: ValidationPropertyType["property"]) => void,
 }
-export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onRemove, getPropState, getValidation, value = {} }) => {
+export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onRemove, getPropState, setProps, getValidation, value = {} }) => {
 
     const onRemoveHandler = useMemoCall(() => {
         onRemove(value.property + "");
@@ -28,8 +28,15 @@ export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onRemove, getP
             onRemoveHandler()
         }
     });
+    const onRemoveValueValidation = useMemoCall(() => {
+        const propertyName = (value.property + "").trim();
+        if (propertyName.length === 0) {
+            onRemoveHandler()
+        } else {
+            setProps("value")({});
+        }
+    })
     const { getError } = getValidation(ValidationPropertySchema, false)
-
 
     return <>
         <Stack display={"flex"} flexDirection={"row"} flexWrap={"wrap"} alignItems={"center"} justifyContent={"flex-start"}>
@@ -41,7 +48,7 @@ export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onRemove, getP
 
             <Typography variant="h5" sx={{ padding: "0 0.3em" }}>:</Typography>
 
-            <AddValidationButton {...getPropState("value")} />
+            <AddValidationButton {...getPropState("value")} onRemove={onRemoveValueValidation} />
             <ErrorText error={getError("value").helperText} />
         </Stack>
     </>;

@@ -4,13 +4,12 @@ import { StringTypeView } from "./string-type";
 import { NumberTypeView } from "./number-type";
 import { InputProps } from "@/basic/generics";
 
-interface IProps extends InputProps<ValidateValueType> {
-    // value: ValidateValueType
-    // value: 
-    // onChange: (newValue: ValidateValueType) => void
+interface IProps<Value = ValidateValueType> extends InputProps<Value> {
+    onRemove: () => void
 }
 export const DataTypeView: React.FC<IProps> = React.memo((props) => {
     // const { value,   } = props;
+    // console.log(props.value)
 
     switch (props.value?.type) {
         case ValidateDataTypesEnums.String:

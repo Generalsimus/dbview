@@ -3,33 +3,40 @@ import Joi from "joi"
 export interface MinType {
     value: number
 }
-export const MinSchema = {
+export const MinSchema = Joi.object<MinType>({
     value: Joi.number().positive().required()
-}
-
+})
 
 export interface MaxType {
     value: number
 }
-export const MaxSchema = {
+export const MaxSchema = Joi.object<MaxType>({
     value: Joi.number().positive().required()
-}
+})
 
 
 export interface MinLengthType {
     value: number
 }
-export const MinLengthSchema = {
+export const MinLengthSchema = Joi.object<MinLengthType>({
     value: Joi.number().positive().required()
-}
+})
 
 
 export interface MaxLengthType {
     value: number
 }
-export const MaxLengthSchema = {
+export const MaxLengthSchema = Joi.object<MaxLengthType>({
     value: Joi.number().positive().required()
+})
+
+
+export interface OptionalValueType {
+    // value: number
 }
+export const OptionalValueSchema = Joi.object<OptionalValueType>( {
+    // value: Joi.number().positive().required()/
+})
 
 // export interface DateType {
 

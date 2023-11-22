@@ -10,14 +10,11 @@ import { IconButton, Stack } from "@mui/material";
 import { AutoResizeField } from "@/app/components/auto-resize-field";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import Joi from "joi";
-import { SmallIconButton } from "@/app/components/small-icon-button";
-// import RemoveIcon from '@mui/icons-material/Remove';
-import RemoveIcon from '@mui/icons-material/Remove';
 
-interface IProps<Value = NumberMaxLengthEntityType> extends InputProps<Value> {
+interface IProps<Value = StringMinLengthEntityType> extends InputProps<Value> {
     onRemove: () => void
 }
-export const Max: React.FC<IProps> = React.memo(({ value = {}, setValue, getValidation, onRemove }) => {
+export const MinLength: React.FC<IProps> = React.memo(({ value = {}, setValue, getValidation, onRemove }) => {
     const { entity = { value: 0 } } = value
 
     const onChangeMAxValue = useMemoCall((e: ChangeEvent<HTMLInputElement>) => {
@@ -29,10 +26,12 @@ export const Max: React.FC<IProps> = React.memo(({ value = {}, setValue, getVali
             entity: newEntity,
         })
     })
-    const { getError } = getValidation(NumberEntityValidationSchema, false)
+    const { getError } = getValidation(StringEntityValidationSchema, false)
 
-    
 
+    // const onRemoveHandler = useMemoCall(() => {
+    //     onRemove(value);
+    // })
 
     return <>
         <TypeNameViewContainer type={value.type} onRemove={onRemove}>

@@ -32,10 +32,11 @@ export const createValidationController =
         const stateValue = stateRefCache.cache?.value || {};
         let refCache = stateRefCache.validationCache ||= {
             cache: undefined,
-            validateResult: validate(stateValue, schema, { abortEarly: false })
+            validateResult: validate(stateValue, schema, { abortEarly: false, stripUnknown: false })
         };
 
-        refCache.validateResult = validate(stateValue, schema, { abortEarly: false });
+        refCache.validateResult = validate(stateValue, schema, { abortEarly: false, stripUnknown: false })
+
 
         if (refCache.cache) {
             return { ...refCache.cache }
@@ -50,7 +51,7 @@ export const createValidationController =
                 // const stateValue = stateRefCache.cache?.value;
                 let validationResult = refCache.validateResult;
 
-
+                // console.log("getIfValid", { validationResult })
                 if (validationResult.error) {
 
                     if (showError) {
@@ -75,6 +76,7 @@ export const createValidationController =
             getError(...errorPaths) {
                 let validationResult = refCache.validateResult;
 
+                // console.log("getError", { validationResult })
                 // if (!showErrorAfterChange) {
 
                 //     // console.log({ showErrorAfterChange, EEEEE: validationResult, schema })

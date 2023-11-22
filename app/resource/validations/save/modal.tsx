@@ -14,6 +14,7 @@ import { ValidationForm } from "./form/form";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 import { useRouter } from "next/navigation";
+import { validate } from "@/utils";
 
 
 interface IProps {
@@ -25,7 +26,7 @@ interface IProps {
     saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>
     deleteValidationDoc: (ids: number) => Promise<void>
 }
-export const ValidationFormModal: React.FC<IProps> = React.memo(({ 
+export const ValidationFormModal: React.FC<IProps> = React.memo(({
     title,
     isOpen,
     onOpen,
@@ -44,6 +45,8 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({
 
     const { getIfValid, getError } = validator;
 
+    // console.log(JSON.stringify(value, undefined, 2))
+    // console.log("validate().  ", validate(value, ValidationSchema, { abortEarly: false, stripUnknown: true, allowUnknown: false }))
     const router = useRouter();
 
     const onSaveData = useMemoCall(() => {
