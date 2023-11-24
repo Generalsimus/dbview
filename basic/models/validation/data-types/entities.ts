@@ -1,17 +1,33 @@
 import Joi from "joi"
 
+
+export const enum EntityValidationEnums {
+    Min = "Min",
+    Max = "Max",
+    MinLength = "MinLength",
+    MaxLength = "MaxLength",
+    Optional = "Optional",
+    Regex = "Regex",
+    // Rwwegex = "Regesx"
+}
+
+export interface EntityValidationGeneric<T extends EntityValidationEnums, V> {
+    type: T,
+    entity: V
+}
+
 export interface MinType {
     value: number
 }
 export const MinSchema = Joi.object<MinType>({
-    value: Joi.number().positive().required()
+    value: Joi.number().required()
 })
 
 export interface MaxType {
     value: number
 }
 export const MaxSchema = Joi.object<MaxType>({
-    value: Joi.number().positive().required()
+    value: Joi.number().required()
 })
 
 
@@ -19,24 +35,32 @@ export interface MinLengthType {
     value: number
 }
 export const MinLengthSchema = Joi.object<MinLengthType>({
-    value: Joi.number().positive().required()
+    value: Joi.number().required()
 })
-
 
 export interface MaxLengthType {
     value: number
 }
 export const MaxLengthSchema = Joi.object<MaxLengthType>({
-    value: Joi.number().positive().required()
+    value: Joi.number().required()
 })
 
 
 export interface OptionalValueType {
     // value: number
 }
-export const OptionalValueSchema = Joi.object<OptionalValueType>( {
+export const OptionalValueSchema = Joi.object<OptionalValueType>({
     // value: Joi.number().positive().required()/
 })
+
+
+export interface RegexType {
+    value: string
+}
+export const RegexSchema = Joi.object<RegexType>({
+    value: Joi.string().required()
+})
+
 
 // export interface DateType {
 

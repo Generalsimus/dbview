@@ -14,14 +14,14 @@ import Fade from '@mui/material/Fade';
 // import { useMemoCall, useToggleBool } from '@/app/utils/hooks';
 import { ValidateDataTypesEnums, ValidateValueType, ValidateDataTypes } from '@/basic/models/validation/data-types';
 // import { DataTypeEntitiesGeneric, getDataTypeEntities } from '@/basic/models/validation/utils';
-import { StringValidateDataTypesEnums } from '@/basic/models/validation/data-types/string';
-import { NumberValidateDataTypesEnums } from '@/basic/models/validation/data-types/number';
+import { StringValidateDataTypes } from '@/basic/models/validation/data-types/string';
+import { NumberValidateDataTypes } from '@/basic/models/validation/data-types/number';
 import { useToggleBool } from '@/app/utils/hooks/useToggleBool';
 import { SmallIconButton } from '@/app/components/small-icon-button';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 
-type AllValidateEnums = ValidateDataTypesEnums[] | StringValidateDataTypesEnums[] | NumberValidateDataTypesEnums[]
+type AllValidateEnums = ValidateDataTypesEnums[] | StringValidateDataTypes[] | NumberValidateDataTypes[]
 
 
 interface IProps<T extends AllValidateEnums> {

@@ -1,13 +1,10 @@
 import { ValidationPropertyType } from "@/basic/models/validation/validation";
-import { IconButton, Stack, useTheme } from "@mui/material";
-import React, { useMemo, useRef } from "react";
+import { IconButton, Stack } from "@mui/material";
+import React, { } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import { InputProps, MakeStateValue, OptionalKeys } from "@/basic/generics";
-import { BlockPropertyInput } from "./block-property-input";
-import { filter, find, isEqual, negate, remove } from "lodash"
-import { ValidateValueType } from "@/basic/models/validation/data-types";
+import { InputProps } from "@/basic/generics";
+import { PropertyInput } from "./property-input";
 // import { AddValidation } from "./add-validation";
-import { useChangeSetProps } from "@/app/utils/hooks/useSetProps";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 
@@ -21,7 +18,7 @@ interface IProps extends InputProps<ValidationPropertyType[]> {
 
 }
 export const ValidationsInput: React.FC<IProps> = React.memo(({ value = [], setValue, setProps, getPropState }) => {
-
+    // const vv = value
 
     const getMemoArgFunction = useMemoArgCall((index: number) => {
         setValue(value.splice(index, 1));
@@ -47,7 +44,7 @@ export const ValidationsInput: React.FC<IProps> = React.memo(({ value = [], setV
         {value.length ? <Stack display={"flex"} justifyContent={"flex-start"}>
             {value.map((_, index) => {
 
-                return <BlockPropertyInput  {...getPropState(index)} onRemove={getMemoArgFunction(index)} />
+                return <PropertyInput  {...getPropState(index)} onRemove={getMemoArgFunction(index)} />
             })}
         </Stack> : null}
         <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -57,4 +54,3 @@ export const ValidationsInput: React.FC<IProps> = React.memo(({ value = [], setV
         </Stack>
     </Stack>;
 });
-// continue

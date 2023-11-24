@@ -7,7 +7,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
 // import { ValidationBlockInput } from "./form/validation-block-input";
 import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
-import { MakeStateValue, OptionalKeys } from "@/basic/generics";
+import { MakeStateValue } from "@/basic/generics";
 import { MakeCreateOrUpdate, MakeForState, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
 import { ValidationForm } from "./form/form";

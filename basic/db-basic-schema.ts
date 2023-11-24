@@ -1,5 +1,5 @@
 import Joi, { AnySchema, ObjectSchema } from "joi"
-import { DeepPartial, JoiSchemaValue, MakeStateValue, OptionalKeys } from "./generics"
+import { DeepPartial, JoiSchemaValue, MakeStateValue } from "./generics"
 
 
 

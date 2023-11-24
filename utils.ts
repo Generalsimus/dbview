@@ -1,7 +1,7 @@
 // import { Allow, IsDate, IsEmpty, IsEnum, IsIn, IsNumber, IsString, MinLength, isDate, isNumber, ValidationError, validateSync } from "class-validator";
 import { RequestTypeEnum, requestMethods } from "@/basic/request";
 import { Children } from "react";
-import { ClassToObject, DeepPartial, MakeStateValue } from "./basic/generics";
+// import { ClassToObject, DeepPartial, MakeStateValue } from "./basic/generics";
 import Joi, { AnySchema, ObjectSchema, ValidationOptions, ValidationResult, any } from "joi";
 import { RouteSchema } from "./basic/models/route/route";
 import { mapValues } from "lodash";

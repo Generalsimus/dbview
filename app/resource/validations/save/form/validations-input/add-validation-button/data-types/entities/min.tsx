@@ -1,19 +1,20 @@
 import { InputProps } from "@/basic/generics";
 import { MaxSchema, MaxType } from "@/basic/models/validation/data-types/entities";
-import { NumberEntityValidationSchema, NumberMaxLengthEntityType, NumberMinLengthEntityType } from "@/basic/models/validation/data-types/number";
+import { NumberEntityValidationSchema, NumberMinEntityType,    } from "@/basic/models/validation/data-types/number";
 import { StringEntityValidationSchema, StringMaxLengthEntityType, StringMinLengthEntityType } from "@/basic/models/validation/data-types/string";
 import React, { ChangeEvent, useState } from "react";
-import { TypeNameViewContainer } from "../type-name-container";
+// import { TypeNameViewContainer } from "../type-name-container";
 import { TextField, Typography, styled } from "@mui/material";
 // import { useChangeSetProps, useMemoCall } from "@/app/utils/hooks";
 import { IconButton, Stack } from "@mui/material";
 import { AutoResizeField } from "@/app/components/auto-resize-field";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import Joi from "joi";
+import { TypeNameViewContainer } from "../type-name-container";
 
 
 
-interface IProps<Value = NumberMinLengthEntityType> extends InputProps<Value> {
+interface IProps<Value = NumberMinEntityType> extends InputProps<Value> {
     onRemove: () => void
 }
 export const Min: React.FC<IProps> = React.memo(({ value = {}, setValue, getValidation, onRemove }) => {

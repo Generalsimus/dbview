@@ -3,35 +3,48 @@ import { IconButton, MenuItem, Select, Stack, TextField, Typography } from "@mui
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { InputProps, MakeStateValue, OptionalKeys } from "@/basic/generics";
+import { DeepPartial, DeepUnion, InputProps, InputPropsRequiredValue, MakeStateValue } from "@/basic/generics";
 import { AddValidationButton } from "./add-validation-button";
 import { ValidateValueType } from "@/basic/models/validation/data-types";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useChangeSetProps } from "@/app/utils/hooks/useSetProps";
 import { EditPropertyNameInput } from "./property-name-input";
 import { ErrorText } from "@/app/components/error-text";
+import { SetPropsRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller";
 
-interface IProps extends InputProps<ValidationPropertyType> {
-    onRemove: (name: ValidationPropertyType["property"]) => void,
+interface IProps extends InputPropsRequiredValue<ValidationPropertyType> {
+    onRemove: () => void
 }
-export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onRemove, getPropState, setProps, getValidation, value = {} }) => {
-
-    const onRemoveHandler = useMemoCall(() => {
-        onRemove(value.property + "");
-    });
+export const PropertyInput: React.FC<IProps> = React.memo(({ onRemove, getPropState, setProps, getValidation, value = {} }) => {
+    const val = value;
+    // DeepPartialObject<{
+    //     property: string;
+    //     value: {
+    //         type: ValidateDataTypesEnums;
+    //         entities: {
+    //             type: EntityValidationEnums;
+    //             entity: {
+    //                 value?: string | number | undefined;
+    //             };
+    //         }[];
+    //     };
+    // }>
+    // const onRemoveHandler = useMemoCall(() => {
+    //     ();
+    // });
     const onRemoveSafeHandler = useMemoCall(() => {
         const propertyName = (value.property + "").trim();
         if (propertyName.length === 0) {
             for (const _ in (value.value || {})) {
                 return;
             }
-            onRemoveHandler()
+            onRemove()
         }
     });
     const onRemoveValueValidation = useMemoCall(() => {
         const propertyName = (value.property + "").trim();
         if (propertyName.length === 0) {
-            onRemoveHandler()
+            onRemove()
         } else {
             setProps("value")({});
         }
@@ -40,7 +53,7 @@ export const BlockPropertyInput: React.FC<IProps> = React.memo(({ onRemove, getP
 
     return <>
         <Stack display={"flex"} flexDirection={"row"} flexWrap={"wrap"} alignItems={"center"} justifyContent={"flex-start"}>
-            <IconButton size="small" color="error" onClick={onRemoveHandler}>
+            <IconButton size="small" color="error" onClick={onRemove}>
                 <DeleteIcon fontSize="small" />
             </IconButton>
 

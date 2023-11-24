@@ -8,6 +8,7 @@ import { StringEntityValidationSchema, StringEntityValidationType, StringValidat
 export const enum ValidateDataTypesEnums {
     String = "String",
     Number = "Number",
+    // EEEEE = "NumEer",
 }
 
 export const ValidateDataTypes = [
@@ -30,6 +31,10 @@ export type StringDataTypeValidationType = ValidateValueTypeGen<ValidateDataType
 export type NumberDataTypeValidationType = ValidateValueTypeGen<ValidateDataTypesEnums.Number, NumberEntityValidationType>;
 
 export type ValidateValueType = StringDataTypeValidationType | NumberDataTypeValidationType;
+
+// interface ValidateValueType {
+//     type: ValidateDataTypesEnums,
+// }
 
 
 export const ValidateValueSchema = Joi.object<ValidateValueType>({

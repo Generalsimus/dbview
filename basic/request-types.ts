@@ -1,6 +1,6 @@
 // import { IsNumber, ValidateNested, isNumber } from "class-validator";
 // import { PathValidation } from "./path";
-import { ClassToObject } from "./generics";
+// import { ClassToObject } from "./generics";
 
 
 

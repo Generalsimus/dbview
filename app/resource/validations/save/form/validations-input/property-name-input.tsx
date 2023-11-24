@@ -5,7 +5,7 @@ import { ValidationPropertyType } from "@/basic/models/validation/validation";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
 
-interface IProps extends InputProps<ValidationPropertyType["property"]> {
+interface IProps extends InputProps<ValidationPropertyType["property"] | undefined> {
     onBlur?: () => void
 }
 export const EditPropertyNameInput: React.FC<IProps> = React.memo(({ value = "", setValue, onBlur }) => {

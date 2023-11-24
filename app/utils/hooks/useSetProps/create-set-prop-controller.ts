@@ -5,9 +5,11 @@ import { CreateObjectWithValue, GetObjectNestedValue, JoiSchemaValue } from "@/b
 import { Validator } from "./create=validation-controller"
 // import { Validator } from "sequelize"
 
+// export type WrapDispatch<O extends any> = O extends any ? Dispatch<SetStateAction<O>> : Dispatch<SetStateAction<O>>
+
 export interface SetPropsRes<S> {
     value: S
-    setValue: Dispatch<SetStateAction<S>>
+    setValue: Dispatch<SetStateAction<S>>,
     setDefault: (defaultValue: SetStateAction<S>) => void
 
 

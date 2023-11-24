@@ -1,51 +1,30 @@
 import { SetPropsRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller";
 import { AnySchema, ObjectSchema, ValidationResult, extend } from "joi";
+import { merge } from "lodash";
+import { UnionToIntersection, Unionize } from "utility-types";
+import { NumberDataTypeValidationType, StringDataTypeValidationType, ValidateDataTypesEnums, ValidateValueType } from "./models/validation/data-types";
 
 
 
+ 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export type DeepPartial<Thing> = Thing extends Function
+  ? Thing
+  : Thing extends Array<infer InferredArrayMember>
+  ? DeepPartialArray<InferredArrayMember>
+  : Thing extends object
+  ? DeepPartialObject<Thing>
+  : Thing
 
+interface DeepPartialArray<Thing> extends Array<DeepPartial<Thing>> { }
 
-export type ConvertPureType<T> = T extends any[] ? ConvertPureType<T[number]>[] : T extends object ? {
-    [K in keyof T]: ConvertPureType<T[K]>
-} : T extends string ? T | string :
-    T extends number ? T | number :
-    T;
-
-
-export type ClassToObject<C extends abstract new (...args: any) => any, T = InstanceType<C>> = {
-    [K in keyof T]: T[K]
-};
-
-
-export type ValueOf<O extends any> = O extends object ? O[keyof O] : never
-
-
-export type OptionalKeys<T extends object, K extends keyof T, V = Omit<T, K>> = V & Partial<Omit<T, keyof V>>
-
-
-
-export type MakeStateValue<T, O = ConvertPureType<T>> = (O extends any[] ? MakeStateValue<O[number]>[] : O extends object ? {
-    [K in keyof O]?: MakeStateValue<O[K]>
-} : O) | undefined
-
-
-export interface InputProps<T> extends SetPropsRes<MakeStateValue<T>> {
-    // value?: V
-    // onChange: (newValue: V) => void
-    // getError?: (...errorPaths: PropertyKey[]) => {
-    //     error: boolean;
-    //     helperText: string;
-    // } | {
-    //     error: boolean;
-    //     helperText: undefined;
-    // }
+type DeepPartialObject<Thing> = {
+  [Key in keyof Thing]?: DeepPartial<Thing[Key]>
 }
 
+/////////////////////////////////////////////
 
-
-export type DeepPartial<T> = T extends object ? {
-    [P in keyof T]?: DeepPartial<T[P]>;
-} : T;
+export type ValueOf<O extends any> = O extends object ? O[keyof O] : never
 
 
 export type JoiSchemaValue<S extends AnySchema> = S extends AnySchema<infer T> ? T : never
@@ -53,18 +32,71 @@ export type JoiSchemaResultValue<S extends ValidationResult> = S extends Validat
 
 
 export type CreateObjectWithValue<K extends readonly PropertyKey[], V> = K extends readonly [infer First, ...infer Rest] ?
-    First extends PropertyKey ?
-    Rest extends readonly PropertyKey[] ?
-    Rest extends readonly [infer First2, ...infer Rest2] ? Record<First, CreateObjectWithValue<Rest, V>> : Record<First, V>
-    : never
-    : never
-    : V
+  First extends PropertyKey ?
+  Rest extends readonly PropertyKey[] ?
+  Rest extends readonly [infer First2, ...infer Rest2] ? Record<First, CreateObjectWithValue<Rest, V>> : Record<First, V>
+  : never
+  : never
+  : V
 
 
 
 export type GetObjectNestedValue<O, K> = K extends readonly [infer First, ...infer Rest] ?
-    First extends PropertyKey ?
-    O extends Record<any, any> ? GetObjectNestedValue<O[First], Rest>
-    : never
-    : never
-    : O
+  First extends PropertyKey ?
+  O extends Record<any, any> ? GetObjectNestedValue<O[First], Rest>
+  : never
+  : never
+  : O
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+type PartialKeys<T, K extends keyof T> =
+  Omit<T, K> & Partial<Pick<T, K>> extends infer O ? { [P in keyof O]: O[P] } : never;
+
+
+type OptionalKeys<T> = T extends any ?
+  { [K in keyof T]-?: {} extends Pick<T, K> ? K : never }[keyof T] : never;
+
+type Idx<T, K extends PropertyKey, D = never> =
+  T extends any ? K extends keyof T ? T[K] : D : never;
+
+type AllKeys<T> = T extends any ? keyof T : never;
+
+
+export type DeepUnion<T> =
+  [T] extends [Array<infer E>] ? DeepUnion<E>[] :
+  [T] extends [object] ? PartialKeys<
+    { [K in AllKeys<T>]: DeepUnion<Idx<T, K>> },
+    Exclude<AllKeys<T>, keyof T> | OptionalKeys<T>
+  > :
+  T;
+
+
+////////////////////////////////////////////
+
+
+
+// type A = { key1: string, key2: string, k4: string }
+// type B = { key1: string, key3: string, k4: number }
+
+// type Nn = Unionize<A & B>
+// type MergedAA = DeepUnion<A | B>
+// type MergedAW = DeepUnion<Nn>
+// type MergedAC = DeepUnion<ValidateValueType>
+// type MergedAD = DeepUnion<string[] | number[]>
+// type MergedAB = (A & B)['key1']
+
+////////////////////////////
+
+
+export type MakeStateValue<O extends any> = DeepPartial<DeepUnion<O>> | undefined
+export type MakeStateRequiredValue<O extends any> = DeepPartial<DeepUnion<O>>
+
+
+export interface InputProps<T> extends SetPropsRes<MakeStateValue<T>> {
+
+}
+
+export interface InputPropsRequiredValue<T> extends SetPropsRes<MakeStateRequiredValue<T>> {
+
+}
