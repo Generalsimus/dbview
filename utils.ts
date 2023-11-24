@@ -31,9 +31,11 @@ export const validateErrorToObject = (errors: any[]): ErrorsObject => {
 
 
 export const validate = <V extends object>(value: any, schema: AnySchema<V>, options: ValidationOptions = { stripUnknown: true, abortEarly: true }): ValidationResult<V> => {
-
-
-    return schema.validate(value, options)
+    const res = schema.validate(value, options);
+    if (res.error) [
+        console.log(res.error)
+    ]
+    return res;
 }
 
 

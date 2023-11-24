@@ -12,10 +12,16 @@ import { Optional } from "./optional";
 import { Regex } from "./regex";
 // import { SwitchTypePropGen } from "../../generics";
 import { SetPropsRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller";
-import { SwitchTypePropGen } from "../../generics";
+// import { SwitchTypePropGen } from "../../generics";
+import { Max } from "./max";
 
+// type OptionalKeys = "setValu"
+export type SwitchTypePropGen<T extends { type: any }> = (T extends any ? InputProps<T> & {
+    type?: T["type"] | undefined
+    onRemove: () => void
+} : never);
 
-type IProps = SwitchTypePropGen<StringEntityValidationType>
+type IProps = SwitchTypePropGen<StringEntityValidationType | NumberEntityValidationType>
 
 export const Entities: React.FC<IProps> = (props: IProps) => {
 
@@ -23,10 +29,15 @@ export const Entities: React.FC<IProps> = (props: IProps) => {
     switch (props?.type) {
         case EntityValidationEnums.MaxLength:
             return <MaxLength {...props} />
+        case EntityValidationEnums.Max:
+            return <Max {...props} />
+        case EntityValidationEnums.Min:
+            return <Min {...props} />
         case EntityValidationEnums.MinLength:
             return <MinLength {...props} />
         case EntityValidationEnums.Optional:
             return <Optional {...props} />
+        case EntityValidationEnums.Regex:
         case EntityValidationEnums.Regex:
             return <Regex {...props} />
 

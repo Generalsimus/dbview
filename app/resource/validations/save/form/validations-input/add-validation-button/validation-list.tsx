@@ -21,14 +21,14 @@ import { SmallIconButton } from '@/app/components/small-icon-button';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 
-type AllValidateEnums = ValidateDataTypesEnums[] | StringValidateDataTypes[] | NumberValidateDataTypes[]
+// type AllValidateEnums = ValidateDataTypesEnums | StringValidateDataTypes | NumberValidateDataTypes
 
 
-interface IProps<T extends AllValidateEnums> {
-    entityTypes: T
-    onChange: (newValue: T[number]) => void
+interface IProps<T> {
+    entityTypes: T[]
+    onChange: (newValue: T) => void
 }
-export const AddValidationsList = <T extends AllValidateEnums>({ entityTypes, onChange }: IProps<T>) => {
+export const AddValidationsList = <T extends any>({ entityTypes = [], onChange }: IProps<T>) => {
     const anchorElRef = useRef<HTMLButtonElement | null>(null);
 
     const [open, initDefaultValue] = useToggleBool(false)

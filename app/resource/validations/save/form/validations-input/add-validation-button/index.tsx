@@ -19,7 +19,7 @@ import { DataTypeView } from './data-types';
 import { InputProps } from '@/basic/generics';
 import { useMemoCall } from '@/app/utils/hooks/useMemoCall';
 import { Partial, filter } from 'lodash';
-import { SwitchTypePropGen } from './generics';
+// import { SwitchTypePropGen } from './generics';
 
 
 // type IPropGen<T> = T extends any ? InputProps<T> & {
