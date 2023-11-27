@@ -1,53 +1,72 @@
-import { InputProps } from "@/basic/generics";
-import { MaxSchema, MaxType } from "@/basic/models/validation/data-types/entities";
-import { NumberEntityValidationSchema } from "@/basic/models/validation/data-types/number";
-import { StringEntityValidationSchema, StringMaxLengthEntityType, StringMinLengthEntityType, StringRegexEntityType } from "@/basic/models/validation/data-types/string";
-import React, { ChangeEvent, useState } from "react";
-// import { TypeNameViewContainer } from "../type-name-container";
-import { TextField, Typography, styled } from "@mui/material";
-// import { useChangeSetProps, useMemoCall } from "@/app/utils/hooks";
+import React, { ChangeEvent, ReactNode, SyntheticEvent, useState } from "react";
+import { ExtractTypeWithProp, InputProps } from "@/basic/generics";
+import { Autocomplete, Box, TextField, Typography, styled } from "@mui/material";
 import { IconButton, Stack } from "@mui/material";
 import { AutoResizeField } from "@/app/components/auto-resize-field";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import Joi from "joi";
-import { SmallIconButton } from "@/app/components/small-icon-button";
-// import RemoveIcon from '@mui/icons-material/Remove';
-import RemoveIcon from '@mui/icons-material/Remove';
+// import Joi from "joi";
 import { TypeNameViewContainer } from "../type-name-container";
+import { StringEntityValidationSchema, StringEntityValidationType } from "@/basic/models/validation/data-types/schema";
+import { EntityValidateEnums } from "@/basic/models/validation/data-types/enums";
 
-interface IProps<Value = StringRegexEntityType> extends InputProps<Value> {
+
+type Option = {
+    label: ReactNode,
+    value: string
+}
+interface IProps extends InputProps<ExtractTypeWithProp<StringEntityValidationType, "type", EntityValidateEnums.Regex>> {
     onRemove: () => void
 }
 export const Regex: React.FC<IProps> = React.memo(({ value = {}, setValue, getValidation, onRemove }) => {
-    const { entity = { value: "" } } = value
+    const { entityValue = "" } = value
 
-    const onChangeMAxValue = useMemoCall((e: ChangeEvent<HTMLInputElement>) => {
-        const newEntity = {
-            value: e.target.value
-        };
+    const onSelectOption = useMemoCall((event: unknown, newValue: string) => {
+        if (newValue in RegexList) {
+            newValue = RegexList[newValue];
+        }
         setValue({
             ...value,
-            entity: newEntity,
+            entityValue: newValue,
         })
     })
+
     const { getError } = getValidation(StringEntityValidationSchema, false)
 
-
+    const options = Object.keys(RegexList)
     return <>
         <TypeNameViewContainer type={value.type} onRemove={onRemove}>
-            <AutoResizeField
-                type="text"
-                value={entity.value}
-                variant="outlined"
-                size="small"
-                onChange={onChangeMAxValue}
+            <Autocomplete
+                disablePortal
+                freeSolo
+                value={entityValue}
+                options={options}
+                disableClearable
+                disableListWrap
+                onChange={onSelectOption}
                 autoFocus
-                sx={{ minHeight: "1.5em", minWidth: "1em" }}
-                hiddenLabel
-                {...getError()}
+                // Adore
+                getOptionLabel={(option) => RegexList[option]}
+                sx={{ minWidth: "2em" }}
+                componentsProps={{ popper: { style: { width: 'fit-content' } } }}
+                renderInput={(params) => {
+                    console.log(params)
+                    return <AutoResizeField
+                        {...params}
+                        type="text"
+                        variant="outlined"
+                        size="small"
 
+                        sx={{ minHeight: "1.5em", minWidth: "1em" }}
+                        hiddenLabel
+                        {...getError()}
+
+                    />
+                }}
             />
         </TypeNameViewContainer>
     </>;
 });
 
+const RegexList: Record<string, string> = {
+    Email: "/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/"
+}

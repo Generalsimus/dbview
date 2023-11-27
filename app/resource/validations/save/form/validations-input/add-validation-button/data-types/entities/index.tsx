@@ -1,15 +1,14 @@
-import { ValidateValueType } from "@/basic/models/validation/data-types";
-import { NumberEntityValidationType } from "@/basic/models/validation/data-types/number";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { InputProps, MakeStateValue } from "@/basic/generics";
-import { StringEntityValidationType, StringMaxLengthEntityType } from "@/basic/models/validation/data-types/string";
-import { EntityValidationEnums, MaxLengthSchema } from "@/basic/models/validation/data-types/entities";
 import { MinLength } from "./min-length";
 import { MaxLength } from "./max-length";
 import { Optional } from "./optional";
 import { Regex } from "./regex";
 import { Max } from "./max";
 import { Min } from "./min";
+// import { NumberEntityValidationType, StringEntityValidationType } from "@/basic/models/validation/data-types/schema";
+import { EntityValidateEnums } from "@/basic/models/validation/data-types/enums";
+import { NumberEntityValidationType, StringEntityValidationType } from "@/basic/models/validation/data-types/schema";
 
 export type SwitchTypePropGen<T extends { type: any }> = (T extends any ? InputProps<T> & {
     type?: T["type"] | undefined
@@ -20,20 +19,22 @@ type IProps = SwitchTypePropGen<StringEntityValidationType | NumberEntityValidat
 
 export const Entities: React.FC<IProps> = (props: IProps) => {
 
-    // }
     switch (props?.type) {
-        case EntityValidationEnums.MaxLength:
+        case EntityValidateEnums.MaxLength:
             return <MaxLength {...props} />
-        case EntityValidationEnums.Max:
+        case EntityValidateEnums.Max:
             return <Max {...props} />
-        case EntityValidationEnums.Min:
+        case EntityValidateEnums.Min:
             return <Min {...props} />
-        case EntityValidationEnums.MinLength:
+        case EntityValidateEnums.MinLength:
             return <MinLength {...props} />
-        case EntityValidationEnums.Optional:
+        case EntityValidateEnums.Optional:
             return <Optional {...props} />
-        case EntityValidationEnums.Regex:
+        case EntityValidateEnums.Regex:
             return <Regex {...props} />
+        case EntityValidateEnums.Or:
+            return <div>s</div>
+        // return <Regex {...props} />
 
     }
     return <></>;

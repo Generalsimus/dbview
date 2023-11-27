@@ -1,24 +1,12 @@
-import React, { MouseEvent, useMemo, useRef } from 'react';
-import Box from '@mui/material/Box';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import React, { useRef } from 'react';
 
-import { ValidationPropertyType } from "@/basic/models/validation/validation";
-import { IconButton, Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
-// import { useMemoCall, useToggleBool } from '@/app/utils/hooks';
-import { ValidateDataTypesEnums, ValidateValueType, ValidateDataTypes } from '@/basic/models/validation/data-types';
-// import { DataTypeEntitiesGeneric, getDataTypeEntities } from '@/basic/models/validation/utils';
-import { StringValidateDataTypes } from '@/basic/models/validation/data-types/string';
-import { NumberValidateDataTypes } from '@/basic/models/validation/data-types/number';
 import { useToggleBool } from '@/app/utils/hooks/useToggleBool';
 import { SmallIconButton } from '@/app/components/small-icon-button';
-import RemoveIcon from '@mui/icons-material/Remove';
 
 
 // type AllValidateEnums = ValidateDataTypesEnums | StringValidateDataTypes | NumberValidateDataTypes

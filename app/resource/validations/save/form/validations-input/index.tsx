@@ -18,10 +18,11 @@ interface IProps extends InputProps<ValidationPropertyType[]> {
 
 }
 export const ValidationsInput: React.FC<IProps> = React.memo(({ value = [], setValue, setProps, getPropState }) => {
-    // const vv = value
 
     const getMemoArgFunction = useMemoArgCall((index: number) => {
-        setValue(value.splice(index, 1));
+        const newValue = [...value];
+        newValue.splice(index, 1);
+        setValue(newValue);
     })
 
     const onAddEmptyPropValidation = useMemoCall(() => {

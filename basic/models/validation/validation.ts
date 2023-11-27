@@ -5,7 +5,8 @@
 // interface {
 
 import Joi from "joi"
-import { ValidateValueSchema, ValidateValueType } from "./data-types"
+import { ValidateValueSchema, ValidateValueType } from "./data-types/schema"
+// import { ValidateValueSchema, ValidateValueType } from "./data-types"
 
 
 

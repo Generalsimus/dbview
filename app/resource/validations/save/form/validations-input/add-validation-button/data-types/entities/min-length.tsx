@@ -1,7 +1,7 @@
-import { InputProps } from "@/basic/generics";
-import { MaxSchema, MaxType } from "@/basic/models/validation/data-types/entities";
-import { NumberEntityValidationSchema } from "@/basic/models/validation/data-types/number";
-import { StringEntityValidationSchema, StringMaxLengthEntityType, StringMinLengthEntityType } from "@/basic/models/validation/data-types/string";
+import { ExtractTypeWithProp, InputProps } from "@/basic/generics";
+// import { MaxSchema, MaxType } from "@/basic/models/validation/data-types/entities";
+// import { NumberEntityValidationSchema } from "@/basic/models/validation/data-types/number";
+// import { StringEntityValidationSchema, StringMaxLengthEntityType, StringMinLengthEntityType } from "@/basic/models/validation/data-types/string";
 import React, { ChangeEvent, useState } from "react";
 // import { TypeNameViewContainer } from "../type-name-container";
 import { TextField, Typography, styled } from "@mui/material";
@@ -11,12 +11,15 @@ import { AutoResizeField } from "@/app/components/auto-resize-field";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import Joi from "joi";
 import { TypeNameViewContainer } from "../type-name-container";
+import { EntityValidateEnums } from "@/basic/models/validation/data-types/enums";
+import { StringEntityValidationSchema, StringEntityValidationType } from "@/basic/models/validation/data-types/schema";
 
-interface IProps<Value = StringMinLengthEntityType> extends InputProps<Value> {
+
+interface IProps extends InputProps<ExtractTypeWithProp<StringEntityValidationType, "type", EntityValidateEnums.MinLength>> {
     onRemove: () => void
 }
 export const MinLength: React.FC<IProps> = React.memo(({ value = {}, setValue, getValidation, onRemove }) => {
-    const { entity = { value: 0 } } = value
+    const { entityValue = 0 } = value
 
     const onChangeMAxValue = useMemoCall((e: ChangeEvent<HTMLInputElement>) => {
         const newEntity = {
@@ -24,21 +27,17 @@ export const MinLength: React.FC<IProps> = React.memo(({ value = {}, setValue, g
         };
         setValue({
             ...value,
-            entity: newEntity,
+            entityValue: parseInt(e.target.value)
         })
     })
     const { getError } = getValidation(StringEntityValidationSchema, false)
 
 
-    // const onRemoveHandler = useMemoCall(() => {
-    //     onRemove(value);
-    // })
-
     return <>
         <TypeNameViewContainer type={value.type} onRemove={onRemove}>
             <AutoResizeField
                 type="number"
-                value={entity.value}
+                value={entityValue}
                 variant="outlined"
                 size="small"
                 onChange={onChangeMAxValue}

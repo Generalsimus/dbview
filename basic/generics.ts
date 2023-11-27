@@ -2,21 +2,19 @@ import { SetPropsRes } from "@/app/utils/hooks/useSetProps/create-set-prop-contr
 import { AnySchema, ObjectSchema, ValidationResult, extend } from "joi";
 import { merge } from "lodash";
 import { UnionToIntersection, Unionize } from "utility-types";
-import { NumberDataTypeValidationType, StringDataTypeValidationType, ValidateDataTypesEnums, ValidateValueType } from "./models/validation/data-types";
+// import { NumberDataTypeValidationType, StringDataTypeValidationType, ValidateDataTypesEnums, ValidateValueType } from "./models/validation/data-types";
 
 
 
- 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export type DeepPartial<Thing> = Thing extends Function
   ? Thing
   : Thing extends Array<infer InferredArrayMember>
-  ? DeepPartialArray<InferredArrayMember>
+  ? DeepPartial<InferredArrayMember>[]
   : Thing extends object
   ? DeepPartialObject<Thing>
   : Thing
-
-interface DeepPartialArray<Thing> extends Array<DeepPartial<Thing>> { }
 
 type DeepPartialObject<Thing> = {
   [Key in keyof Thing]?: DeepPartial<Thing[Key]>
@@ -27,7 +25,7 @@ type DeepPartialObject<Thing> = {
 export type ValueOf<O extends any> = O extends object ? O[keyof O] : never
 
 
-export type JoiSchemaValue<S extends AnySchema> = S extends AnySchema<infer T> ? T : never
+export type JoiSchemaValue<S extends any> = S extends AnySchema<infer T> ? T : never
 export type JoiSchemaResultValue<S extends ValidationResult> = S extends ValidationResult<infer T> ? T : never
 
 
@@ -48,6 +46,9 @@ export type GetObjectNestedValue<O, K> = K extends readonly [infer First, ...inf
   : never
   : O
 
+
+export type ExtractTypeWithProps<O, Props extends PropertyKey[], Value> = Props extends readonly [...infer Rest, infer Last] ? Last extends PropertyKey ? Extract<GetObjectNestedValue<O, Rest>, { [K in Last]: Value }> : never : never
+export type ExtractTypeWithProp<O, Prop extends PropertyKey, Value> = ExtractTypeWithProps<O, [Prop], Value>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 type PartialKeys<T, K extends keyof T> =

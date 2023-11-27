@@ -1,19 +1,13 @@
-import { NumberDataTypeValidationType, StringDataTypeValidationType, ValidateDataTypesEnums, ValidateValueType } from "@/basic/models/validation/data-types";
-import React, { useMemo, useState } from "react";
-// import { StringTypeView } from "./string-type";
-// import { NumberTypeView } from "./number-type";
+import React, { useMemo, useState } from "react"; 
 import { InputProps } from "@/basic/generics";
-import { NumberEntityValidationType, NumberValidateEntitiesTypes } from "@/basic/models/validation/data-types/number";
-import { StringEntityValidationType, StringValidateEntitiesTypes } from "@/basic/models/validation/data-types/string";
-// import { SwitchTypePropGen } from "../generics";
-// import { StringTypeView } from "./string";
-// import { NumberTypeView } from "./number";
 import { TypeNameViewContainer } from "./type-name-container";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { AddValidationsList } from "../validation-list";
 import { Entities } from "./entities";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { map } from "lodash";
+import { ValidateDataTypesEnums } from "@/basic/models/validation/data-types/enums";
+import { NumberValidateEntitiesTypes, StringValidateEntitiesTypes, ValidateValueType } from "@/basic/models/validation/data-types/schema";
 
 
 
@@ -24,17 +18,14 @@ export const DataTypeView: React.FC<IProps> = React.memo((props) => {
     const { value = {}, setValue, getPropState, onRemove } = props;
     const { entities = [], type } = value;
 
-    //     // switch (props.value?.type) {
-    //     // case ValidateDataTypesEnums.String:
-    //     // return <StringTypeView {...props} />
-    //     // case ValidateDataTypesEnums.Number:
-    //     return <NumberTypeView  {...props} />
-    //     // }
 
     const getMemoArgRemoveFunction = useMemoArgCall((index: number) => {
+        const newEntities = [...entities];
+        newEntities.splice(index, 1);
+
         setValue({
             ...value,
-            entities: entities.splice(index, 1),
+            entities: newEntities,
         });
     });
     const addDataType = useMemoCall((newType: (typeof entities)[number]["type"]) => {
@@ -44,7 +35,7 @@ export const DataTypeView: React.FC<IProps> = React.memo((props) => {
                 ...entities,
                 {
                     type: newType,
-                    entity: {}
+                    entityValue: undefined
                 }
             ]
         })
@@ -62,7 +53,7 @@ export const DataTypeView: React.FC<IProps> = React.memo((props) => {
         {entities.map((item, index) => {
             const state = getPropState("entities", index)
 
-            return <Entities type={state.value?.type} {...(state as any)} onRemove={getMemoArgRemoveFunction(index)} />
+            return <Entities type={state.value?.type} {...state as any} onRemove={getMemoArgRemoveFunction(index)} />
         })}
         <AddValidationsList entityTypes={entitiesTypes} onChange={addDataType} />
     </>;
