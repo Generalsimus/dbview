@@ -15,6 +15,8 @@ import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 import { useRouter } from "next/navigation";
 import { validate } from "@/utils";
+import { ObjectPropertiesInput } from "@/app/components/object-properties-input";
+import { PropertyNameViews, PropertyNameViewsValue } from "@/app/components/object-properties-input/types";
 
 
 interface IProps {

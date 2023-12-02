@@ -1,12 +1,14 @@
 import { ValidationPropertyType } from "@/basic/models/validation/validation";
 import { IconButton, Stack } from "@mui/material";
-import React, { } from "react";
+import React, { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import { InputProps } from "@/basic/generics";
 import { PropertyInput } from "./property-input";
 // import { AddValidation } from "./add-validation";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
+import { PropertyNameViews, PropertyNameViewsValue } from "@/app/components/object-properties-input/types";
+import { ObjectPropertiesInput } from "@/app/components/object-properties-input";
 
 // const useMemoArgCall = () => {
 
@@ -48,6 +50,7 @@ export const ValidationsInput: React.FC<IProps> = React.memo(({ value = [], setV
                 return <PropertyInput  {...getPropState(index)} onRemove={getMemoArgFunction(index)} />
             })}
         </Stack> : null}
+
         <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
             <IconButton onClick={onAddEmptyPropValidation} size="large">
                 <AddIcon />

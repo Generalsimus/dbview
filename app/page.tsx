@@ -26,7 +26,7 @@ export default function Index() {
       aria-label="scrollable auto tabs example"
     >
       {routes.map(e => {
-        return <Tab label={e.label} value={e} />
+        return <Tab key={e.label} label={e.label} value={e} />
       })}
     </Tabs>
   </>

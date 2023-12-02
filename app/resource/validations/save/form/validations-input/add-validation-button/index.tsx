@@ -13,6 +13,7 @@ export const AddValidationButton: React.FC<IProps> = React.memo((props) => {
     const { value = {}, setValue, onRemove } = props;
 
     const addDataType = useMemoCall((type: ValidateDataTypesEnums) => {
+        console.log(type)
         setValue({
             type: type,
             entities: []

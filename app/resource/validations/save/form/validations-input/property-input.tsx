@@ -1,12 +1,14 @@
 import { ValidationPropertySchema, ValidationPropertyType } from "@/basic/models/validation/validation";
 import { IconButton, Stack, Typography } from "@mui/material";
-import React, {  } from "react";
+import React, { useState } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { InputPropsRequiredValue } from "@/basic/generics";
 import { AddValidationButton } from "./add-validation-button";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { EditPropertyNameInput } from "./property-name-input";
 import { ErrorText } from "@/app/components/error-text";
+import { PropertyNameViews, PropertyNameViewsValue } from "@/app/components/object-properties-input/types";
+import { ObjectPropertiesInput } from "@/app/components/object-properties-input";
 
 
 interface IProps extends InputPropsRequiredValue<ValidationPropertyType> {
@@ -44,8 +46,59 @@ export const PropertyInput: React.FC<IProps> = React.memo(({ onRemove, getPropSt
 
             <Typography variant="h5" sx={{ padding: "0 0.3em" }}>:</Typography>
 
-            <AddValidationButton {...getPropState("value")} onRemove={onRemoveValueValidation} />
+            {/* <AddValidationButton {...getPropState("value")} onRemove={onRemoveValueValidation} /> */}
+            <Test />
             <ErrorText error={getError("value").helperText} />
         </Stack>
     </>;
-}); 
+});
+// autoCreateProperty?: boolean,
+// argValues?: ValueOrFunc<PropertyNameViews | ValueTypes[]>
+// properties?: ValueOrFunc<PropertyNameViews>;
+
+const dataTypes: PropertyNameViews = {
+    Number: {
+        // argValues: () => StringOptions,
+        dentFilterProperties: true,
+        properties: () => StringOptions,
+    },
+    String: {
+        // argValues: () => StringOptions,
+        dentFilterProperties: true,
+        properties: () => StringOptions,
+    },
+}
+const StringOptions: PropertyNameViews = {
+    MinLength: {
+        // argValues: () => StringOptions,
+        properties: () => StringOptions,
+    },
+    MaxLength: {
+        // argValues: () => StringOptions,
+        properties: () => StringOptions,
+    },
+    Or: {
+        argValues: () => dataTypes,
+        properties: () => StringOptions,
+    },
+    Optional: {
+        // argValues: () => StringOptions,
+        properties: () => StringOptions,
+    }
+}
+const options: PropertyNameViews = {
+    Min: {
+        argValues: () => options,
+        properties: () => options,
+    }
+}
+
+const Test = () => {
+    const [value, onChange] = useState<PropertyNameViewsValue<typeof dataTypes>>()
+
+    return <>
+        {/* 1 */}
+        <ObjectPropertiesInput value={value} valueOption={dataTypes} onChange={onChange} />
+        {/* 2 */}
+    </>
+}

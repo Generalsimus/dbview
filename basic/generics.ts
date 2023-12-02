@@ -101,3 +101,9 @@ export interface InputProps<T> extends SetPropsRes<MakeStateValue<T>> {
 export interface InputPropsRequiredValue<T> extends SetPropsRes<MakeStateRequiredValue<T>> {
 
 }
+///////////////////////////////////////////////////////
+
+export type ValueOrFunc<V> = V | (() => V)
+
+// export type FunctionOrAsValue<V> = V extends (...args: any[]) => infer R ? R : V
+//////////////////////////////////////////////////////

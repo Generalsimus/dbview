@@ -9,6 +9,7 @@ import { Min } from "./min";
 // import { NumberEntityValidationType, StringEntityValidationType } from "@/basic/models/validation/data-types/schema";
 import { EntityValidateEnums } from "@/basic/models/validation/data-types/enums";
 import { NumberEntityValidationType, StringEntityValidationType } from "@/basic/models/validation/data-types/schema";
+import { Or } from "./or";
 
 export type SwitchTypePropGen<T extends { type: any }> = (T extends any ? InputProps<T> & {
     type?: T["type"] | undefined
@@ -33,7 +34,8 @@ export const Entities: React.FC<IProps> = (props: IProps) => {
         case EntityValidateEnums.Regex:
             return <Regex {...props} />
         case EntityValidateEnums.Or:
-            return <div>s</div>
+            return <Or {...props} />
+            // return <div>s</div>
         // return <Regex {...props} />
 
     }

@@ -8,14 +8,14 @@ import { alpha } from '@mui/material';
 // formControlClasses
 interface IProps {
     children?: ReactNode
-    type?: ReactNode
+    name?: ReactNode
     onRemove?: () => void
 }
-export const TypeNameViewContainer: React.FC<IProps> = React.memo(({ children, type, onRemove }) => {
+export const PropertyNameViewContainer: React.FC<IProps> = React.memo(({ children, name, onRemove }) => {
 
 
     return <Stack display={"flex"} flexDirection={"row"} alignItems={"center"} gap={0.4}>
-        <Typography sx={{ display: "flex", alignItems: "center" }}>.{type}
+        <Typography sx={{ display: "flex", alignItems: "center" }}>{name}
             {onRemove && <RemoveButton onClick={onRemove} >
                 <RemoveIcon color="error" />
             </RemoveButton>}
@@ -35,8 +35,4 @@ const RemoveButton = styled(IconButton)(({ theme }) => {
             fontSize: ".6em"
         }
     }
-});
-
-const schemaTest = {
-
-}
+}); 

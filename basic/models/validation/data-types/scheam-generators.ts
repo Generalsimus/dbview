@@ -8,7 +8,10 @@ type ReturnDataTypeValue<V extends object> = ({
     }
 
 }[keyof V])
-export const getDataTypeSchema = <V extends Record<any, AnySchema>>(entities: V) => {
+export const getDataTypeSchema = <V extends Record<any, AnySchema>>(entities: V): {
+    types: (keyof V)[],
+    schema: Joi.AnySchema<ReturnDataTypeValue<V>>
+} => {
     const types: (keyof V)[] = Object.keys(entities);
 
     return {
@@ -38,10 +41,13 @@ export const getDataTypeSchema = <V extends Record<any, AnySchema>>(entities: V)
 type ReturnEntityValue<V extends object> = ({
     [K in keyof V]: {
         type: K,
-        entityValue: Array<JoiSchemaValue<V[K]>>[number]
+        entityValue: JoiSchemaValue<V[K]>
     }
 }[keyof V])
-export const getDataTypeEntitiesSchema = <V extends Record<any, AnySchema>>(entities: V) => {
+export const getDataTypeEntitiesSchema = <V extends Record<any, AnySchema>>(entities: V): {
+    types: (keyof V)[],
+    schema: Joi.AnySchema<ReturnEntityValue<V>>
+} => {
     // : {
     //     types: (keyof V)[],
     //     readonly schema: ReturnDataTypeValue<V>
@@ -61,9 +67,8 @@ export const getDataTypeEntitiesSchema = <V extends Record<any, AnySchema>>(enti
                 }),
 
                 otherwise: Joi.forbidden()
-
             }),
 
         })
-    }
+    } as const
 };
