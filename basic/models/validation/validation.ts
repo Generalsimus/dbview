@@ -6,16 +6,14 @@
 
 import Joi from "joi"
 import { ValidateValueSchema, ValidateValueType } from "./data-types/schema"
+import { PropertyType } from "@/app/components/object-input/types";
 // import { ValidateValueSchema, ValidateValueType } from "./data-types"
 
 
 
-export interface ValidationPropertyType {
-    property: string,
-    value: ValidateValueType
-}
-export const ValidationPropertySchema = Joi.object({
-    property: Joi.string().required(),
+export type ValidationPropertyType = PropertyType;
+export const ValidationPropertySchema = Joi.object<ValidationPropertyType>({
+    propertyName: Joi.string().required(),
     value: ValidateValueSchema.required()
 })
 

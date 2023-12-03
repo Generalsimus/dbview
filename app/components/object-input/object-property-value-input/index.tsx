@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { GetPropertiesValue, PropertyNameViews, PropertyNameViewsValue, ValueTypes } from "./types";
+import { GetPropertiesValue, PropertyNameViews, PropertyNameViewsValue, ValueTypes } from "../types";
 import { AddButton } from "./add-button";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { Stack } from "@mui/material";
@@ -17,7 +17,15 @@ interface IProps<O extends PropertyNameViews> {
     valueOption: O,
     hideNameDot?: boolean
 }
-export const ObjectPropertiesInput = React.memo(<O extends PropertyNameViews>({ value, onChange, hideNameDot = true, valueOption }: IProps<O>) => {
+export const ObjectPropertyValueInput = React.memo(<O extends PropertyNameViews>({ value, onChange, hideNameDot = true, valueOption }: IProps<O>) => {
+
+    const properties: (keyof O)[] = useMemo(() => Object.keys(valueOption), [valueOption])
+
+
+    const safeProperties = useSafeProperties(valueOption, value);
+    const safeArgValues = useSafeArgValues(valueOption, value);
+
+
 
     const addNewOptionName = useMemoCall((newName: keyof O) => {
         const newValue = {
@@ -46,16 +54,20 @@ export const ObjectPropertiesInput = React.memo(<O extends PropertyNameViews>({ 
             onChange(newValue)
         }
     });
-    const onChangeArgValue = useMemoArgCall((index: number, newValue: ValueTypes) => {
+    const onChangeArgValue = useMemoArgCall((index: number, newInputValue: ValueTypes) => {
+
+        if (value && safeArgValues instanceof Array) {
+            safeArgValues.splice(index, 1, newInputValue);
+            const newValue = {
+                ...value,
+                argValues: [...safeArgValues]
+            }
+            onChange(newValue)
+        }
 
     })
 
 
-    const properties: (keyof O)[] = useMemo(() => Object.keys(valueOption), [valueOption])
-
-
-    const safeProperties = useSafeProperties(valueOption, value);
-    const safeArgValues = useSafeArgValues(valueOption, value);
 
 
 
@@ -68,14 +80,11 @@ export const ObjectPropertiesInput = React.memo(<O extends PropertyNameViews>({ 
 
 
     const name = hideNameDot ? String(value.name) : `.${String(value.name)}`
-
-
     return <>
         <PropertyNameViewContainer name={name}>
             {(() => {
                 if (safeArgValues instanceof Array) {
-                    const ee = safeArgValues
-                    safeArgValues.map((input, index) => {
+                    return safeArgValues.map((input, index) => {
                         return <InputsView value={input} onChange={onChangeArgValue(index)} />
                     })
                 } else if (safeArgValues) {
@@ -83,7 +92,7 @@ export const ObjectPropertiesInput = React.memo(<O extends PropertyNameViews>({ 
                     let argValue: PropertyNameViewsValue<PropertyNameViews> | undefined = argValues instanceof Array ? undefined : argValues;
                     return <>
                         <Stack px={0.5} />
-                        <ObjectPropertiesInput valueOption={safeArgValues} value={argValue} onChange={addAddValueArgs} />
+                        <ObjectPropertyValueInput valueOption={safeArgValues} value={argValue} onChange={addAddValueArgs} />
                         <Stack px={0.5} />
                     </>
                 }
@@ -91,7 +100,7 @@ export const ObjectPropertiesInput = React.memo(<O extends PropertyNameViews>({ 
             })()}
         </PropertyNameViewContainer>
 
-        {safeProperties && <ObjectPropertiesInput valueOption={safeProperties} hideNameDot={false} value={value.properties} onChange={addAddValueProperty} />}
+        {safeProperties && <ObjectPropertyValueInput valueOption={safeProperties} hideNameDot={false} value={value.properties} onChange={addAddValueProperty} />}
 
     </>;
 });

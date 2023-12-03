@@ -7,9 +7,9 @@ import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
 import { RequestMethodType, requestMethods } from "@/basic/request";
 import { Route, RouteSchema } from "@/basic/models/route/route";
-import { DeepPartial } from "@/basic/generics";
+import { DeepPartial, PartialKeys } from "@/basic/generics";
 import { useRouter } from "next/navigation";
-import { MakeCreateOrUpdate, MakeForState, getCreateOrUpdateSchema, } from "@/basic/db-basic-schema";
+import { MakeCreate, MakeCreateOrUpdate, MakeUpdate, getCreateOrUpdateSchema, } from "@/basic/db-basic-schema";
 import { DrawerView } from "./drawer-view";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
@@ -17,29 +17,35 @@ import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
 import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 
 
-
-type StateValue = MakeForState<Route>;
 interface IProps {
     saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>;
     deleteRouteDoc: (id: number) => Promise<void>;
-    initialStateValue?: StateValue;
+    initialStateValue?: MakeCreateOrUpdate<Route>;
 
     title: string;
     getViewControllerContent: (arg: {
         onOpen: () => void;
         onClose: () => void;
-        setStateValue: (value: StateValue) => void;
+        setStateValue: (value: MakeCreateOrUpdate<Route>) => void;
     }) => ReactNode;
 }
+const basicState = () => {
+    return {
+        name: "",
+        path: "",
+        description: "",
+        method: ""
+    }
+}
 
-export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc, initialStateValue = {}, title, getViewControllerContent }) => {
+export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc, initialStateValue, title, getViewControllerContent }) => {
     const {
         value,
         setValue,
         initSetProps,
         getValidation
-    } = useSetProps<MakeForState<Route>>(initialStateValue);
-    
+    } = useSetProps<MakeCreateOrUpdate<Route>>(initialStateValue || basicState);
+
     const { name, path, method, description } = value || {};
 
     const [status, setModalStatus, setModalStatusValue] = useToggleBool(false)
@@ -50,7 +56,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({ saveRouteDoc, delet
 
 
     const handleClose = useMemoCall(() => {
-        setValue({});
+        setValue(basicState);
         onClose();
     });
 

@@ -3,12 +3,15 @@ import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { InputProps } from "@/basic/generics";
 import { ValidationPropertyType } from "@/basic/models/validation/validation";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import { PropertyType } from "./types";
 
 
-interface IProps extends InputProps<ValidationPropertyType["property"] | undefined> {
+interface IProps<V = PropertyType["propertyName"]> {
+    value: V,
+    onChange: (newValue: V) => void,
     onBlur?: () => void
 }
-export const EditPropertyNameInput: React.FC<IProps> = React.memo(({ value = "", setValue, onBlur }) => {
+export const PropertyNameInput: React.FC<IProps> = React.memo(({ value = "", onChange, onBlur }) => {
 
 
     const onOnKeyDown = useMemoCall((event: KeyboardEvent<HTMLDivElement>) => {
@@ -16,8 +19,8 @@ export const EditPropertyNameInput: React.FC<IProps> = React.memo(({ value = "",
             onBlur?.()
         }
     });
-    const onChange = useMemoCall((event: ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
+    const onChangeHandler = useMemoCall((event: ChangeEvent<HTMLInputElement>) => {
+        onChange(event.target.value);
     });
 
     return <>
@@ -29,7 +32,7 @@ export const EditPropertyNameInput: React.FC<IProps> = React.memo(({ value = "",
             value={value}
             variant="outlined"
             size="small"
-            onChange={onChange}
+            onChange={onChangeHandler}
             onBlur={onBlur}
             autoFocus
             onKeyDown={onOnKeyDown}

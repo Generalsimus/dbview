@@ -23,6 +23,7 @@ export const useMemoArgCall = <
                 return value
             }
         }
+
         const callFnForMap = <A extends ARGS1>(...args2: OmitFirstParams<FN, A>): ReturnType<FN> => {
             return callFn(...args1, ...args2);
         };

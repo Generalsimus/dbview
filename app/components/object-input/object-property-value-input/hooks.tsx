@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { PropertyNameViews, PropertyNameViewsValue } from "./types";
+import { PropertyNameViews, PropertyNameViewsValue } from "../types";
 
 
 

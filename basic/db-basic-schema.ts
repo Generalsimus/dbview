@@ -1,5 +1,5 @@
 import Joi, { AnySchema, ObjectSchema } from "joi"
-import { DeepPartial, JoiSchemaValue, MakeStateValue } from "./generics"
+import { JoiSchemaValue, } from "./generics"
 
 
 
@@ -21,7 +21,7 @@ export type MakeCreate<M extends any> = M
 
 export type MakeCreateOrUpdate<M extends any> = MakeUpdate<M> | MakeCreate<M>
 
-export type MakeForState<M extends any> = MakeCreateOrUpdate<MakeStateValue<M>>
+// export type MakeForState<M extends any> = MakeCreateOrUpdate<MakeStateValue<M>>
 // /akeUpdate<M> | 
 
 ///////////////////////////////////

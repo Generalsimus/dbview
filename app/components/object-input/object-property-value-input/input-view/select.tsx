@@ -1,9 +1,10 @@
 import { ExtractTypeWithProp } from "@/basic/generics";
 import React, { ChangeEvent, useMemo, useState } from "react";
-import { InputTypes, ValueTypes } from "../types";
-import { AutoResizeField } from "../../auto-resize-field";
+import { InputTypes, ValueTypes } from "../../types";
+// import { AutoResizeField } from "../../auto-resize-field";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { Autocomplete } from "@mui/material";
+import { AutoResizeField } from "@/app/components/auto-resize-field";
 
 interface IProps<V = ExtractTypeWithProp<ValueTypes, "type", InputTypes.Select>> {
     value: V

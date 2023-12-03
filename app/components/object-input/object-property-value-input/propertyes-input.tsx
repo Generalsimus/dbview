@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { PropertyNameViews, PropertyNameViewsValue } from "./types";
+import { PropertyNameViews, PropertyNameViewsValue } from "../types";
 
 interface IProps<O extends PropertyNameViews> {
     value: PropertyNameViewsValue<O>,

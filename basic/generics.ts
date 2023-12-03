@@ -51,7 +51,7 @@ export type ExtractTypeWithProps<O, Props extends PropertyKey[], Value> = Props 
 export type ExtractTypeWithProp<O, Prop extends PropertyKey, Value> = ExtractTypeWithProps<O, [Prop], Value>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-type PartialKeys<T, K extends keyof T> =
+export type PartialKeys<T, K extends keyof T> =
   Omit<T, K> & Partial<Pick<T, K>> extends infer O ? { [P in keyof O]: O[P] } : never;
 
 
@@ -90,20 +90,20 @@ export type DeepUnion<T> =
 ////////////////////////////
 
 
-export type MakeStateValue<O extends any> = DeepPartial<DeepUnion<O>> | undefined
-export type MakeStateRequiredValue<O extends any> = DeepPartial<DeepUnion<O>>
+// export type MakeStateValue<O extends any> = DeepPartial<DeepUnion<O>> | undefined
+// export type MakeStateRequiredValue<O extends any> = DeepPartial<DeepUnion<O>>
 
 
-export interface InputProps<T> extends SetPropsRes<MakeStateValue<T>> {
-
-}
-
-export interface InputPropsRequiredValue<T> extends SetPropsRes<MakeStateRequiredValue<T>> {
+export interface InputProps<T> extends SetPropsRes<T> {
 
 }
+
+// export interface InputPropsRequiredValue<T> extends SetPropsRes<MakeStateRequiredValue<T>> {
+
+// }
 ///////////////////////////////////////////////////////
 
 export type ValueOrFunc<V> = V | (() => V)
 
-// export type FunctionOrAsValue<V> = V extends (...args: any[]) => infer R ? R : V
+export type FunctionOrAsValue<V> = V extends (...args: any[]) => infer R ? R : V
 //////////////////////////////////////////////////////

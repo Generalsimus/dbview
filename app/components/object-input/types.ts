@@ -16,7 +16,6 @@ interface ValueGeneric<T extends any, V extends any> {
 }
 interface ValueOptionsGeneric<T extends any, Value extends PropertyKey> extends ValueGeneric<T, Value> {
     options: Record<Value, string>
-    // { label: ReactNode, value: V }[]
 }
 
 
@@ -53,37 +52,42 @@ export type PropertyNameViewsValue<V extends PropertyNameViews> = ({
 }[keyof V]);
 
 
-const enum MainDataTypes {
-    String = "String",
-    Number = "Number",
-}
-const ssss: PropertyNameViews = {
-    [MainDataTypes.String]: {
-        properties: {
-            MinLength: {
-                autoCreateProperty: true,
-                argValues: [
-                    {
-                        type: InputTypes.Number,
-                        value: 0,
-                        validate: Joi.number().required()
-                    }
-                ]
-            },
-            MaxLength: {
-                autoCreateProperty: true,
-                argValues: [
-                    {
-                        type: InputTypes.Number,
-                        value: 0,
-                        validate: Joi.number().required()
-                    }
-                ]
-            },
-            Or: {
-                properties: () => ssss
-            }
-        }
-    }
-}
-type EE = PropertyNameViewsValue<typeof ssss>
+
+
+export type PropertyType = { propertyName: string, value: PropertyNameViewsValue<PropertyNameViews> }
+
+////////////////////////////////////////////////
+// const enum MainDataTypes {
+//     String = "String",
+//     Number = "Number",
+// }
+// const ssss: PropertyNameViews = {
+//     [MainDataTypes.String]: {
+//         properties: {
+//             MinLength: {
+//                 autoCreateProperty: true,
+//                 argValues: [
+//                     {
+//                         type: InputTypes.Number,
+//                         value: 0,
+//                         validate: Joi.number().required()
+//                     }
+//                 ]
+//             },
+//             MaxLength: {
+//                 autoCreateProperty: true,
+//                 argValues: [
+//                     {
+//                         type: InputTypes.Number,
+//                         value: 0,
+//                         validate: Joi.number().required()
+//                     }
+//                 ]
+//             },
+//             Or: {
+//                 properties: () => ssss
+//             }
+//         }
+//     }
+// }
+// type EE = PropertyNameViewsValue<typeof ssss>

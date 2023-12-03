@@ -5,18 +5,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
-// import { ValidationBlockInput } from "./form/validation-block-input";
 import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
-import { MakeStateValue } from "@/basic/generics";
-import { MakeCreateOrUpdate, MakeForState, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
+// import { MakeStateValue } from "@/basic/generics";
+import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
 import { ValidationForm } from "./form/form";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 import { useRouter } from "next/navigation";
-import { validate } from "@/utils";
-import { ObjectPropertiesInput } from "@/app/components/object-properties-input";
-import { PropertyNameViews, PropertyNameViewsValue } from "@/app/components/object-properties-input/types";
 
 
 interface IProps {
@@ -24,7 +20,7 @@ interface IProps {
     isOpen: boolean
     onClose: () => void
     onOpen: () => void
-    initialValue?: MakeStateValue<MakeCreateOrUpdate<Validation>>
+    initialValue?: MakeCreateOrUpdate<Validation>
     saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>
     deleteValidationDoc: (ids: number) => Promise<void>
 }
@@ -33,12 +29,16 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({
     isOpen,
     onOpen,
     onClose,
-    initialValue = {},
+    initialValue,
     saveValidationDoc,
     deleteValidationDoc
 }) => {
 
-    const stateController = useSetProps<MakeForState<Validation>>(initialValue);
+    const stateController = useSetProps<MakeCreateOrUpdate<Validation>>(() => (initialValue || {
+        name: "",
+        description: "",
+        validations: []
+    }));
 
 
     const { getValidation, value } = stateController;
