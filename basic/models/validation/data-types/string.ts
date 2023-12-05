@@ -1,5 +1,5 @@
 import { InputTypes, PropertyNameViews } from "@/app/components/object-input/types";
-import Joi from "joi"; 
+import Joi from "joi";
 import { DataTypes } from ".";
 
 export const StringDataType: PropertyNameViews = {
@@ -14,11 +14,34 @@ export const StringDataType: PropertyNameViews = {
         properties: () => StringDataType,
     },
     MaxLength: {
-        // argValues: () => StringOptions,
+        argValues: [
+            {
+                type: InputTypes.Number,
+                value: 0,
+                validate: Joi.number().required()
+            }
+        ],
+        properties: () => StringDataType,
+    },
+    RegExp: {
+        argValues: [
+            {
+                type: InputTypes.Select,
+                options: [
+                    { label: "Mail", value: "/#asd,as,/gm" },
+                ],
+                // options: {
+                //     Mail:"/regexp/gm"
+                // },
+                // value: 0,
+                validate: Joi.number().required()
+            }
+        ],
         properties: () => StringDataType,
     },
     Or: {
-        argValues: () => DataTypes,
+        dentFilterProperties: true,
+        argProperties: () => DataTypes,
         properties: () => StringDataType,
     },
     Optional: {

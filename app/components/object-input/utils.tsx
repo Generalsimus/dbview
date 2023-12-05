@@ -8,7 +8,7 @@ const validateProperty = <O extends PropertyType["propertyName"]>(propertyNameOp
 }
 
 const validatePropertyValue = <O extends PropertyType["value"]>(propertyNameOptionalValue: O) => {
-    return Joi.string().required()
+    return Joi.object().pattern(Joi.string(), Joi.number())
 }
 
 

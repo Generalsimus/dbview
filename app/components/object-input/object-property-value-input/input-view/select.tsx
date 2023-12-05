@@ -1,43 +1,72 @@
 import { ExtractTypeWithProp } from "@/basic/generics";
-import React, { ChangeEvent, useMemo, useState } from "react";
-import { InputTypes, ValueTypes } from "../../types";
-// import { AutoResizeField } from "../../auto-resize-field";
+import React, { useMemo } from "react";
+import { ArgValueType, InputTypes, ValueTypes } from "../../types";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, Box, Stack } from "@mui/material";
 import { AutoResizeField } from "@/app/components/auto-resize-field";
+import { entries, keyBy } from "lodash";
 
-interface IProps<V = ExtractTypeWithProp<ValueTypes, "type", InputTypes.Select>> {
-    value: V
-    onChange: (newValue: V) => void
+
+
+interface IProps extends ExtractTypeWithProp<ValueTypes, "type", InputTypes.Select> {
+    onChange: (newValue: ArgValueType) => void
 }
-export const Select: React.FC<IProps> = React.memo(({ value, onChange }) => {
-    const omChangeValue = useMemoCall((e: React.SyntheticEvent<Element, Event>, newValue: (keyof IProps["value"]["options"])) => {
+export const Select: React.FC<IProps> = React.memo(({ type, value, validate, options, onChange }) => {
+    // const omChangeValue = useMemoCall((e: React.SyntheticEvent<Element, Event>, newValue: (keyof IProps["options"])) => {
+    //     onChange({
+    //         type: type,
+    //         value: newValue
+    //     })
+    // })
+    // const optionsValues: (keyof IProps["options"])[] = useMemo(() => Object.keys(options), [])
+    const onChangeValue = useMemoCall((newValue: IProps["value"]) => {
         onChange({
-            ...value,
+            type: type,
             value: newValue
         })
     })
-    const optionsValues: (keyof IProps["value"]["options"])[] = useMemo(() => Object.keys(value.options), [])
+    const { } = useMemo(() => {
+        // const optionsByLabel
+
+        // return options.reduce < Record<string, string>((curr, option) => {
+        //     return curr
+        // }, {})
+        return keyBy(options, "label")
+    }, [])
+    console.log({ value })
     return <>
         <Autocomplete
             disablePortal
             freeSolo
-            value={value.value}
-            options={optionsValues}
+            value={value + ""}
+            options={options}
             disableClearable
             disableListWrap
             onChange={(e, v) => {
-
+                console.log({ vvv: v, updated: typeof v === "string" ? v : v.value })
+                onChangeValue(typeof v === "string" ? v : v.value)
             }}
             autoFocus
             // Adore
-            getOptionLabel={(option) => value.options[option]}
+
+            // getOptionLabel={(option) => typeof option === "string" ? option : option.label}
+            // renderOption={(pros, option) => option.label}
             sx={{ minWidth: "2em" }}
             componentsProps={{ popper: { style: { width: 'fit-content' } } }}
             renderInput={(params) => {
                 console.log(params)
+                // params.InputProps.value = value
                 return <AutoResizeField
                     {...params}
+                    // value={value + ""}
+                    // inputProps={{
+                    //     ...params.InputProps,
+                    //     value
+                    // }}
+                    // value={value + ""}
+                    // onChange={(e => {
+                    //     onChangeValue(e.target.value)
+                    // })}
                     type="text"
                     variant="outlined"
                     size="small"

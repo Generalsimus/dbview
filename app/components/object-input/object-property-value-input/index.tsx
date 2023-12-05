@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { GetPropertiesValue, PropertyNameViews, PropertyNameViewsValue, ValueTypes } from "../types";
+import { ArgPropertiesType, ArgValueType, PropertyNameViews, PropertyNameViewsValue, ValueTypes } from "../types";
 import { AddButton } from "./add-button";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { Stack } from "@mui/material";
@@ -22,12 +22,12 @@ export const ObjectPropertyValueInput = React.memo(<O extends PropertyNameViews>
     const properties: (keyof O)[] = useMemo(() => Object.keys(valueOption), [valueOption])
 
 
-    const safeProperties = useSafeProperties(valueOption, value);
-    const safeArgValues = useSafeArgValues(valueOption, value);
+    const safeArgProperties = useSafeProperties(valueOption, value);
+    const { argInputValues, argProperties } = useSafeArgValues(valueOption, value);
 
-
-
-    const addNewOptionName = useMemoCall((newName: keyof O) => {
+    // console.log("argInputValues", argInputValues)
+    // 
+    const addNewOptionName = useMemoCall((newName: PropertyNameViewsValue<O>["name"]) => {
         const newValue = {
             name: newName,
         }
@@ -36,7 +36,7 @@ export const ObjectPropertyValueInput = React.memo(<O extends PropertyNameViews>
 
     const addAddValueProperty = useMemoCall((propertyValue: PropertyNameViewsValue<PropertyNameViews>) => {
         if (value) {
-            console.log(value)
+            // console.log(value)
             const newValue = {
                 ...value,
                 properties: propertyValue
@@ -46,7 +46,7 @@ export const ObjectPropertyValueInput = React.memo(<O extends PropertyNameViews>
     })
     const addAddValueArgs = useMemoCall((argValues: PropertyNameViewsValue<PropertyNameViews>) => {
         if (value) {
-            console.log({ argValues })
+            // console.log({ argValues })
             const newValue = {
                 ...value,
                 argValues: argValues
@@ -54,15 +54,30 @@ export const ObjectPropertyValueInput = React.memo(<O extends PropertyNameViews>
             onChange(newValue)
         }
     });
-    const onChangeArgValue = useMemoArgCall((index: number, newInputValue: ValueTypes) => {
-
-        if (value && safeArgValues instanceof Array) {
-            safeArgValues.splice(index, 1, newInputValue);
+    const onChangeArgValue = useMemoArgCall((index: number, newInputValue: ArgValueType) => {
+        if (argInputValues && value) {
             const newValue = {
                 ...value,
-                argValues: [...safeArgValues]
+                argValues: argInputValues.map(<El extends ArgValueType>(el: El, currentIndex) => {
+                    if (currentIndex === index) {
+                        return newInputValue;
+                    }
+                    return el;
+                })
             }
-            onChange(newValue)
+            // console.log("newValue", { newValue })
+            onChange(newValue);
+        }
+
+    })
+    const onChangeArgProperties = useMemoCall((newArgProperties: ArgPropertiesType) => {
+
+        if (value) {
+            const newValue = {
+                ...value,
+                argProperties: newArgProperties
+            }
+            onChange(newValue);
         }
 
     })
@@ -82,25 +97,17 @@ export const ObjectPropertyValueInput = React.memo(<O extends PropertyNameViews>
     const name = hideNameDot ? String(value.name) : `.${String(value.name)}`
     return <>
         <PropertyNameViewContainer name={name}>
-            {(() => {
-                if (safeArgValues instanceof Array) {
-                    return safeArgValues.map((input, index) => {
-                        return <InputsView value={input} onChange={onChangeArgValue(index)} />
-                    })
-                } else if (safeArgValues) {
-                    const { argValues } = value
-                    let argValue: PropertyNameViewsValue<PropertyNameViews> | undefined = argValues instanceof Array ? undefined : argValues;
-                    return <>
-                        <Stack px={0.5} />
-                        <ObjectPropertyValueInput valueOption={safeArgValues} value={argValue} onChange={addAddValueArgs} />
-                        <Stack px={0.5} />
-                    </>
-                }
-                return <></>
-            })()}
+            {argInputValues?.map((argValueProp, index) => {
+                return <InputsView {...argValueProp} onChange={onChangeArgValue(index)} />
+            })}
+            {argProperties && <>
+                <br />
+                <ObjectPropertyValueInput valueOption={argProperties} value={value.argProperties} onChange={onChangeArgProperties} />
+                <Stack px={0.5} />
+            </>}
         </PropertyNameViewContainer>
 
-        {safeProperties && <ObjectPropertyValueInput valueOption={safeProperties} hideNameDot={false} value={value.properties} onChange={addAddValueProperty} />}
+        {safeArgProperties && <ObjectPropertyValueInput valueOption={safeArgProperties} value={value.properties} hideNameDot={false} onChange={addAddValueProperty} />}
 
     </>;
 });

@@ -1,5 +1,5 @@
 import { InputTypes, PropertyNameViews } from "@/app/components/object-input/types";
-import Joi from "joi"; 
+import Joi from "joi";
 import { DataTypes } from ".";
 import { StringDataType } from "./string";
 
@@ -15,15 +15,21 @@ export const NumberDataType: PropertyNameViews = {
         properties: () => NumberDataType,
     },
     Max: {
-        // argValues: () => StringOptions,
+        argValues: [
+            {
+                type: InputTypes.Number,
+                value: 0,
+                validate: Joi.number().required()
+            }
+        ],
         properties: () => NumberDataType,
     },
     Or: {
-        argValues: () => DataTypes,
+        dentFilterProperties: true,
+        argProperties: () => DataTypes,
         properties: () => NumberDataType,
     },
     Optional: {
-        // argValues: () => StringOptions,
         properties: () => NumberDataType,
     }
 }

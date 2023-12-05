@@ -1,4 +1,4 @@
-import { ValueOf, ValueOrFunc } from "@/basic/generics"
+import { JoiSchemaValue, ValueOf } from "@/basic/generics"
 import Joi, { AnySchema } from "joi"
 import { ReactNode } from "react"
 
@@ -10,12 +10,13 @@ export const enum InputTypes {
 }
 interface ValueGeneric<T extends any, V extends any> {
     type: T,
-    value: V,
+    value?: V,
     validate: AnySchema<V>,
 
 }
-interface ValueOptionsGeneric<T extends any, Value extends PropertyKey> extends ValueGeneric<T, Value> {
-    options: Record<Value, string>
+interface ValueOptionsGeneric<T extends any, V extends any> extends ValueGeneric<T, V> {
+    // options: Record<string, V>
+    options: { label: string, value: V }[]
 }
 
 
@@ -23,33 +24,73 @@ export type ValueTypes = ValueGeneric<InputTypes.Number, number> | ValueGeneric<
 
 
 
+export type ValueOrFunc<V> = V | (() => V)
+// export type ValueOF<V> = V | (() => V)
 
-type PropertyNameValueViews = {
+
+export interface PropertyNameValueViews {
     autoCreateProperty?: boolean,
 
     dentFilterProperties?: boolean,
     filterArgProperties?: boolean,
 
-    argValues?: ValueOrFunc<PropertyNameViews | ValueTypes[]>
+    argValues?: ValueOrFunc<ValueTypes[]>
+    argProperties?: ValueOrFunc<PropertyNameViews>
     properties?: ValueOrFunc<PropertyNameViews>;
 }
 export type PropertyNameViews = Record<string, PropertyNameValueViews>
+// export interface PropertyNameViews {
+//     [k: string]: PropertyNameValueViews
+// }
 
-type GetArgValueV<V extends any> = V extends PropertyNameViews ? PropertyNameViewsValue<V> : V
-type GetPropertiesValueV<V extends any> = V extends PropertyNameViews ? PropertyNameViewsValue<V> : V
+// type GetArgValueV<V extends any> = V extends PropertyNameViews ? PropertyNameViewsValue<V> : V
+// type GetPropertiesValueV<V extends any> = V extends PropertyNameViews ? PropertyNameViewsValue<V> : V
 
 
-type GetArgValue<V extends PropertyNameViewsValue<any>["argValues"]> = GetArgValueV<Exclude<V, undefined | Function>>
-export type GetPropertiesValue<V extends PropertyNameViewsValue<any>["properties"]> = GetPropertiesValueV<Exclude<V, undefined | Function>>
+// type GetArgValue<V extends PropertyNameViewsValue<any>["argValues"]> = GetArgValueV<Exclude<V, undefined | Function>>
+// export type GetPropertiesValue<V extends PropertyNameViewsValue<any>["properties"]> = GetPropertiesValueV<Exclude<V, undefined | Function>>
+export type ArgValueTypeGen<T extends Exclude<PropertyNameValueViews["argValues"], undefined | Function>[number]> = {
+    type: T["type"]
+    value?: JoiSchemaValue<T["validate"]>
+};
+export type ArgValueType<V extends PropertyNameValueViews = PropertyNameValueViews> = ArgValueTypeGen<Exclude<V["argValues"], undefined | Function>[number]>
 
+
+
+
+export type ArgPropertiesType<V extends PropertyNameValueViews = PropertyNameValueViews> = PropertyNameViewsValue<Exclude<V["argProperties"], undefined | Function>>
+
+export type PropertiesType<V extends PropertyNameValueViews = PropertyNameValueViews> = PropertyNameViewsValue<Exclude<V["properties"], undefined | Function>>
+
+
+// export interface PropertyNameViewsValue<T extends PropertyNameViews, V extends PropertyNameValueViews = ValueOf<T>>   {
+//     name: string,
+//     argValues?: ArgValueType<V>[]
+//     argProperties?: ArgPropertiesType<V>
+//     properties?: PropertiesType<V>
+// };
 
 export type PropertyNameViewsValue<V extends PropertyNameViews> = ({
     [K in keyof V]: {
-        name: K,
-        argValues?: GetArgValue<V[K]["argValues"]>
-        properties?: GetPropertiesValue<V[K]["properties"]>
+        name: string,
+        argValues?: ArgValueType<V[K]>[]
+        argProperties?: ArgPropertiesType<V[K]>
+        properties?: PropertiesType<V[K]>
     }
 }[keyof V]);
+
+
+
+// export interface PropertyNameViewsValue<V extends PropertyNameViews = PropertyNameViews, KEY extends string = (keyof V)> =
+
+// ({
+//     [K in keyof V]: {
+//         name: string,
+//         argValues?: ArgValueType<V[K]>[]
+//         argProperties?: ArgPropertiesType<V[K]>
+//         properties?: PropertiesType<V[K]>
+//     }
+// }[keyof V]);
 
 
 

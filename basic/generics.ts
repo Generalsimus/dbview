@@ -103,7 +103,7 @@ export interface InputProps<T> extends SetPropsRes<T> {
 // }
 ///////////////////////////////////////////////////////
 
-export type ValueOrFunc<V> = V | (() => V)
+// export type ValueOrFunc<V> = V | (() => V)
 
-export type FunctionOrAsValue<V> = V extends (...args: any[]) => infer R ? R : V
+// export type FunctionOrAsValue<V> = V extends (...args: any[]) => infer R ? R : V
 //////////////////////////////////////////////////////

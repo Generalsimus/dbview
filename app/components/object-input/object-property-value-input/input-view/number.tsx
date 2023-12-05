@@ -1,30 +1,30 @@
 import { ExtractTypeWithProp } from "@/basic/generics";
-import React, { ChangeEvent, useMemo, useState } from "react";
-import { InputTypes, ValueTypes } from "../../types";
-// import { AutoResizeField } from "../../auto-resize-field";
+import React, { ChangeEvent } from "react";
+import { ArgValueType, InputTypes, ValueTypes } from "../../types";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { AutoResizeField } from "@/app/components/auto-resize-field";
 
-interface IProps<V = ExtractTypeWithProp<ValueTypes, "type", InputTypes.Number>> {
-    value: V
-    onChange: (newValue: V) => void
+
+
+interface IProps extends ExtractTypeWithProp<ValueTypes, "type", InputTypes.Number> {
+    onChange: (newValue: ArgValueType) => void
 }
-export const Number: React.FC<IProps> = React.memo(({ value, onChange }) => {
+export const Number: React.FC<IProps> = React.memo(({ type, value, onChange }) => {
     const omChangeValue = useMemoCall((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log({
-            ...value,
-            value: parseInt(e.target.value)
-        })
+        // console.log({
+        //     type: InputTypes.String,
+        //     value: 2
+        // })
         onChange({
-            ...value,
+            type: type,
             value: parseInt(e.target.value)
         })
     })
-    console.log({ value })
+    console.log("value", { value })
     return <>
         <AutoResizeField
             type="number"
-            value={value.value}
+            value={value}
             variant="outlined"
             size="small"
             onChange={omChangeValue}

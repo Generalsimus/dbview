@@ -1,24 +1,31 @@
 import React, { useState } from "react";
-import { ValueTypes, InputTypes } from "../../types";
+import { ValueTypes, InputTypes, ArgValueType } from "../../types";
 import { Number } from "./number";
 import { String } from "./string";
 import { Select } from "./select";
+import { JoiSchemaValue } from "@/basic/generics";
+
+// export type InputValue<T extends ValueTypes> = T extends any ? T & {
+//     value?: JoiSchemaValue<T["validate"]>,
+//     onChange: (newValue: ArgValueType) => void
+// } : never
 
 
-interface IProps {
-    value: ValueTypes
-    onChange: (newValue: ValueTypes) => void
+
+type IProps = ValueTypes & {
+    onChange: (newValue: ArgValueType) => void
 }
-export const InputsView: React.FC<IProps> = React.memo(({ value, onChange }) => {
 
-    console.log(value.type, value)
-    switch (value.type) {
+export const InputsView: React.FC<IProps> = React.memo((props) => {
+
+    // console.log(value.type, value)
+    switch (props.type) {
         case InputTypes.Number:
-            return <Number value={value} onChange={onChange} />
+            return <Number {...props} />
         case InputTypes.String:
-            return <String value={value} onChange={onChange} />
+            return <String {...props} />
         case InputTypes.Select:
-            return <Select value={value} onChange={onChange} />
+            return <Select  {...props} />
         default:
             throw new Error("Input Type Does Not Exist!")
     }
