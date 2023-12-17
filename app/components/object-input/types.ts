@@ -16,6 +16,7 @@ interface ValueGeneric<T extends any, V extends any> {
 }
 interface ValueOptionsGeneric<T extends any, V extends any> extends ValueGeneric<T, V> {
     // options: Record<string, V>
+    // options: Map<any, V>
     options: { label: string, value: V }[]
 }
 
@@ -25,13 +26,13 @@ export type ValueTypes = ValueGeneric<InputTypes.Number, number> | ValueGeneric<
 
 
 export type ValueOrFunc<V> = V | (() => V)
-// export type ValueOF<V> = V | (() => V)
 
 
 export interface PropertyNameValueViews {
     autoCreateProperty?: boolean,
 
     dentFilterProperties?: boolean,
+    dentFilterAfterChoose?: boolean,
     filterArgProperties?: boolean,
 
     argValues?: ValueOrFunc<ValueTypes[]>
@@ -95,7 +96,7 @@ export type PropertyNameViewsValue<V extends PropertyNameViews> = ({
 
 
 
-export type PropertyType = { propertyName: string, value: PropertyNameViewsValue<PropertyNameViews> }
+export type PropertyType<O extends PropertyNameViews = PropertyNameViews> = { propertyName: string, value: PropertyNameViewsValue<PropertyNameViews> }
 
 ////////////////////////////////////////////////
 // const enum MainDataTypes {

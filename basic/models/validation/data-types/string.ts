@@ -28,7 +28,13 @@ export const StringDataType: PropertyNameViews = {
             {
                 type: InputTypes.Select,
                 options: [
-                    { label: "Mail", value: "/#asd,as,/gm" },
+                    {
+                        label: "Mail",
+                        value: "/#asd,as,/gm"
+                    }, {
+                        label: "UUID",
+                        value: "/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i"
+                    }
                 ],
                 // options: {
                 //     Mail:"/regexp/gm"
@@ -40,7 +46,7 @@ export const StringDataType: PropertyNameViews = {
         properties: () => StringDataType,
     },
     Or: {
-        dentFilterProperties: true,
+        dentFilterAfterChoose: true,
         argProperties: () => DataTypes,
         properties: () => StringDataType,
     },

@@ -6,7 +6,7 @@ import { formControlClasses } from '@mui/material/FormControl';
 import { autocompleteClasses } from '@mui/material';
 import { ErrorText } from "./error-text";
 
-console.log({ autocompleteClasses })
+
 interface IProps extends ComponentProps<typeof TextField> {
 }
 export const AutoResizeField: React.FC<IProps> = React.memo(styled(({ className, helperText, ...props }: IProps) => {

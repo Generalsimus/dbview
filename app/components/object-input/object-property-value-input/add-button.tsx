@@ -27,7 +27,7 @@ export const AddButton = React.memo(<S extends any[]>({ options, onAdd, alreadyC
         return options.filter(e => !alreadyChoose.includes(e));
     }, [...options, ...alreadyChoose])
 
-    console.log({ saveOptions, options })
+    // console.log({ saveOptions, options })
 
     return <>
         {saveOptions.length ? <>

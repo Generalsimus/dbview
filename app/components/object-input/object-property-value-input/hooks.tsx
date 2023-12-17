@@ -61,7 +61,7 @@ export const useSafeProperties = <O extends PropertyNameViews>(valueOption: O, v
     return useMemo(() => {
         if (value) {
             const { name } = value;
-            const { properties, dentFilterProperties } = valueOption[name];
+            const { properties, dentFilterProperties, dentFilterAfterChoose } = valueOption[name];
             const safePropertiesBeforeFilter = properties instanceof Function ? properties() : properties;
             if (!safePropertiesBeforeFilter || dentFilterProperties) return safePropertiesBeforeFilter;
 
@@ -73,7 +73,7 @@ export const useSafeProperties = <O extends PropertyNameViews>(valueOption: O, v
                 }
             }
 
-            if (typeof name === "string") {
+            if (typeof name === "string" && !dentFilterAfterChoose) {
                 delete safePropertiesValue[name];
             }
 

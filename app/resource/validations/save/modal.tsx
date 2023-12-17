@@ -6,14 +6,29 @@ import SaveIcon from '@mui/icons-material/Save';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
 import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
-// import { MakeStateValue } from "@/basic/generics";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
 import { ValidationForm } from "./form/form";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 import { useRouter } from "next/navigation";
+import { PartialKeys } from "@/basic/generics";
+import { PropertyType } from "@/app/components/object-input/types";
 
+// export type ValidationPropertyType = PropertyType[];
+// export const ValidationPropertySchema = CreateObjectValidationSchema(DataTypes)
+
+/////////////////////////////////////////////////////////
+
+// export interface Validation {
+//     name: string
+//     description: string
+//     validations: ValidationPropertyType
+// }
+
+export interface StateValueType extends Omit<Validation, "validations"> {
+    validations: PartialKeys<PropertyType, "value">[]
+}
 
 interface IProps {
     title: string
@@ -34,12 +49,12 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({
     deleteValidationDoc
 }) => {
 
-    const stateController = useSetProps<MakeCreateOrUpdate<Validation>>(() => (initialValue || {
+    const stateController = useSetProps<MakeCreateOrUpdate<StateValueType>>(() => (initialValue || {
         name: "",
         description: "",
         validations: []
     }));
-
+    // console.log(stateController)
 
     const { getValidation, value } = stateController;
 
@@ -54,6 +69,7 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({
     const onSaveData = useMemoCall(() => {
         const validDoc = getIfValid(true);
         if (validDoc) {
+            // console.log({ validDoc })
             saveValidationDoc(validDoc).then(() => {
                 onClose();
                 router.refresh();
@@ -70,7 +86,7 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <Stack minWidth={600} maxWidth={"100vw"}>
+            <Stack minWidth={600} maxWidth={"100vw"} >
                 <DialogTitle id="alert-dialog-title" >
                     <Stack
                         direction="row"

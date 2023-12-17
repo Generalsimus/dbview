@@ -76,14 +76,7 @@ export const createValidationController =
             getError(...errorPaths) {
                 let validationResult = refCache.validateResult;
 
-                // console.log("getError", { validationResult })
-                // if (!showErrorAfterChange) {
-
-                //     // console.log({ showErrorAfterChange, EEEEE: validationResult, schema })
-                // }
-                // console.log({ showErrorAfterChange, validationResult });
                 if (validationResult?.error) {
-                    // console.log({ showErrorAfterChange });
 
                     const key = errorPaths.join("|");
                     if (showErrorAfterChange && !isKeyChangeEffect[key]) {

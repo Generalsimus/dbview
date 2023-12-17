@@ -3,39 +3,37 @@ import { PropertyNameViews, PropertyNameViewsValue, PropertyType } from "./types
 import { IconButton, Stack } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import { PartialKeys } from "@/basic/generics";
+import { DeepPartial, PartialKeys } from "@/basic/generics";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { PropertyInput } from "./property-input";
 import { filter } from "lodash";
+import { CreateObjectValidationSchema } from "./utils";
 
-interface IProps<V = PropertyType> {
+interface IProps<V = PartialKeys<PropertyType, "value">> {
     value?: V[],
     onChange: (newValue: V[]) => void,
     optionalValue: PropertyNameViews
 }
-export const ObjectInput: React.FC<IProps> = React.memo(({ value: initialValue = [], onChange: onChangeInitialValue, optionalValue }) => {
-    const [values, setValues] = useState<PartialKeys<PropertyType, "value">[]>(initialValue);
-    useEffect(() => {
-        if (initialValue.length) {
-            setValues(initialValue)
-        }
-    }, [initialValue])
+export const ObjectInput: React.FC<IProps> = React.memo(({ value = [], onChange, optionalValue }) => {
+
 
 
     const addEmptyProperty = useMemoCall(() => {
-        setValues([
-            { propertyName: "", value: null as any }
+        onChange([
+            ...value,
+            { propertyName: "", value: undefined }
         ])
     });
     const onRemoveProperty = useMemoArgCall((index: number) => {
-        values.splice(index, 1)
-        setValues([...values])
+        value.splice(index, 1)
+        onChange([...value])
     })
     const onChangeProperty = useMemoArgCall((index: number, newPropertyValue: PartialKeys<PropertyType, "value">) => {
-        values.splice(index, 1, newPropertyValue)
-        setValues([...values])
+        value.splice(index, 1, newPropertyValue)
+        onChange([...value])
     });
-
+    // const schema = CreateObjectValidationSchema(optionalValue)
+    // console.log({ schema })
     return <>
         <Stack
             display={"flex"}
@@ -44,13 +42,12 @@ export const ObjectInput: React.FC<IProps> = React.memo(({ value: initialValue =
             justifyContent={"flex-start"}
             alignItems={"flex- start"}
         >
-            {values.length ? <Stack display={"flex"} justifyContent={"flex-start"}>
-                {values.map((property, index) => {
+            {value.length ? <Stack display={"flex"} justifyContent={"flex-start"}>
+                {value.map((property, index) => {
 
                     return <PropertyInput value={property} onChange={onChangeProperty(index)} onRemove={onRemoveProperty(index)} optionalValues={optionalValue} />
                 })}
             </Stack> : null}
-
             <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
                 <IconButton onClick={addEmptyProperty} size="large">
                     <AddIcon />

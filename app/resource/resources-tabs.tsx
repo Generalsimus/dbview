@@ -28,7 +28,7 @@ interface IProps {
     children: ReactNode
 }
 export const ResourceTabsProvider: React.FC<IProps> = React.memo(({ children }) => {
-    const [tab, setTab] = useState(ResourceTabsEnum.Routes)
+    const [tab, setTab] = useState<ResourceTabsEnum | undefined>()
     const tabsValue = useMemo(() => <Tabs
         value={tab}
         variant="scrollable"

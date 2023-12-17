@@ -14,15 +14,16 @@ interface IProps {
 export const PropertyNameViewContainer: React.FC<IProps> = React.memo(({ children, name, onRemove }) => {
 
 
-    return <Stack display={"flex"} flexDirection={"row"} alignItems={"center"} gap={0.4}>
-        <Typography sx={{ display: "flex", alignItems: "center" }}>{name}
+    // return <Stack display={"flex"} flexDirection={"row"} flexWrap={"wrap"} alignItems={"center"} gap={0.4}>
+    return <>
+        <Typography sx={{ display: "flex", alignItems: "center" }} fontWeight={"bold"}>{name}
             {onRemove && <RemoveButton onClick={onRemove} >
                 <RemoveIcon color="error" />
             </RemoveButton>}
             (</Typography>
         {children}
-        <Typography>)</Typography>
-    </Stack>;
+        <Typography fontWeight={"bold"}>)</Typography>
+    </>;
 });
 
 const RemoveButton = styled(IconButton)(({ theme }) => {

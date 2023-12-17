@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { ValidationsTable } from "./validations-table";
 import { Header } from "./header";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
@@ -6,6 +6,7 @@ import { Validation, ValidationSchema } from "@/basic/models/validation/validati
 import { validate } from "@/utils";
 import { ValidationModel } from "@/db/models/validation";
 import { map } from "lodash";
+import Loading from "@/app/loading";
 
 
 
@@ -42,9 +43,9 @@ export default async ({ searchParams }: IProps) => {
 
     async function SaveValidationDoc(value: MakeCreateOrUpdate<Validation>): Promise<void> {
         'use server'
-        console.log(value)
+        // console.log(value)
         const validateRes = validate(value, getCreateOrUpdateSchema(ValidationSchema))
-
+        // console.log({ validateRes ,value})
         if (!validateRes.error) {
             const { value } = validateRes;
 

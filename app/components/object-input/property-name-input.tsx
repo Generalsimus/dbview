@@ -1,13 +1,11 @@
 import { AutoResizeField } from "@/app/components/auto-resize-field";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import { InputProps } from "@/basic/generics";
-import { ValidationPropertyType } from "@/basic/models/validation/validation";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { PropertyType } from "./types";
 
 
 interface IProps<V = PropertyType["propertyName"]> {
-    value: V,
+    value?: V,
     onChange: (newValue: V) => void,
     onBlur?: () => void
 }

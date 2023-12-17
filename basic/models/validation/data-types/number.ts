@@ -25,7 +25,7 @@ export const NumberDataType: PropertyNameViews = {
         properties: () => NumberDataType,
     },
     Or: {
-        dentFilterProperties: true,
+        dentFilterAfterChoose: true,
         argProperties: () => DataTypes,
         properties: () => NumberDataType,
     },

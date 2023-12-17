@@ -1,14 +1,8 @@
-import { ValidationPropertySchema, ValidationPropertyType } from "@/basic/models/validation/validation";
 import { IconButton, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { PartialKeys } from "@/basic/generics";
-// import { AddValidationButton } from "./add-validation-button";
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-// import { EditPropertyNameInput } from "./property-name-input";
-import { ErrorText } from "@/app/components/error-text";
-// import { InputTypes, PropertyNameViews, PropertyNameViewsValue } from "@/app/components/object-properties-input/types";
-// import { ObjectPropertiesInput } from "@/app/components/object-properties-input";
+import { PartialKeys } from "@/basic/generics"; 
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall"; 
 import Joi from "joi";
 import { InputTypes, PropertyNameViews, PropertyNameViewsValue, PropertyType } from "./types";
 import { ObjectPropertyValueInput } from "./object-property-value-input";
