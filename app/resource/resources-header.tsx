@@ -9,10 +9,10 @@ interface IProps {
     rightSideContent: ReactNode
 }
 export const ResourcesHeaderContent: React.FC<IProps> = React.memo(({ tab, rightSideContent }) => {
-    const [tabComponent, setTab] = useTabsContext();
-    useEffect(() => {
-        setTab(tab)
-    }, [tab])
+    // const [tabComponent, setTab] = useTabsContext();
+    // useEffect(() => {
+    //     setTab(tab)
+    // }, [tab])
 
     return <>
         <Stack
@@ -22,7 +22,7 @@ export const ResourcesHeaderContent: React.FC<IProps> = React.memo(({ tab, right
             spacing={2}
             padding="10px"
         >
-            {tabComponent}
+            {/* {tabComponent} */}
             {rightSideContent}
         </Stack>
     </>;

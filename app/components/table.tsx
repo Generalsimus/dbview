@@ -3,24 +3,26 @@ import { Paper, TableBody, Table as TableMaterialUi, TableContainer, TableHead, 
 import React, { ReactNode, useState } from "react";
 // import { useMemoCall } from '../utils/hooks';
 import { useTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useMemoCall } from '../utils/hooks/useMemoCall';
 type TablePaginationProps = React.ComponentProps<typeof TablePagination>
 type TableCellProps = React.ComponentProps<typeof TableCell>
 
 type IProps<O extends Record<any, ReactNode>> = {
-    columns: { headerName: ReactNode, field: keyof O | string, columnCellProps?: TableCellProps }[]
-    rows: (O & { rowCellProps?: TableCellProps })[]
+    columns?: { headerName: ReactNode, field: keyof O | string, columnCellProps?: TableCellProps }[]
+    rows?: (O & { rowCellProps?: TableCellProps })[]
 
     rowsPerPageOptions: TablePaginationProps["rowsPerPageOptions"]
-    start: number,
-    end: number,
-    maxRowCount: TablePaginationProps["count"]
+    start?: number,
+    end?: number,
+    maxRowCount?: TablePaginationProps["count"]
     onPagination: (start: number, end: number) => void
 
     stickyHeader?: boolean
     stickyFooter?: boolean
     headerContent?: ReactNode
     footerContent?: ReactNode
+    isLoading?: boolean
 
     // headerColumnProps?: TableCellProps
     // rowColumnProps?: TableCellProps
@@ -30,17 +32,18 @@ type IProps<O extends Record<any, ReactNode>> = {
 }
 export const Table = <O extends Record<any, any>>(props: IProps<O>) => {
     const {
-        columns,
-        rows,
-        maxRowCount,
-        start,
-        end,
+        columns = [],
+        rows = [],
+        maxRowCount = 0,
+        start = 0,
+        end = 0,
         rowsPerPageOptions,
         onPagination,
         stickyFooter,
         stickyHeader,
         headerContent,
         footerContent,
+        isLoading
     } = props;
     const page = Math.floor(start / (end - start))
     // console.log({ page })
@@ -62,7 +65,9 @@ export const Table = <O extends Record<any, any>>(props: IProps<O>) => {
     // console.log({ theme })
     const stickyHeaderSx = stickyFooter ? { position: "sticky", top: 0 } : {}
     const stickyFooterSx = stickyHeader ? { position: "sticky", bottom: 0 } : {}
-
+    // if (isLoading) {
+    //     return <div>LOADING</div>
+    // }
     return <>
         <TableMaterialUi aria-label="table" sx={{ bgcolor: theme.palette.background.paper }}>
             <TableHead sx={{ ...stickyHeaderSx, bgcolor: theme.palette.background.paper, width: "100%" }}>
@@ -79,8 +84,14 @@ export const Table = <O extends Record<any, any>>(props: IProps<O>) => {
                     })}
                 </TableRow>
             </TableHead>
-            <TableBody>
-                {rows.map(row => {
+            <TableBody sx={{ borderCollapse: "collapse" }}>
+                {isLoading ? <TableRow role="checkbox">
+                    <TableCell colSpan={columns.length} padding="none"  >
+                        <Stack display={"flex"} flex={1} justifyContent={"center"} alignItems={"center"} padding={15}>
+                            <CircularProgress color="inherit" size={100} />
+                        </Stack>
+                    </TableCell>
+                </TableRow> : rows.map(row => {
                     return <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                         {columns.map(column => {
                             return <TableCell {...(row.rowCellProps || {})}>

@@ -39,7 +39,7 @@ export const validate = <V extends object>(value: any, schema: AnySchema<V>, opt
 }
 
 
-export const stringToRoutePath = (stringArg: string) => {
+export const stringToRoutePath = (stringArg: string | number) => {
 
     return (`/${stringArg}/`).toLowerCase().trim().replace(/\s+/gm, "-").replace(/[^\w\-]+/gm, "/");
 } 

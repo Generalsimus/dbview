@@ -3,13 +3,15 @@ import { sequelize } from "../init";
 import { DataTypes, ModelDefined } from "sequelize";
 import { MakeAsDbDoc } from "@/basic/db-basic-schema";
 import { Route } from "@/basic/models/route/route";
+import { Validation } from "@/basic/models/validation/validation";
+import { Service } from "@/basic/models/services/services";
 
 
 
-export const RouteModel: ModelDefined<
-    MakeAsDbDoc<Route>,
+export const ServiceModel: ModelDefined<
+    MakeAsDbDoc<Service>,
     {}
-> = sequelize.define('route', {
+> = sequelize.define('service', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -19,20 +21,12 @@ export const RouteModel: ModelDefined<
         type: DataTypes.STRING(1234),
         allowNull: false
     },
-    path: {
-        type: DataTypes.STRING(1234),
-        allowNull: false
-    },
     description: {
         type: DataTypes.STRING(1234),
         allowNull: false
     },
-    method: {
-        type: DataTypes.ENUM,
-        values: requestMethods
+    methods: {
+        type: DataTypes.JSON
     }
 });
-RouteModel.sync({ alter: true })
-// RouteModel.toJSON({
-//     omitNull: true
-// })
+ServiceModel.sync({ alter: true })
