@@ -6,26 +6,25 @@ import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Validation } from "@/basic/models/validation/validation";
 import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
 import { ValidationFormModal } from "./modal";
+import { useValidationsFormController, useValidationsFormViewController } from "./hooks";
 
 interface IProps {
     saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>
     deleteValidationDoc: (ids: number) => Promise<void>
 }
 export const AddValidationButton: React.FC<IProps> = React.memo(({ saveValidationDoc, deleteValidationDoc }) => {
-    const [isOpen, initSetValue] = useToggleBool(false)
-    const onOpen = initSetValue(true);
-    const onClose = initSetValue(false);
-
+    const validationsFormViewController = useValidationsFormViewController()
+    const validationsFormController = useValidationsFormController()
 
     return <>
-        <Button variant="contained" onClick={onOpen} startIcon={<CreateIcon />}>
+        <Button variant="contained" onClick={validationsFormViewController.onOpen} startIcon={<CreateIcon />}>
             Add Validation
         </Button>
         <ValidationFormModal
             title="Add Validation"
-            isOpen={isOpen}
-            onClose={onClose}
-            onOpen={onOpen}
+            {...validationsFormViewController}
+            {...validationsFormController}
+
             saveValidationDoc={saveValidationDoc}
             deleteValidationDoc={deleteValidationDoc}
         />

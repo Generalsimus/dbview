@@ -14,59 +14,42 @@ import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 import { useRouter } from "next/navigation";
 import { PartialKeys } from "@/basic/generics";
 import { PropertyType } from "@/app/components/object-input/types";
-import { useRouteFormController, useRouteFormViewController } from "./hooks";
-
-// export type ValidationPropertyType = PropertyType[];
-// export const ValidationPropertySchema = CreateObjectValidationSchema(DataTypes)
-
-/////////////////////////////////////////////////////////
-
-// export interface Validation {
-//     name: string
-//     description: string
-//     validations: ValidationPropertyType
-// }
+import { useValidationsFormController, useValidationsFormViewController } from "./hooks";
 
 export interface StateValueType extends Omit<Validation, "validations"> {
     validations: PartialKeys<PropertyType, "value">[]
 }
 
-type ExtendsControllers = ReturnType<typeof useRouteFormViewController> & ReturnType<typeof useRouteFormController>
-interface IProps  extends ExtendsControllers{
+type ExtendsControllers = ReturnType<typeof useValidationsFormViewController> & ReturnType<typeof useValidationsFormController>
+interface IProps extends ExtendsControllers {
     title: string
-    // isOpen: boolean
-    // onClose: () => void
-    // onOpen: () => void
-    // initialValue?: MakeCreateOrUpdate<Validation>
     saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>
     deleteValidationDoc: (ids: number) => Promise<void>
 }
-export const ValidationFormModal: React.FC<IProps> = React.memo(({
-    title,
-    isOpen,
-    onOpen,
-    onClose,
-    initialValue,
-    saveValidationDoc,
-    deleteValidationDoc
-}) => {
+export const ValidationFormModal: React.FC<IProps> = React.memo((props) => {
+    const {
+        title,
+        open,
+        onOpen,
+        onClose,
+        // initialValue,
+        getValidation,
+        value,
+        saveValidationDoc,
+        deleteValidationDoc
+    } = props;
 
-    // console.log(stateController)
-
-    const { getValidation, value } = stateController;
 
     const validator = getValidation(getCreateOrUpdateSchema(ValidationSchema));
 
     const { getIfValid, getError } = validator;
 
-    // console.log(JSON.stringify(value, undefined, 2))
-    // console.log("validate().  ", validate(value, ValidationSchema, { abortEarly: false, stripUnknown: true, allowUnknown: false }))
     const router = useRouter();
 
     const onSaveData = useMemoCall(() => {
         const validDoc = getIfValid(true);
         if (validDoc) {
-            // console.log({ validDoc })
+            
             saveValidationDoc(validDoc).then(() => {
                 onClose();
                 router.refresh();
@@ -78,7 +61,7 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({
 
     return <>
         <Dialog
-            open={isOpen}
+            open={open}
             onClose={onClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -106,7 +89,7 @@ export const ValidationFormModal: React.FC<IProps> = React.memo(({
                     flexDirection: "column",
                     gap: 1
                 }}>
-                    <ValidationForm validator={validator} {...stateController} />
+                    <ValidationForm validator={validator} {...props} />
 
                 </DialogContent>
                 <DialogActions>

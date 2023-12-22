@@ -8,7 +8,7 @@ import { clear } from "console";
 import { StateValueType } from "./modal";
 // import { Route } from "next";
 
-export const useRouteFormViewController = (initialOpenValue: boolean = false) => {
+export const useValidationsFormViewController = (initialOpenValue: boolean = false) => {
 
     const [status, setModalStatus, setModalStatusValue] = useToggleBool(initialOpenValue)
 
@@ -23,19 +23,18 @@ export const useRouteFormViewController = (initialOpenValue: boolean = false) =>
     }
 }
 
-// const basicState = () => {
-//     return {
-//         name: "",
-//         path: "",
-//         description: "",
-//         method: ""
-//     }
-// }
+const basicState = () => {
+    return {
+        name: "",
+        description: "",
+        validations: []
+    }
+}
 
-export const useRouteFormController = (initialStateValue?: MakeCreateOrUpdate<Route>) => {
-    // const setProsRes = useSetProps<MakeCreateOrUpdate<Route>>(initialStateValue || basicState);
+export const useValidationsFormController = (initialStateValue?: MakeCreateOrUpdate<Route>) => {
 
-    const setProsRes = useSetProps<MakeCreateOrUpdate<StateValueType>>();
+    const setProsRes = useSetProps<MakeCreateOrUpdate<StateValueType>>(basicState);
+    
     return {
         ...setProsRes,
         clearState: useMemoCall(() => {

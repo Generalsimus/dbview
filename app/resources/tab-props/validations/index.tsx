@@ -4,7 +4,7 @@ import { InitialPropsTypes } from ".."
 import { AddValidationButton } from "./save/add-button"
 import { DeleteValidationDoc, SaveValidationDoc, getValidations } from "./server"
 import { map } from "lodash"
-// import { DeleteRouteDoc, SaveRouteDoc, getRouteDocs } from "./server"
+import { EditValidationsEffectView } from "./save/edit-Validationas-effect-view"
 
 export const getValidationProps = (start: number, end: number, setTableProps: (newValue: InitialPropsTypes) => void) => {
     const validationDocs = getValidations(start, end);
@@ -22,15 +22,25 @@ export const getValidationProps = (start: number, end: number, setTableProps: (n
     ];
 
     validationDocs.then((validationDocs) => {
-        const rows = validationDocs.docs.map(el => {
+        const rows = validationDocs.docs.map(obj => {
             return {
-                name: el.name,
-                description: el.description,
-                properties: map(el.validations, "property").join(", "),
+                name: obj.name,
+                description: obj.description,
+                properties: map(obj.validations, "propertyName").join(", "),
                 rowCellProps: {
                     sx: { cursor: "pointer" },
                     onClick: () => {
-                        // onViewModal(el)
+                        setTableProps({
+                            ...awaitedProps,
+                            rightSideContent: <>
+                                {awaitedProps.rightSideContent}
+                                <EditValidationsEffectView
+                                    saveValidationDoc={SaveValidationDoc}
+                                    deleteValidationDoc={DeleteValidationDoc}
+                                    initialValue={{ ...obj }}
+                                />
+                            </>
+                        })
                     }
                 }
             }
