@@ -39,8 +39,9 @@ export async function getRouteDocs(startIndex: number, endIndex: number) {
         offset: startIndex
     })
 
+    const docs = rows.map(el => el.dataValues)
     return {
-        docs: rows.map(el => el.dataValues),
-        maxDocsCount: count
+        docs: [...docs, ...docs, ...docs, ...docs, ...docs],
+        maxDocsCount: count * 5
     }
 }
