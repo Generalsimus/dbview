@@ -30,6 +30,7 @@ export async function DeleteRouteDoc(id: number): Promise<void> {
 }
 
 export async function getRouteDocs(startIndex: number, endIndex: number) {
+    'use server'
     const { rows, count } = await RouteModel.findAndCountAll({
         where: {},
         order: [

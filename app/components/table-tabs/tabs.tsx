@@ -27,6 +27,7 @@ export const TabsContent: React.FC<IProps> = React.memo(({ tab, tabs, getTabProp
                 aria-label="scrollable auto tabs example"
             >
                 {tabs.map((e) => {
+                    // console.log({ EEE: (getTabProps?.(e) || {}) })
                     return <Tab key={e} {...(getTabProps?.(e) || {})} />
                 })}
             </Tabs>

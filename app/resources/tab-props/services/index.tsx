@@ -1,22 +1,21 @@
 "use client"
-import React, { } from "react"
+import { Dispatch, SetStateAction } from "react"
 import { InitialPropsTypes } from "../hooks"
-import { AddRouteButton } from "./save/add-button"
-import { DeleteRouteDoc, SaveRouteDoc, getRouteDocs } from "./server"
+import { map } from "lodash"
 import { ResourceTabsEnum, getEmptyTableProps } from "../utils"
-import { EditRouteEffectView } from "./save/edit-route-effect-view"
+import { getServiceDocs } from "./server"
 
 
-export const getRouteProps = (start: number, end: number, setTableProps: (newValue: InitialPropsTypes) => void) => {
-    const routeDocs = getRouteDocs(start, end);
+
+export const getServicesProps = (start: number, end: number, setTableProps: (newValue: InitialPropsTypes) => void) => {
+    const servicesDocs = getServiceDocs(start, end);
     const cellProps = {
         colSpan: 1
     };
     const columnContent = [
         { content: "name", cellProps: cellProps },
-        { content: "method", cellProps: cellProps },
-        { content: "path", cellProps: cellProps },
         { content: "description", cellProps: cellProps },
+        { content: "properties", cellProps: cellProps },
     ];
     const staticProps = getEmptyTableProps({
         titleRow: {
@@ -24,14 +23,16 @@ export const getRouteProps = (start: number, end: number, setTableProps: (newVal
         },
         start: start,
         end: end,
-        tab: ResourceTabsEnum.Routes,
-        rightSideContent: <AddRouteButton
-            saveRouteDoc={SaveRouteDoc}
-            deleteRouteDoc={DeleteRouteDoc}
-        />,
+        tab: ResourceTabsEnum.Services,
+        rightSideContent: <>
+        </>
+        // <EditValidationsEffectView
+        //     saveValidationDoc={SaveValidationDoc}
+        //     deleteValidationDoc={DeleteValidationDoc}
+        // />,
     });
 
-    routeDocs.then(({ docs, maxDocsCount }) => {
+    servicesDocs.then(({ docs, maxDocsCount }) => {
         const awaitedContentProps = {
             ...staticProps,
             maxRowCount: maxDocsCount,
@@ -53,11 +54,8 @@ export const getRouteProps = (start: number, end: number, setTableProps: (newVal
                                 ...awaitedContentProps,
                                 rightSideContent: <>
                                     {awaitedContentProps.rightSideContent}
-                                    <EditRouteEffectView
-                                        saveRouteDoc={SaveRouteDoc}
-                                        deleteRouteDoc={DeleteRouteDoc}
-                                        initialValue={{ ...doc }}
-                                    />
+                                    <></>
+
                                 </>
                             });
                         }

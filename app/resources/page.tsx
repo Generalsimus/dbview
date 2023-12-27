@@ -2,7 +2,8 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { TableTabs } from '../components/table-tabs';
-import { ResourceTable, ResourceTabsEnum, resourceTabsEnums } from './table';
+import { ResourceTable } from './table';
+import { ResourceTabsEnum, resourceTabsEnums } from './tab-props/utils';
 
 
 

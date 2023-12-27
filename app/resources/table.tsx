@@ -4,16 +4,12 @@ import { TableTabs } from "../components/table-tabs";
 import { useMemoCall } from "../utils/hooks/useMemoCall";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useResourceProps } from "./tab-props";
+import { useResourceProps } from "./tab-props/hooks";
+import { Backdrop, CircularProgress } from "@mui/material";
+import { ResourceTabsEnum } from "./tab-props/utils";
 
 
 
-export const enum ResourceTabsEnum {
-    Routes = "Routes",
-    Validations = "Validations",
-    Services = "Services",
-}
-export const resourceTabsEnums: ResourceTabsEnum[] = [ResourceTabsEnum.Routes, ResourceTabsEnum.Services, ResourceTabsEnum.Validations];
 
 
 interface IProps {
@@ -32,28 +28,38 @@ export const ResourceTable: React.FC<IProps> = React.memo(({ start, end, tab }) 
     });
 
     const resource = useResourceProps(tab, start, end)
-
-    // console.log(resource)
-    // // const maxRowCount = 26;
+    // console.log({ resource })
     return <>
-        <TableTabs
+        <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={!resource}
+        >
+            <CircularProgress color="inherit" />
+        </Backdrop>
+        {resource && <TableTabs
             {...resource}
-            tabs={resourceTabsEnums}
-            tab={tab}
-            getTabProps={(tab) => {
-                return {
-                    href: `/resources/?tab=${tab}`,
-                    component: Link,
-                    label: tab,
-                    value: tab,
-                }
-            }}
-            rowsPerPageOptions={[5, 10, 30, 60, 100, 120]}
-            onPagination={onPagination}
-            stickyHeader={true}
-            stickyFooter={true}
-            start={start}
-            end={end}
-        />
+        // footer={{
+        //     pagination:{
+        //         start,
+        //         end
+        //     }
+        // }}
+        // tabs={resourceTabsEnums}
+        // tab={tab}
+        // getTabProps={(tab) => {
+        //     return {
+        //         href: `/resources/?tab=${tab}`,
+        //         component: Link,
+        //         label: tab,
+        //         value: tab,
+        //     }
+        // }}
+        // rowsPerPageOptions={[5, 10, 30, 60, 100, 120]}
+        // onPagination={onPagination}
+        // stickyHeader={true}
+        // stickyFooter={true}
+        // start={start}
+        // end={end}
+        />}
     </>;
 });
