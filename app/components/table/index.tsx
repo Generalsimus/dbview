@@ -5,19 +5,20 @@ import React, { ReactNode } from "react";
 import { useTheme } from '@mui/material/styles';
 import { Footer } from './footer';
 import { Header } from './header';
-import { FooterType, HeaderType, RowType } from './types';
+import { BodyType, FooterType, HeaderType, RowType } from './types';
 import { RowLine } from './row-line';
+import { Body } from './body';
 
 interface IProps {
     header?: HeaderType
     footer?: FooterType
-    rows?: RowType[]
+    body?: BodyType
 }
 export const Table = (props: IProps) => {
     const {
         header,
         footer,
-        rows = []
+        body
     } = props;
 
     const theme = useTheme()
@@ -26,11 +27,7 @@ export const Table = (props: IProps) => {
     return <>
         <TableMaterialUi aria-label="table" sx={{ bgcolor: theme.palette.background.paper }}>
             {header && <Header {...header} />}
-            <TableBody sx={{ borderCollapse: "collapse" }}>
-                {rows.map((row, index) => {
-                    return <RowLine key={index} {...row} />
-                })}
-            </TableBody>
+            {body && <Body {...body} />}
             {footer && <Footer {...footer} />}
         </TableMaterialUi >
     </>

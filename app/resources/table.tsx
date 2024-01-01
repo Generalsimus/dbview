@@ -1,12 +1,13 @@
 "use client"
 import React, { } from "react";
-import { TableTabs } from "../components/table-tabs";
 import { useMemoCall } from "../utils/hooks/useMemoCall";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useResourceProps } from "./tab-props/hooks";
+import { useTableBody, useTableFooter, useTableHeader } from "./hooks";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { ResourceTabsEnum } from "./tab-props/utils";
+import { Table } from "../components/table";
+import { useTableData } from "./tab-props/hooks";
 
 
 
@@ -27,39 +28,16 @@ export const ResourceTable: React.FC<IProps> = React.memo(({ start, end, tab }) 
         router.push(`/resources/?start=${start}&end=${end}&tab=${tab}`);
     });
 
-    const resource = useResourceProps(tab, start, end)
-    // console.log({ resource })
+    const tableData = useTableData(tab, start, end);
+    const header = useTableHeader(tableData);
+    const footer = useTableFooter(tableData);
+    const body = useTableBody(tableData)
+    // console.log({ body, tableData })
     return <>
-        <Backdrop
-            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={!resource}
-        >
-            <CircularProgress color="inherit" />
-        </Backdrop>
-        {resource && <TableTabs
-            {...resource}
-        // footer={{
-        //     pagination:{
-        //         start,
-        //         end
-        //     }
-        // }}
-        // tabs={resourceTabsEnums}
-        // tab={tab}
-        // getTabProps={(tab) => {
-        //     return {
-        //         href: `/resources/?tab=${tab}`,
-        //         component: Link,
-        //         label: tab,
-        //         value: tab,
-        //     }
-        // }}
-        // rowsPerPageOptions={[5, 10, 30, 60, 100, 120]}
-        // onPagination={onPagination}
-        // stickyHeader={true}
-        // stickyFooter={true}
-        // start={start}
-        // end={end}
-        />}
+        <Table
+            header={header}
+            footer={footer}
+            body={body}
+        />
     </>;
 });

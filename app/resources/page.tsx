@@ -1,7 +1,5 @@
 "use client"
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
-import { TableTabs } from '../components/table-tabs';
+import React from 'react'; 
 import { ResourceTable } from './table';
 import { ResourceTabsEnum, resourceTabsEnums } from './tab-props/utils';
 
@@ -14,7 +12,7 @@ interface IProps {
         tab?: ResourceTabsEnum;
     }
 }
-export default async ({ searchParams }: IProps) => {
+export default  ({ searchParams }: IProps) => {
     let start = Number(searchParams?.start) || 0;
     let end = Number(searchParams?.end) || 15;
     let tab = searchParams?.tab || ResourceTabsEnum.Routes;

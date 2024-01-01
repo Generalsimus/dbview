@@ -1,53 +1,24 @@
-import React, { ComponentProps, ReactNode, useState } from "react";
-import TableCell from '@mui/material/TableCell';
-import Collapse from '@mui/material/Collapse';
-import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
-import { TablePagination, TableRow } from "@mui/material";
-import { title } from "process";
-
-
-type TablePaginationProps = React.ComponentProps<typeof TablePagination>
+import React, { ComponentProps, ReactNode } from "react";
+import TableCell from "@mui/material/TableCell";
+import Collapse from "@mui/material/Collapse";
+import { TableBody, TableFooter, TableHead, TableRow } from "@mui/material";
 
 export interface ColumnType {
-    content?: ReactNode,
-    cellProps?: ComponentProps<typeof TableCell>
+  content?: ReactNode;
+  cellProps?: ComponentProps<typeof TableCell>;
 }
 
 export interface RowType {
-    columns: ColumnType[],
-    tableRowProps?: ComponentProps<typeof TableRow>
-    collapseProps?: ComponentProps<typeof Collapse>
-}
-interface Content extends RowType {
+  columns: ColumnType[];
+  rowProps?: ComponentProps<typeof TableRow>;
+  //   collapseProps?: ComponentProps<typeof Collapse>;
 }
 
-export interface HeaderType {
-    sticky?: boolean
-    content?: Content,
-    titleRow?: RowType
+interface Content<Container extends React.FC> {
+  containerProps?: ComponentProps<Container>;
+  rows?: RowType[];
 }
-// const ssss = {
-//     sticky: true,
-//     content: {
-//         columns: []
-//         tableRowProps: {}
-//         // columns: ColumnType[],
-//         // tableRowProps?: ComponentProps<typeof TableRow>
-//     },
-//     titleRow?:
-// }
 
-export interface PaginationType {
-    collSize: number,
-    start: number,
-    end: number,
-    onPagination: (start: number, end: number) => void,
-    rowsPerPageOptions: TablePaginationProps["rowsPerPageOptions"],
-    maxRowCount: TablePaginationProps["count"],
-    rowsPerPage: number
-}
-export interface FooterType {
-    sticky?: boolean
-    content?: Content,
-    pagination?: PaginationType
-}
+export interface HeaderType extends Content<typeof TableHead> {}
+export interface BodyType extends Content<typeof TableBody> {}
+export interface FooterType extends Content<typeof TableFooter> {}

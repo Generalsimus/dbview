@@ -14,28 +14,17 @@ import { RowLine } from './row-line';
 //     titleRow?: RowType
 interface IProps extends HeaderType {
 }
-export const Header: React.FC<IProps> = React.memo(({ sticky = true, content, titleRow }) => {
+export const Header: React.FC<IProps> = React.memo(({
 
-    const stickyHeaderSx = sticky ? { position: "sticky", top: 0 } : {}
+    containerProps = {},
+    rows = [],
+}) => {
 
-    const theme = useTheme()
-    // console.log({ sticky, content, titleRow })
     return <>
-        <TableHead sx={{ ...stickyHeaderSx, bgcolor: theme.palette.background.paper, width: "100%" }}>
-            {content && <RowLine  {...content} />}
-            {titleRow && <RowLine  {...titleRow} />}
-            {/* {titleRow && <TableRow>
-                <TableCell colSpan={headerContent.rowSize} padding="none">
-                    {headerContent.content}
-                </TableCell>
-            </TableRow>} */}
-            {/* {titleRow && <TableRow {...(titleRow.tableRowProps || {})}>
-                {titleRow.columns.map(({ headerName, cellProps }) => {
-                    return <TableCell  {...(cellProps || {})}>
-                        {headerName}
-                    </TableCell>
-                })}
-            </TableRow>} */}
+        <TableHead  {...containerProps}  >
+            {rows.map((row, index) => {
+                return <RowLine key={index} {...row} />
+            })}
         </TableHead>
     </>;
 });
