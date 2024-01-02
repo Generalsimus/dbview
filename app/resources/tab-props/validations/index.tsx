@@ -10,6 +10,13 @@ import { AddValidationButton } from "./save/add-button";
 
 
 
+const cellProps = {
+    colSpan: 1,
+    sx: {
+        fontWeight: "bold",
+        width: "calc(100% / 3)"
+    }
+}
 const columns = [
     // {
     //     name: "CollSpan",
@@ -18,9 +25,9 @@ const columns = [
     //         colSpan: 1,
     //     }
     // },
-    { name: "name", content: "Name", },
-    { name: "description", content: "Description" },
-    { name: "properties", content: "Properties" },
+    { name: "name", content: "Name", cellProps: cellProps },
+    { name: "description", content: "Description", cellProps: cellProps },
+    { name: "properties", content: "Properties", cellProps: cellProps },
 ]
 export const getValidationResource = (
     start: number,
@@ -30,7 +37,7 @@ export const getValidationResource = (
         saveValidationDoc={SaveValidationDoc}
         deleteValidationDoc={DeleteValidationDoc}
     />;
-    
+
     return {
         start: start,
         end: end,

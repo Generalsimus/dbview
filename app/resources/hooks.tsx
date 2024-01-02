@@ -54,9 +54,9 @@ export const useTableHeader = (resource: TableTataType) => {
             content: headerTabsContent,
             cellProps: {
               padding: "none" as const,
-              // sx: {
-              //   width: "100%"
-              // }
+              sx: {
+                width: "100%"
+              },
               colSpan: columns.length
             }
           }
