@@ -10,6 +10,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Content } from "next/font/google";
 import { TableTataType } from "../hooks";
 import { SetStateAction } from "react";
+import { BorderBottom, BorderTop } from "@mui/icons-material";
 
 
 
@@ -65,7 +66,7 @@ export const getServiceResource = (
                                             onClick={() => {
                                                 setTableData(curr => {
                                                     const newRows = [...curr.rows];
-                                                    newRows.splice(rowIndex, 2, ...getRow(doc, rowIndex, !isCollapsed))
+                                                    newRows.splice(rowIndex, 2, ...getRow(doc, rowIndex, !isCollapsed));
 
                                                     return {
                                                         ...curr,
@@ -87,8 +88,13 @@ export const getServiceResource = (
                                 } as const
                             }),
                             rowProps: {
-                                hover: true,
-                                sx: { cursor: "pointer" },
+                                hover: !isCollapsed,
+                                sx: {
+                                    cursor: "pointer",
+                                    '& > *': {
+                                        borderBottom: 'unset !important'
+                                    }
+                                },
                                 role: "checkbox",
                                 tabIndex: -1,
                                 onClick: () => {
@@ -116,9 +122,6 @@ export const getServiceResource = (
                                     }
                                 }
                             ],
-                            rowProps: {
-                                // sx: { '& > *': { borderBottom: 'unset' } }
-                            }
                         }
                     ]
                 }
@@ -129,7 +132,7 @@ export const getServiceResource = (
 
                     rows.push(...getRow(doc, rowIndex, false));
                 }
-                
+
                 return {
                     ...curr,
                     maxRowCount: maxDocsCount,
@@ -140,4 +143,3 @@ export const getServiceResource = (
     }
 }
 
- 

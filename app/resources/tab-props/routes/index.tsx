@@ -70,7 +70,7 @@ export const getRouteResource = (
                 }
             });
 
-            
+
             setTableData((curr) => {
 
                 return {
@@ -79,95 +79,7 @@ export const getRouteResource = (
                     rows: rows,
                 }
             });
-            // return {
-            //     columns: columnContent.map(column => {
-            //         return {
-            //             content: doc[column.name],
-            //         } as const
-            //     }),
-            //     rowProps: {
-            //         hover: true,
-            //         sx: { cursor: "pointer" },
-            //         role: "checkbox",
-            //         tabIndex: -1,
-            //     }
-            // }
         }
     }
 
 }
-
-// export const getRouteProps = (start: number, end: number, setTableProps: (newValue: InitialPropsTypes) => void) => {
-//     const routeDocs = getRouteDocs(start, end);
-//     const cellProps = {
-//         colSpan: 1,
-//         sx: {
-//             fontWeight: "bold",
-//             fontSize: "medium"
-//         }
-//     };
-//     const columnContent = [
-//         { name: "name", content: "Name", cellProps: cellProps },
-//         { name: "method", content: "Method", cellProps: cellProps },
-//         { name: "path", content: "Path", cellProps: cellProps },
-//         { name: "description", content: "Description", cellProps: cellProps },
-//     ];
-
-
-
-//     const staticProps = getEmptyTableProps({
-//         titleRow: {
-//             columns: columnContent,
-//         },
-//         start: start,
-//         end: end,
-//         tab: ResourceTabsEnum.Routes,
-//         tabCellProps: {},
-//         rightSideContent: <AddRouteButton
-//             saveRouteDoc={SaveRouteDoc}
-//             deleteRouteDoc={DeleteRouteDoc}
-//         />,
-//     });
-
-//     routeDocs.then(({ docs, maxDocsCount }) => {
-//         const awaitedContentProps = {
-//             ...staticProps,
-//             maxRowCount: maxDocsCount,
-//             rows: docs.map((doc) => {
-//                 return {
-//                     columns: columnContent.map(column => {
-//                         return {
-//                             content: doc[column.name],
-//                             cellProps: {
-//                                 colSpan: 1,
-//                             }
-//                         } as const
-//                     }),
-//                     tableRowProps: {
-//                         hover: true,
-//                         sx: { cursor: "pointer" },
-//                         role: "checkbox",
-//                         tabIndex: -1,
-//                         onClick: () => {
-//                             setTableProps({
-//                                 ...awaitedContentProps,
-//                                 rightSideContent: <>
-//                                     {awaitedContentProps.rightSideContent}
-//                                     <EditRouteEffectView
-//                                         saveRouteDoc={SaveRouteDoc}
-//                                         deleteRouteDoc={DeleteRouteDoc}
-//                                         initialValue={{ ...doc }}
-//                                     />
-//                                 </>
-//                             });
-//                         }
-//                     }
-//                 } as const
-//             }),
-//         }
-
-//         setTableProps({ ...awaitedContentProps })
-//     });
-
-//     return { ...staticProps }
-// }
