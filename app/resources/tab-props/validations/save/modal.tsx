@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { PartialKeys } from "@/basic/generics";
 import { PropertyType } from "@/app/components/object-input/types";
 import { useValidationsFormController, useValidationsFormViewController } from "./hooks";
+import { FullScreenDialogController } from "@/app/components/full-screen-dialog-controller";
+import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 
 export interface StateValueType extends Omit<Validation, "validations"> {
     validations: PartialKeys<PropertyType, "value">[]
@@ -49,7 +51,7 @@ export const ValidationFormModal: React.FC<IProps> = React.memo((props) => {
     const onSaveData = useMemoCall(() => {
         const validDoc = getIfValid(true);
         if (validDoc) {
-            
+
             saveValidationDoc(validDoc).then(() => {
                 onClose();
                 router.refresh();
@@ -58,61 +60,21 @@ export const ValidationFormModal: React.FC<IProps> = React.memo((props) => {
             })
         }
     })
+    const onDelete = useMemoArgCall(deleteValidationDoc)
 
     return <>
-        <Dialog
+        <FullScreenDialogController
             open={open}
             onClose={onClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
+            onOpen={onOpen}
+            title={title}
+            onCancel={onClose}
+            onSave={onSaveData}
+            onDelete={value && "id" in value ? onDelete(value.id) : undefined}
         >
-            <Stack minWidth={600} maxWidth={"100vw"} >
-                <DialogTitle id="alert-dialog-title" >
-                    <Stack
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        spacing={2}
-                    >
-                        {title}
-                        <IconButton
-                            aria-label="close"
-                            onClick={onClose}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                    </Stack>
-
-                </DialogTitle>
-                <DialogContent sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 1
-                }}>
-                    <ValidationForm validator={validator} {...props} />
-
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose} disabled={false} variant="outlined">Cancel</Button>
-                    {value && "id" in value && <DeleteButtonModal
-                        title={`Delete "${value.name}" Validation?`}
-                        docId={value.id}
-                        deleteFn={deleteValidationDoc}
-                    />}
-                    <Button
-                        variant="contained"
-                        autoFocus
-                        type="submit"
-                        startIcon={<SaveIcon />}
-                        // disabled={isSavingProcess}
-                        onClick={onSaveData}
-                    >
-
-                        Save
-                    </Button>
-                </DialogActions>
+            <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
+                <ValidationForm validator={validator} {...props} />
             </Stack>
-        </Dialog>
-
+        </FullScreenDialogController>
     </>;
 });

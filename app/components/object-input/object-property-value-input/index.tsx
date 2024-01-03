@@ -96,7 +96,7 @@ export const ObjectPropertyValueInput = React.memo(<O extends PropertyNameViews>
     return <>
         <PropertyNameViewContainer name={name} onRemove={onRemove}>
             {argInputValues?.map((argValueProp, index) => {
-                return <InputsView {...argValueProp} onChange={onChangeArgValue(index)} />
+                return <InputsView key={index} {...argValueProp} onChange={onChangeArgValue(index)} />
             })}
             {argProperties && <>
                 {value.argProperties && <Stack flexBasis={"100%;"} />}

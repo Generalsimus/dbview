@@ -7,6 +7,7 @@ import { DeleteValidationDoc, SaveValidationDoc, getValidations } from "./server
 import { EditValidationsEffectView } from "./save/edit-Validationas-effect-view";
 import { Validation } from "@/basic/models/validation/validation";
 import { AddValidationButton } from "./save/add-button";
+import { map } from "lodash";
 
 
 
@@ -18,13 +19,6 @@ const cellProps = {
     }
 }
 const columns = [
-    // {
-    //     name: "CollSpan",
-    //     content: "OWN",
-    //     cellProps: {
-    //         colSpan: 1,
-    //     }
-    // },
     { name: "name", content: "Name", cellProps: cellProps },
     { name: "description", content: "Description", cellProps: cellProps },
     { name: "properties", content: "Properties", cellProps: cellProps },
@@ -49,9 +43,13 @@ export const getValidationResource = (
 
                 return {
                     columns: columns.map(column => {
-                        return {
+                        const returnValue = {
                             content: doc[column.name],
-                        } as const
+                        }
+                        if (column.name === "properties") {
+                            returnValue.content = map(doc.validations, "propertyName").join(", ")
+                        }
+                        return returnValue;
                     }),
                     rowProps: {
                         hover: true,
