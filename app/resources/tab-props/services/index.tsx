@@ -2,7 +2,7 @@
 
 import { Service } from "@/basic/models/services/services";
 import { ResourceData, ResourceTabsEnum } from "../utils";
-import { getServiceDocs } from "./server";
+import { deleteServiceDoc, getServiceDocs, saveServiceDoc } from "./server";
 import { RowType } from "@/app/components/table/types";
 import { Collapse, IconButton } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -11,6 +11,8 @@ import { Content } from "next/font/google";
 import { TableTataType } from "../hooks";
 import { SetStateAction } from "react";
 import { BorderBottom, BorderTop } from "@mui/icons-material";
+import { EditServiceEffectView } from "./save/edit-service-effect-view";
+import { AddServiceButton } from "./save/add-button";
 
 
 
@@ -41,7 +43,10 @@ export const getServiceResource = (
     start: number,
     end: number): ResourceData<Service> => {
     const serviceDocs = getServiceDocs(start, end);
-    const tabsRightContent = <div>ADD ME</div>
+    const tabsRightContent = <AddServiceButton
+        saveServiceDoc={saveServiceDoc}
+        deleteServiceDoc={deleteServiceDoc}
+    />
     return {
         start: start,
         end: end,
@@ -85,6 +90,25 @@ export const getServiceResource = (
                                 }
                                 return {
                                     content: doc[column.name],
+                                    cellProps: {
+                                        onClick: () => {
+                                            setTableData((curr) => { 
+                                                return {
+                                                    ...curr,
+                                                    tabsRightContent: <>
+                                                        {tabsRightContent}
+                                                        <EditServiceEffectView
+                                                            saveServiceDoc={saveServiceDoc}
+                                                            deleteServiceDoc={deleteServiceDoc}
+                                                            initialValue={{ ...doc }}
+                                                        />
+                                                    </>
+                                                }
+                                            });
+                                        }
+                                        // align: "left" as const,
+                                        // sx: { paddingTop: 0, paddingBottom: 0 }
+                                    }
                                 } as const
                             }),
                             rowProps: {
@@ -96,18 +120,7 @@ export const getServiceResource = (
                                     }
                                 },
                                 role: "checkbox",
-                                tabIndex: -1,
-                                onClick: () => {
-                                    setTableData((curr) => {
-                                        return {
-                                            ...curr,
-                                            tabsRightContent: <>
-                                                {tabsRightContent}
-
-                                            </>
-                                        }
-                                    });
-                                }
+                                tabIndex: -1
                             }
                         },
                         {

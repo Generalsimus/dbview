@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
-import { ValidationForm } from "./form/form";
+import { ValidationForm } from "./form";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 import { useRouter } from "next/navigation";

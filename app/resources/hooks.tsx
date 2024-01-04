@@ -27,7 +27,6 @@ const useHeaderTabsContent = ({ currentTab, tabsRightContent }: TableTataType) =
       alignItems="baseline"
       spacing={2}
       padding="10px"
-      // width={"100%"}
     >
       <Tabs
         value={currentTab}
@@ -46,27 +45,26 @@ const useHeaderTabsContent = ({ currentTab, tabsRightContent }: TableTataType) =
 export const useTableHeader = (resource: TableTataType) => {
   const { columns } = resource;
   const headerTabsContent = useHeaderTabsContent(resource)
-  return {
-    rows: [
-      {
-        columns: [
-          {
-            content: headerTabsContent,
-            cellProps: {
-              padding: "none" as const,
-              sx: {
-                width: "100%"
-              },
-              colSpan: columns.length
+  return useMemo(() => {
+    return {
+      rows: [
+        {
+          columns: [
+            {
+              content: headerTabsContent,
+              cellProps: {
+                padding: "none" as const,
+                colSpan: columns.length
+              }
             }
-          }
-        ],
-      },
-      {
-        columns: columns
-      }
-    ],
-  };
+          ],
+        },
+        {
+          columns: columns
+        }
+      ],
+    };
+  }, [headerTabsContent, columns])
 };
 
 
