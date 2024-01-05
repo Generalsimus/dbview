@@ -20,11 +20,11 @@ export async function getServiceDocs(startIndex: number, endIndex: number) {
     offset: startIndex,
   });
 
-  const fakeDocs: MakeCreate<Service>[] = Array.from({ length: 10 }, () => {
+  const fakeDocs: MakeCreate<Service>[] = Array.from({ length: 1 }, () => {
     return {
       name: "string string",
       description: "string description",
-      methods: Array.from({ length: 15 }, () => {
+      methods: Array.from({ length: 1 }, () => {
         return {
           name: "name_____name",
           descriptions: "descriptions___descriptions",
@@ -43,7 +43,7 @@ export async function getServiceDocs(startIndex: number, endIndex: number) {
 
   return {
     docs: fakeDocs,
-    maxDocsCount: 2000,
+    maxDocsCount: 1,
   };
   //   return {
   //     docs: rows.map((el) => el.dataValues),

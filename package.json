@@ -16,6 +16,7 @@
     "@types/lodash": "^4.14.201",
     "joi": "^17.11.0",
     "lodash": "^4.17.21",
+    "monaco-editor": "^0.45.0",
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",

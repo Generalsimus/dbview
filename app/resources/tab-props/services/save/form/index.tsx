@@ -5,7 +5,7 @@ import { Service } from "@/basic/models/services/services";
 import { InputProps } from "@/basic/generics";
 import { Validator } from "@/app/utils/hooks/useSetProps/create=validation-controller";
 import { DescriptionInput } from "./description-input";
-import { MethodsInput } from "./methods-input";
+import { MethodsInput } from "./trr";
 
 interface IProps extends InputProps<Service> {
     validator: Validator<Service>
