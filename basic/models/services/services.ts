@@ -3,7 +3,7 @@ import Joi from "joi"
 
 interface ServiceMethod {
     name: string,
-    descriptions: string,
+    description: string,
     argValidationIds: number[],
     actionCode: string
 }
@@ -11,7 +11,7 @@ export const ServiceMethodSchema = Joi.object({
     name: Joi.string().required(),
     description: Joi.string().allow("").default(""),
     argValidationIds: Joi.array().items(Joi.number()).default([]),
-    actionCode: Joi.string().required(),
+    actionCode: Joi.string().allow("").required(),
 })
 
 

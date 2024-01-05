@@ -1,16 +1,12 @@
 "use client"
 
 import { Service } from "@/basic/models/services/services";
-import { ResourceData, ResourceTabsEnum } from "../utils";
+import { ResourceData } from "../utils";
 import { deleteServiceDoc, getServiceDocs, saveServiceDoc } from "./server";
-import { RowType } from "@/app/components/table/types";
 import { Collapse, IconButton } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Content } from "next/font/google";
 import { TableTataType } from "../hooks";
-import { SetStateAction } from "react";
-import { BorderBottom, BorderTop } from "@mui/icons-material";
 import { EditServiceEffectView } from "./save/edit-service-effect-view";
 import { AddServiceButton } from "./save/add-button";
 

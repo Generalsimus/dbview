@@ -1,22 +1,11 @@
 "use client"
-import { Button, CircularProgress, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
-import React, { useState, ReactNode, useMemo } from "react";
-import SaveIcon from '@mui/icons-material/SaveAs';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CreateIcon from '@mui/icons-material/Create';
-import CloseIcon from '@mui/icons-material/Close';
+import { FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
+import React, { } from "react";
 import { RequestMethodType, requestMethods } from "@/basic/request";
 import { Route, RouteSchema } from "@/basic/models/route/route";
-import { DeepPartial, PartialKeys } from "@/basic/generics";
-import { useRouter } from "next/navigation";
-import { MakeCreate, MakeCreateOrUpdate, MakeUpdate, getCreateOrUpdateSchema, } from "@/basic/db-basic-schema";
-import { DrawerView } from "./drawer-view";
+import { MakeCreateOrUpdate, getCreateOrUpdateSchema, } from "@/basic/db-basic-schema";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import { useSetProps } from "@/app/utils/hooks/useSetProps";
-import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
-import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 import { useRouteFormViewController, useRouteFormController } from "./hooks";
-// import { FullScreenDialogController } from "../../../../components/full-screen-dialog";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { FullScreenDialogController } from "@/app/components/full-screen-dialog-controller";
 
@@ -55,23 +44,13 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
 
 
 
-    const [isSavingProcess, setIsSavingProcess] = useState(false);
-
-
     const { getIfValid, getError } = getValidation(getCreateOrUpdateSchema(RouteSchema));
 
 
-    const router = useRouter();
-
-
-    const onSave = useMemoCall(() => {
+    const onSave = useMemoCall(async () => {
         const value = getIfValid(true);
         if (value) {
-            saveRouteDoc(value).then(() => {
-                setIsSavingProcess(false);
-                handleClose();
-                router.refresh()
-            })
+            await saveRouteDoc(value)
         }
     })
 
@@ -86,7 +65,6 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
         title={title}
         onCancel={onClose}
         onSave={onSave}
-        isDisabled={isSavingProcess}
         onDelete={value && "id" in value ? onDelete(value.id) : undefined}
     >
         <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>

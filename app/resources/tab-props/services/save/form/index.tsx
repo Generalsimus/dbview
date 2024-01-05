@@ -5,13 +5,15 @@ import { Service } from "@/basic/models/services/services";
 import { InputProps } from "@/basic/generics";
 import { Validator } from "@/app/utils/hooks/useSetProps/create=validation-controller";
 import { DescriptionInput } from "./description-input";
-import { MethodsInput } from "./trr";
+import { MethodsInput } from "./methods-input";
+// import { MethodsInput } from "./trr";
 
 interface IProps extends InputProps<Service> {
     validator: Validator<Service>
 }
+
 export const ServiceForm: React.FC<IProps> = React.memo(({ value = {}, validator, initSetProps, getPropState }) => {
-    const { name, description } = value
+    // const { name, description } = value
 
     return <>
         <NameInput

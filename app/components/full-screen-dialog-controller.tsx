@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
@@ -7,6 +7,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import { Stack } from "@mui/material";
+import { useMemoCall } from "../utils/hooks/useMemoCall";
+import { useToggleBool } from "../utils/hooks/useToggleBool";
+import { useRouter } from "next/navigation";
+import { Backdrop, CircularProgress } from "@mui/material";
+import { useTheme } from "@emotion/react";
 
 interface IProps {
     open?: boolean
@@ -17,7 +22,6 @@ interface IProps {
     onDelete?: () => void
     onSave?: () => void
     onCancel?: () => void
-    isDisabled?: boolean
 }
 export const FullScreenDialogController: React.FC<IProps> = React.memo(({
     open = true,
@@ -28,9 +32,43 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
     onDelete,
     onSave,
     onCancel,
-    isDisabled
 }) => {
+    const [isLoading, initialDefaultValue] = useToggleBool(false);
+    const onLoading = initialDefaultValue(true);
+    const offLoading = initialDefaultValue(false);
+    const router = useRouter();
+
+    const onSafeSave = useMemoCall(async () => {
+        onLoading()
+        try {
+            await onSave?.()
+            onClose?.();
+            router.refresh();
+        } finally {
+            offLoading()
+        }
+    });
+
+    const onSafeDelete = useMemoCall(async () => {
+        onLoading()
+        try {
+            await onDelete?.();
+            onClose?.();
+            router.refresh();
+        } finally {
+            offLoading()
+        }
+    });
+    const isDisabled = isLoading;
+    const theme = useTheme()
+
     return <>
+        <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isLoading}
+        >
+            <CircularProgress color="inherit" />
+        </Backdrop>
         <Dialog
             fullScreen
             open={open}
@@ -59,14 +97,14 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
                     disabled={isDisabled}
                     variant="outlined">Cancel</Button>}
                 {onDelete && <Button
-                    onClick={onDelete}
+                    onClick={onSafeDelete}
                     disabled={isDisabled}
                     variant="contained"
                     autoFocus
                     type="submit"
                     color="error">Delete</Button>}
                 {onSave && <Button
-                    onClick={onSave}
+                    onClick={onSafeSave}
                     disabled={isDisabled}
                     variant="contained">Save</Button>}
             </Stack>

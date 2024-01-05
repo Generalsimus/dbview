@@ -1,6 +1,10 @@
 import { ReactNode, useEffect, useState } from "react"
 import { ResourceTabsEnum, getResourceData } from "./utils"
 import { ColumnType, RowType } from "@/app/components/table/types"
+import { useRouter } from "next/router"
+import { useParams } from "next/navigation"
+// import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation";
 
 
 export interface TableTataType {
@@ -28,6 +32,8 @@ export const useTableData = (
         maxRowCount: 0,
         collapsedIndex: null
     });
+
+    const params = useParams();
     useEffect(() => {
         const { columns, resource, tabsRightContent, updateRows } = getResourceData(tab, start, end);
         setData(curr => {
@@ -50,6 +56,6 @@ export const useTableData = (
         return () => {
             isEjected = true;
         }
-    }, [tab, start, end]);
+    }, [tab, start, end, params]);
     return data;
 }

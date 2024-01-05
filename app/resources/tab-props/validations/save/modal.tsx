@@ -48,16 +48,10 @@ export const ValidationFormModal: React.FC<IProps> = React.memo((props) => {
 
     const router = useRouter();
 
-    const onSaveData = useMemoCall(() => {
+    const onSaveData = useMemoCall(async () => {
         const validDoc = getIfValid(true);
         if (validDoc) {
-
-            saveValidationDoc(validDoc).then(() => {
-                onClose();
-                router.refresh();
-            }).catch(() => {
-
-            })
+            await saveValidationDoc(validDoc)
         }
     })
     const onDelete = useMemoArgCall(deleteValidationDoc)
