@@ -12,9 +12,11 @@ import { MonacoEditor } from "@/app/components/monaco-editor";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
+import Deletecon from '@mui/icons-material/Delete';
 import { AutoResizeField } from "@/app/components/auto-resize-field";
 import { accordionSummaryClasses } from '@mui/material';
 import { MethodNameInput } from "./method-name-input";
+import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 // import { MonacoEditor } from "./trr/monaco-editor";
 // import { MonacoEditor } from "./monaco-editor";
 
@@ -36,6 +38,11 @@ export const MethodsInput: React.FC<IProps> = React.memo(({ value, validator: { 
                 actionCode: ""
             }
         ])
+    });
+    const removeMethod = useMemoArgCall((removeIndex: number) => {
+        const newValue = [...value]
+        newValue.splice(removeIndex, 1);
+        setValue(newValue);
     });
 
     return <>
@@ -60,7 +67,7 @@ export const MethodsInput: React.FC<IProps> = React.memo(({ value, validator: { 
                         }}
 
                     >
-                        <MethodNameInput {...getPropState(index, "name")} />
+                        <MethodNameInput {...getPropState(index)} onRemove={removeMethod(index)} />
                     </AccordionSummary>
                     <AccordionDetails>
                         <MonacoEditor {...getPropState(index, "actionCode")} />

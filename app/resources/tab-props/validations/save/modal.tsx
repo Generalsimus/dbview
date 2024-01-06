@@ -1,16 +1,9 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, TextField } from "@mui/material";
-import React, { useState } from "react";
-import SaveAsIcon from '@mui/icons-material/SaveAs';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
-import CreateIcon from '@mui/icons-material/Create';
-import CloseIcon from '@mui/icons-material/Close';
+import { Stack } from "@mui/material";
+import React from "react";
 import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
-import { useSetProps } from "@/app/utils/hooks/useSetProps";
 import { ValidationForm } from "./form";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import { DeleteButtonModal } from "@/app/components/delete-button-modal";
 import { useRouter } from "next/navigation";
 import { PartialKeys } from "@/basic/generics";
 import { PropertyType } from "@/app/components/object-input/types";
@@ -66,9 +59,9 @@ export const ValidationFormModal: React.FC<IProps> = React.memo((props) => {
             onSave={onSaveData}
             onDelete={value && "id" in value ? onDelete(value.id) : undefined}
         >
-            <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
+            {open && <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
                 <ValidationForm validator={validator} {...props} />
-            </Stack>
+            </Stack>}
         </FullScreenDialogController>
     </>;
 });

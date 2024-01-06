@@ -10,7 +10,7 @@ interface IProps {
 }
 export const MonacoEditor: React.FC<IProps> = React.memo(({ value = "", onChange }) => {
     const { createEditorRef, editor } = useMonacoEditor({
-        value: value,
+        value: Array(200).fill('const ss = 21;').join("\n"),
         language: 'typescript',
         theme: 'vs-dark',
     });
@@ -23,6 +23,8 @@ export const MonacoEditor: React.FC<IProps> = React.memo(({ value = "", onChange
         editor?.onDidChangeModelContent(onChangeCode);
     }, [editor])
     return <>
-        <Box component={"div"} sx={{ height: "50vh", width: "100%" }} ref={createEditorRef} />
+        <Box onWheel={(e) => {
+            e.preventDefault()
+        }} component={"div"} sx={{ height: "50vh", width: "100%" }} ref={createEditorRef} />
     </>;
 });

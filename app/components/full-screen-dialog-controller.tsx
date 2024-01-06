@@ -6,12 +6,13 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { Stack } from "@mui/material";
+import { Stack, useTheme } from "@mui/material";
 import { useMemoCall } from "../utils/hooks/useMemoCall";
 import { useToggleBool } from "../utils/hooks/useToggleBool";
 import { useRouter } from "next/navigation";
 import { Backdrop, CircularProgress } from "@mui/material";
-import { useTheme } from "@emotion/react";
+// import { useTheme } from "@emotion/react";
+import { ApproveModal } from "./approve-modal";
 
 interface IProps {
     open?: boolean
@@ -61,7 +62,8 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
     });
     const isDisabled = isLoading;
     const theme = useTheme()
-
+    console.log({
+    })
     return <>
         <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -91,18 +93,27 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
                 </IconButton>
             </Stack>
             <Stack flex={1}>{children}</Stack>
-            <Stack position={"sticky"} bottom={9} display={"flex"} flexDirection={"row"} gap={2} justifyContent={"flex-end"} padding={1}>
+            <Stack zIndex={theme.zIndex.appBar} bgcolor={theme.palette.background.default} position={"sticky"} bottom={0} display={"flex"} flexDirection={"row"} gap={2} justifyContent={"flex-end"} padding={1}>
                 {onCancel && <Button
                     onClick={onCancel}
                     disabled={isDisabled}
                     variant="outlined">Cancel</Button>}
-                {onDelete && <Button
-                    onClick={onSafeDelete}
-                    disabled={isDisabled}
-                    variant="contained"
-                    autoFocus
-                    type="submit"
-                    color="error">Delete</Button>}
+                {onDelete && <ApproveModal
+                    title="Are you sure to delete?"
+                    approveContent="Delete"
+                    rejectContent="Cancel"
+                    approveButtonColor="error"
+                    onApprove={onSafeDelete}
+                    getModalOpenerNode={(onOpen) => {
+                        return <Button
+                            onClick={onOpen}
+                            disabled={isDisabled}
+                            variant="contained"
+                            autoFocus
+                            type="submit"
+                            color="error">Delete</Button>
+                    }}
+                />}
                 {onSave && <Button
                     onClick={onSafeSave}
                     disabled={isDisabled}

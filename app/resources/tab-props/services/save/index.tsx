@@ -61,8 +61,8 @@ export const EditServiceFormModal: React.FC<IProps> = React.memo((props) => {
         onCancel={onClose}
         onDelete={value && "id" in value ? onDelete(value.id) : undefined}
     >
-        <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
+        {open && <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
             <ServiceForm validator={validator} {...props} />
-        </Stack>
+        </Stack>}
     </FullScreenDialogController>;
 });
