@@ -57,24 +57,6 @@ export const PickOnTop: React.FC<IProps> = React.memo(({ children }) => {
                     </Paper>
                 </Fade>
             })}
-            {/* {pickDataItems.map(el => {
-
-                return <SnackbarContent
-                    message={
-                        <Stack display={"flex"} flexDirection={"row"}>
-                            {el.icon}
-                            <Typography>{el.title}</Typography>
-                        </Stack>
-                    }
-                />
-                // <Paper elevation={4} >
-                //     <ButtonBase sx={{ padding: '5px 10px', display: "flex", cursor: "pointer" }}>
-
-                //         {el.icon}
-                //         <Typography>{el.title}</Typography>
-                //     </ButtonBase>
-                // </Paper>
-            })} */}
         </Stack>
         {children}
     </PickOnTopContext.Provider>;
