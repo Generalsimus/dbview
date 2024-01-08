@@ -16,11 +16,7 @@ import { AutoResizeField } from "@/app/components/auto-resize-field";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { accordionSummaryClasses } from '@mui/material';
 
-// interface IProps extends InputProps<Service["methods"][number]["name"]> {
-//     // validator: Validator<Service>
-// }
 interface IProps extends InputProps<Service["methods"][number]> {
-    // validator: Validator<Service>
     onRemove: () => void
 }
 export const MethodNameInput: React.FC<IProps> = React.memo(({ value, setValue, initSetProps, getPropState, onRemove }) => {
