@@ -6,7 +6,7 @@ import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 // import { Route } from "@/basic/models/route/route";
 import { SaveRouteForm } from ".";
 import { Route } from "@/basic/models/route/route";
-import { useRouteFormController, useRouteFormViewController } from "./hooks";
+import { useRouteFormController_V2 } from "./hooks";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 interface IProps {
@@ -15,13 +15,15 @@ interface IProps {
     initialValue?: MakeCreateOrUpdate<Route>
 }
 export const EditRouteEffectView: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc, initialValue }) => {
-    const formViewController = useRouteFormViewController();
-    const formController = useRouteFormController(initialValue);
+
+    const from = useRouteFormController_V2()
 
     useEffect(() => {
         if (initialValue) {
-            formController.setValue(initialValue)
-            formViewController.onOpen();
+            from.setValue({
+                open: true,
+                doc: initialValue
+            })
         }
     }, [initialValue])
     return <>
@@ -29,8 +31,7 @@ export const EditRouteEffectView: React.FC<IProps> = React.memo(({ saveRouteDoc,
             title="Edit Route"
             saveRouteDoc={saveRouteDoc}
             deleteRouteDoc={deleteRouteDoc}
-            {...formViewController}
-            {...formController}
+            {...from}
         />
     </>
 });

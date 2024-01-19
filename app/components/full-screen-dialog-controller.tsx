@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { Backdrop, CircularProgress } from "@mui/material";
 // import { useTheme } from "@emotion/react";
 import { ApproveModal } from "./approve-modal";
+import { PickOnTop } from "./pick-on-top";
 
 interface IProps {
     open?: boolean
@@ -81,7 +82,7 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
                 <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                     {title}
                 </Typography>
-
+                <PickOnTop />
                 <IconButton
                     edge="start"
                     color="inherit"

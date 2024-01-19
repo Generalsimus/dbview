@@ -5,14 +5,15 @@ import { RequestMethodType, requestMethods } from "@/basic/request";
 import { Route, RouteSchema } from "@/basic/models/route/route";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema, } from "@/basic/db-basic-schema";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import { useRouteFormViewController, useRouteFormController } from "./hooks";
+import { useRouteFormController_V2 } from "./hooks";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { FullScreenDialogController } from "@/app/components/full-screen-dialog-controller";
+import { getBasicRouteDoc } from "./utils";
 
 
-type ExtendsControllers = ReturnType<typeof useRouteFormViewController> & ReturnType<typeof useRouteFormController>
+// type ExtendsControllers = 
 
-interface IProps extends ExtendsControllers {
+interface IProps extends ReturnType<typeof useRouteFormController_V2> {
     saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>;
     deleteRouteDoc: (id: number) => Promise<void>;
     title: string;
@@ -26,32 +27,43 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
     title,
     value,
     setValue,
+    setProps,
     initSetProps,
-    clearState,
-    getValidation,
-    onClose,
-    onOpen,
-    open
+    // getBasicRouteDoc,
+    // clearState,
+    // getValidation,
+    // onClose,
+    // onOpen,
+    // open
 }) => {
-    const { name, path, method, description } = value || {};
+    const { doc: { name, path, method, description }, open } = value;
 
 
 
-    const handleClose = useMemoCall(() => {
-        clearState();
-        onClose();
+    const onClose = useMemoCall(() => {
+        setValue({
+            open: false,
+            doc: getBasicRouteDoc()
+        })
     });
+    const onOpen = useMemoCall(() => {
+        setProps("open")(true);
+    });
+    // const handleClose = useMemoCall(() => {
+    //     clearState();
+    //     onClose();
+    // });
 
 
 
-    const { getIfValid, getError } = getValidation(getCreateOrUpdateSchema(RouteSchema));
+    // const { getIfValid, getError } = getValidation(getCreateOrUpdateSchema(RouteSchema));
 
 
     const onSave = useMemoCall(async () => {
-        const value = getIfValid(true);
-        if (value) {
-            await saveRouteDoc(value)
-        }
+        // const value = getIfValid(true);
+        // if (value) {
+        //     await saveRouteDoc(value)
+        // }
     })
 
 
@@ -70,7 +82,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
         <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
             <TextField
                 value={name}
-                onChange={initSetProps("target", "value")("name")}
+                onChange={initSetProps("target", "value")("doc", "name")}
                 autoFocus
                 margin="dense"
                 id="name"
@@ -78,7 +90,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
                 type="text"
                 fullWidth
                 variant="filled"
-                {...getError("name")}
+            // {...getError("name")}
             />
             <FormControl variant="filled" fullWidth>
                 <InputLabel id="demo-simple-select-label">Method</InputLabel>
@@ -89,8 +101,8 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
                     name="method"
                     value={method}
                     label="Method"
-                    onChange={initSetProps("target", "value")("method")}
-                    {...getError("method")}
+                    onChange={initSetProps("target", "value")("doc", "method")}
+                // {...getError("method")}
                 >
                     {requestMethods.map((method: RequestMethodType[number]) => {
                         return <MenuItem key={method} value={method}>{method}</MenuItem>
@@ -103,12 +115,12 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
                 id="path"
                 name="path"
                 value={path}
-                onChange={initSetProps("target", "value")("path")}
+                onChange={initSetProps("target", "value")("doc", "path")}
                 label="Path"
                 type="text"
                 fullWidth
                 variant="filled"
-                {...getError("path")}
+            // {...getError("path")}
             />
             <TextField
                 autoFocus
@@ -117,13 +129,13 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
                 label="Description"
                 name="description"
                 value={description}
-                onChange={initSetProps("target", "value")("description")}
+                onChange={initSetProps("target", "value")("doc", "description")}
                 minRows={2}
                 type="text"
                 fullWidth
                 variant="filled"
                 multiline
-                {...getError("description")}
+            // {...getError("description")}
             />
 
         </Stack>

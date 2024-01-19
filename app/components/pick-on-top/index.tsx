@@ -1,63 +1,52 @@
 "use client"
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import React, { ReactNode, createContext, useState } from "react";
+import React, { useRef, useState } from 'react';
+import { useMemoCall } from '@/app/utils/hooks/useMemoCall';
+import PushPinIcon from '@mui/icons-material/PushPin';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ButtonBase, Fade, Paper, Stack, Typography, Zoom } from "@mui/material";
-import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
-
-
-interface PickData {
-    icon: ReactNode,
-    title: string
-    onClick: () => void
-}
-type PickOnTopContextType = (pick: PickData) => void
-
-export const PickOnTopContext = createContext<PickOnTopContextType>(() => { })
+import { ButtonBase, IconButton, Paper, Stack, Typography } from '@mui/material';
+import { useToggleBool } from '@/app/utils/hooks/useToggleBool';
+import { useSnackbarContent } from '../snack-bar/hooks';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface IProps {
-    children: ReactNode
 }
-export const PickOnTop: React.FC<IProps> = React.memo(({ children }) => {
-    const [pickDataItems, setPickDataItems] = useState<PickData[]>([
-        {
-            icon: <DeleteIcon />,
-            title: "Delete",
-            onClick: () => { }
-        },
-        {
-            icon: <DeleteIcon />,
-            title: "Delete",
-            onClick: () => { }
-        },
-        {
-            icon: <DeleteIcon />,
-            title: "Delete",
-            onClick: () => { }
+export const PickOnTop: React.FC<IProps> = React.memo(({ }) => {
+    const [isPined, setIsPined] = useState(false);
+    const unpinRef = useRef(() => { })
+
+    const addSnackbarContent = useSnackbarContent()
+    const sectionId = "PickOnTop"
+
+    const onTogglePin = useMemoCall(() => {
+        setIsPined(!isPined);
+
+        if (isPined) {
+            unpinRef.current?.();
+            return undefined
         }
-    ])
+        const removeItem = addSnackbarContent({
+            content: <Paper elevation={4} >
+                <ButtonBase sx={{ display: "flex", flexDirection: "row", alignItems: "center", padding: '5px 10px' }} onClick={() => {
 
-    const addPickDataItem = useMemoCall((newItem: PickData) => {
-        setPickDataItems([
-            newItem,
-            ...pickDataItems,
-        ])
+                }}>
+                    <DeleteIcon />
+                    <Typography>Delete</Typography>
+                    <IconButton size="small" onClick={(e) => {
+                        removeItem()
+                    }}>
+                        <CloseIcon />
+                    </IconButton>
+                </ButtonBase>
+            </Paper>
+        }, sectionId);
+
+        unpinRef.current = removeItem;
     })
-    return <PickOnTopContext.Provider value={addPickDataItem}>
-        <Stack position="fixed" bottom={20} left={20} gap={1} zIndex={(theme) => theme.zIndex.tooltip}>
 
-            {pickDataItems.map(el => {
 
-                return <Fade in={true}>
-                    <Paper elevation={4} >
-                        <ButtonBase sx={{ padding: '5px 10px', display: "flex", cursor: "pointer" }}>
-                            {el.icon}
-                            <Typography>{el.title}</Typography>
-                        </ButtonBase>
-                    </Paper>
-                </Fade>
-            })}
-        </Stack>
-        {children}
-    </PickOnTopContext.Provider>;
+    return <>
+        <IconButton size="small" onClick={onTogglePin}>
+            <PushPinIcon sx={{ transform: `rotate(${isPined ? 0 : 45}deg)`, fill: isPined ? "blue" : undefined, transition: "ease-in-out .2s" }} />
+        </IconButton>
+    </>;
 });
