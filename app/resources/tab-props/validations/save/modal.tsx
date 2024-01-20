@@ -28,24 +28,24 @@ export const ValidationFormModal: React.FC<IProps> = React.memo((props) => {
         onOpen,
         onClose,
         // initialValue,
-        getValidation,
+        // getValidation,
         value,
         saveValidationDoc,
         deleteValidationDoc
     } = props;
 
 
-    const validator = getValidation(getCreateOrUpdateSchema(ValidationSchema));
+    // const validator = getValidation(getCreateOrUpdateSchema(ValidationSchema));
 
-    const { getIfValid, getError } = validator;
+    // const { getIfValid, getError } = validator;
 
     const router = useRouter();
 
     const onSaveData = useMemoCall(async () => {
-        const validDoc = getIfValid(true);
-        if (validDoc) {
-            await saveValidationDoc(validDoc)
-        }
+        // const validDoc = getIfValid(true);
+        // if (validDoc) {
+        //     await saveValidationDoc(validDoc)
+        // }
     })
     const onDelete = useMemoArgCall(deleteValidationDoc)
 
@@ -60,7 +60,7 @@ export const ValidationFormModal: React.FC<IProps> = React.memo((props) => {
             onDelete={value && "id" in value ? onDelete(value.id) : undefined}
         >
             {open && <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
-                <ValidationForm validator={validator} {...props} />
+                <ValidationForm  {...props} />
             </Stack>}
         </FullScreenDialogController>
     </>;

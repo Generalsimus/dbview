@@ -34,6 +34,7 @@ export const useTableData = (
     });
 
     const params = useParams();
+    
     useEffect(() => {
         const { columns, resource, tabsRightContent, updateRows } = getResourceData(tab, start, end);
         setData(curr => {

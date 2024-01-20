@@ -1,61 +1,79 @@
+import { CreateObjectWithValue, GetObjectNestedValue } from "@/basic/generics"
+import { validate, validateErrorToObject } from "@/utils"
+import Joi, { AnySchema, ValidationResult } from "joi"
 import { Dispatch, SetStateAction } from "react"
-import { ValidateRefCacheType, createValidationController } from "./create=validation-controller"
-import { AnySchema } from "joi"
-import { CreateObjectWithValue, GetObjectNestedValue, JoiSchemaValue } from "@/basic/generics"
-import { Validator } from "./create=validation-controller"
-// import { Validator } from "sequelize"
-
-// export type WrapDispatch<O extends any> = O extends any ? Dispatch<SetStateAction<O>> : Dispatch<SetStateAction<O>>
-
+import { IndexedDBController } from "../../indexedDb"
+import { Anybody } from "next/font/google"
+// import { ValidationRes } from "./create-validation-controller"
+type Error = {
+    error: true,
+    helperText: string | undefined,
+} | {
+    error: false,
+    helperText: undefined,
+}
+export interface ValidationRes<S> {
+    getError: (...path: PropertyKey[]) => Error
+    getIfValid: (effectErrorView?: boolean) => S
+    // getPropValidation: <KEYS extends PropertyKey[]>(...propertyKeys: KEYS) => ValidationRes<GetObjectNestedValue<S, KEYS>> 
+}
 export interface SetPropsRes<S> {
     value: S
-    setValue: Dispatch<SetStateAction<S>>,
-    setDefault: (defaultValue: SetStateAction<S>) => void
-
-
+    setValue: (newValueOrAction: SetStateAction<S>) => S,
     setProps: <SetPropKeys extends PropertyKey[]>(...setPropKeys: SetPropKeys) => (newValue: SetStateAction<GetObjectNestedValue<S, SetPropKeys>>) => void
     initSetProps: <InitialKeys extends PropertyKey[]>(
         ...initialValueKeys: InitialKeys
     ) => <SetPropKeys extends readonly PropertyKey[]>(
         ...setPropKeys: SetPropKeys
     ) => (insiderObj: CreateObjectWithValue<InitialKeys, SetStateAction<GetObjectNestedValue<S, SetPropKeys>>>) => void
-    getValidation: <schemaType extends AnySchema>(schema: schemaType, showErrorAfterChange?: boolean) => Validator<JoiSchemaValue<schemaType>>
-    getPropState: <KEYS extends PropertyKey[]>(...propertyKeys: KEYS) => SetPropsRes<GetObjectNestedValue<S, KEYS>>
+    getPropState: <KEYS extends readonly PropertyKey[]>(...propertyKeys: KEYS) => SetPropsRes<GetObjectNestedValue<S, KEYS>>
+    getValidation: <D>(schema?: AnySchema<D>) => ValidationRes<D>
 }
-
-export type NewRefCacheType<T extends any> = {
-    cache?: SetPropsRes<T>,
-    validationCache?: ValidateRefCacheType<any>,
-    childRefCache: Partial<{
-        [K in keyof T]: NewRefCacheType<T[K]>
-    }>
-}
+// type PropKeysGeneric<O extends any> = O extends object ? ({ [K in keyof O]: [K, ...PropKeysGeneric<O[K]>] | [K] | [] }[keyof O]) : any[]
 
 
-export const createSetPropController = <State extends unknown>(
-    value: State,
-    originalSetState: Dispatch<SetStateAction<State>>,
-    refCache: NewRefCacheType<State>
-): SetPropsRes<State> => {
 
-    let currentSetPropController: SetPropsRes<State> = refCache.cache ||= {
-        value: value,
-        setValue: (newValue) => {
+export const createSetPropController = <S extends any>(
+    state: S,
+    onChangeState: (newSTate: S) => void,
+    cacheUniqId: string,
+    prevController?: SetPropsRes<S>,
+    pathHierarchy: PropertyKey[] = [],
+) => {
+    if (prevController) {
+        prevController.value = state;
+        return prevController;
+    }
+    // const controllerId = pathHierarchy.join("_") + cacheUniqId;
 
-            return originalSetState((oldValue) => {
-                const newValueRes = newValue instanceof Function ? newValue(oldValue) : newValue;
-                refCache.cache = currentSetPropController = {
-                    ...currentSetPropController,
-                    value: newValueRes
-                };
+    const childPropControllers: { [K in keyof S]?: SetPropsRes<S[K]> } = {};
+    let showErrors = false;
+    // const validationCache: {
+    //     controller: ValidationRes<S>,
+    //     schema: unknown
+    // } | undefined
 
-                return newValueRes;
-            });
-        },
-        setDefault(defaultValue: SetStateAction<State>) {
-            return () => {
-                currentSetPropController.setValue(defaultValue);
+    let prevSchema: AnySchema | undefined
+
+    const controller: SetPropsRes<S> = {
+        value: state,
+        setValue: (newValueOrAction) => {
+            let newValue = newValueOrAction instanceof Function ? newValueOrAction(controller.value) : newValueOrAction;
+
+            if (newValue instanceof Array) {
+                newValue = [...newValue] as S;
+            } else if (typeof newValue === "object") {
+                newValue = { ...newValue };
             }
+            if (controller.value !== newValue) {
+                showErrors = true
+            }
+            controller.value = newValue;
+            onChangeState(newValue);
+            return newValue;
+        },
+        setProps(...setPropKeys) {
+            return controller.getPropState(...setPropKeys).setValue
         },
         initSetProps(...initialValueKeys) {
 
@@ -68,52 +86,103 @@ export const createSetPropController = <State extends unknown>(
                     }
 
 
-                    currentSetPropController.setProps(...setPropKeys)(newValue);
+                    controller.setProps(...setPropKeys)(newValue);
                 }
             }
         },
-        setProps(...setPropKeys) {
-            return currentSetPropController.getPropState(...setPropKeys).setValue
-        },
-        getPropState(...propertyKeys) {
+        // load
+        // state: S,
+        // onChangeState: (newSTate: S) => void,
+        // pathHierarchy: PropertyKey[] = [],
+        // cacheUniqId: string,
+        // prevController?: SetPropsRes<S>
+        getPropState: (...propertyKeys): SetPropsRes<any> => {
+            if (propertyKeys.length === 0) return controller;
 
-            let propertyRefCache: NewRefCacheType<any> = refCache
-            let propertySetPropController: SetPropsRes<any> = currentSetPropController
-            for (const property of propertyKeys) {
-                const propertyLocalRefCache: NewRefCacheType<any> = propertyRefCache.childRefCache[property as any] ||= {
-                    cache: undefined,
-                    childRefCache: {}
-                };
-                const propertyLocalSetPropController: SetPropsRes<any> = propertySetPropController;
+            const [propertyKey, ...childProperties] = propertyKeys;
+            const propertyController = createSetPropController(controller.value[propertyKey], (newValue) => {
+                controller.value[propertyKey] = newValue;
 
-                propertyRefCache = propertyLocalRefCache;
+                controller.setValue(controller.value);
 
-                propertySetPropController = propertyLocalRefCache.cache ||= createSetPropController(propertyLocalSetPropController.value?.[property], (newValue) => {
+                return newValue
+            }, childPropControllers[propertyKey]);
 
-                    propertyLocalSetPropController.setValue((old: any): any => {
-                        if (old) {
-                            old[property] = newValue instanceof Function ? newValue(old[property]) : newValue;
-                        }
+            childPropControllers[propertyKey] = propertyController;
 
-                        if (old instanceof Array) {
-                            return [...old];
-                        } else if (old) {
-                            return { ...old };
-                        }
-                        return old
-                    });
+            if (childProperties.length) {
+                return propertyController.getPropState(...childProperties)
 
-                }, propertyLocalRefCache);
-                propertySetPropController.value = propertyLocalSetPropController.value?.[property];
             }
-
-            return propertySetPropController;
+            return propertyController;
         },
-        getValidation(schema, showErrorAfterChange = true) {
-            return createValidationController(refCache, schema, showErrorAfterChange);
+        getValidation: (schema) => {
+            // prevSchema = schema
+            // if (!prevSchema || prevSchema !== schema) {
+            //     prevSchema = schema
+            // }
+            console.log({ schema })
+            const validationResult = schema ? validate(schema, {}) : undefined;
+            const errors = validationResult?.error ? validateErrorToObject([validationResult.error]) : undefined
+            const sss = validateErrorToObject()
+            // const validate
+            return {
+                getError: (...errorPaths) => {
+                    // let validationResult = refCache.validateResult;
+
+                    if (showErrors && validationResult?.error) {
+
+                        // const key = errorPaths.join("|");
+                        // if (showErrorAfterChange && !isKeyChangeEffect[key]) {
+                        //     // if (isEqual(
+                        //     //     get(stateValue, errorPaths),
+                        //     //     get(stateRefCache.cache?.value, errorPaths)
+                        //     // )) {
+
+                        //     return {
+                        //         error: false,
+                        //         helperText: undefined,
+                        //     } as const
+                        //     // } else {
+                        //     //     isKeyChangeEffect[key] = true;
+                        //     // }
+
+                        // }
+                        const { error: { details } } = validationResult;
+
+                        detailsLoop: for (const detail of details) {
+                            indexingLoop: for (let index = 0; index < errorPaths.length; index++) {
+                                const pathName = errorPaths[index];
+                                if (pathName != detail.path[index]) {
+                                    continue detailsLoop;
+                                    break indexingLoop;
+                                }
+                            }
+
+                            return {
+                                error: true,
+                                helperText: detail.message,
+                            } as const
+                        }
+
+                    }
+
+                    return {
+                        error: false,
+                        helperText: undefined,
+                    } as const
+                },
+                // (path) => {
+                //     console.log(pathHierarchy, path)
+                // },
+                getIfValid: (effectErrorView = false): any => { },
+                // getPropValidation: (path: PropertyKey[]) => void
+                // getIfValid: () => S
+                // getPropValidation: <KEYS extends PropertyKey[]>(...propertyKeys: KEYS) => ValidationRes<GetObjectNestedValue<S, KEYS>>
+            }
         }
     }
-    return currentSetPropController
-}
 
 
+    return controller;
+};

@@ -1,4 +1,4 @@
-import { Validator } from "@/app/utils/hooks/useSetProps/create=validation-controller";
+// import { Validator } from "@/app/utils/hooks/useSetProps/create=validation-controller";
 import { InputProps } from "@/basic/generics";
 import { Service } from "@/basic/models/services/services";
 import React, { useState } from "react";
@@ -25,9 +25,9 @@ import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 // argValidationIds: number[],
 // actionCode: string
 interface IProps extends InputProps<Service["methods"]> {
-    validator: Validator<Service>
+    // validator: Validator<Service>
 }
-export const MethodsInput: React.FC<IProps> = React.memo(({ value, validator: { getError }, setValue, initSetProps, getPropState }) => {
+export const MethodsInput: React.FC<IProps> = React.memo(({ value, getValidation, setValue, initSetProps, getPropState }) => {
     const addEmptyMethod = useMemoCall(() => {
         setValue([
             ...value,
@@ -44,6 +44,7 @@ export const MethodsInput: React.FC<IProps> = React.memo(({ value, validator: { 
         newValue.splice(removeIndex, 1);
         setValue(newValue);
     });
+    // const { } = getValidation()
 
     return <>
         <div>

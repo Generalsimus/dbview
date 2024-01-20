@@ -1,4 +1,4 @@
-import { Validator } from "@/app/utils/hooks/useSetProps/create=validation-controller";
+// import { Validator } from "@/app/utils/hooks/useSetProps/create=validation-controller";
 import { DeepPartial, InputProps } from "@/basic/generics";
 import { Validation } from "@/basic/models/validation/validation";
 import { TextField } from "@mui/material";
@@ -7,11 +7,11 @@ import { ValidationsInput } from "./validations-input";
 import { StateValueType } from "../modal";
 
 interface IProps extends InputProps<StateValueType> {
-    validator: Validator<StateValueType>
+    // validator: Validator<StateValueType>
 }
-export const ValidationForm: React.FC<IProps> = React.memo(({ value = {}, validator: { getError }, initSetProps, getPropState }) => {
+export const ValidationForm: React.FC<IProps> = React.memo(({ value = {}, getValidation, initSetProps, getPropState }) => {
     const { name, description } = value
-
+    const { getError } = getValidation()
 
     return <>
 

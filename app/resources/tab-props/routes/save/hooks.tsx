@@ -1,4 +1,4 @@
-import { useForm } from "@/app/utils/hooks/useForm";
+// import { useForm } from "@/app/utils/hooks/useSetProps";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
@@ -14,7 +14,7 @@ interface FormType {
 }
 export const useRouteFormController_V2 = () => {
     // useForm
-    const form = useForm<FormType>(() => ({
+    const form = useSetProps<FormType>(() => ({
         open: false,
         doc: getBasicRouteDoc()
     }));

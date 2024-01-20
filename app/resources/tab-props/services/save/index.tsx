@@ -38,11 +38,11 @@ export const EditServiceFormModal: React.FC<IProps> = React.memo((props) => {
 
     const validator = getValidation(getCreateOrUpdateSchema(ServiceSchema));
     const { getIfValid, getError } = validator;
-
+    // console.log(validator)
 
 
     const onSave = useMemoCall(async () => {
-        const validDoc = getIfValid(true);
+        const validDoc = getIfValid();
         if (validDoc) {
 
             await saveServiceDoc(validDoc);
@@ -62,7 +62,7 @@ export const EditServiceFormModal: React.FC<IProps> = React.memo((props) => {
         onDelete={value && "id" in value ? onDelete(value.id) : undefined}
     >
         {open && <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
-            <ServiceForm validator={validator} {...props} />
+            <ServiceForm   {...props} />
         </Stack>}
     </FullScreenDialogController>;
 });
