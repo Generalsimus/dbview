@@ -1,26 +1,16 @@
 "use client"
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import Backdrop from '@mui/material/Backdrop';
 import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import { Stack, Typography } from '@mui/material';
-import Grow from '@mui/material/Grow';
-import Collapse from '@mui/material/Collapse';
-import Paper from '@mui/material/Paper';
 import Card from '@mui/material/Card';
 import Slide from '@mui/material/Slide';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 
 const actions = [
@@ -39,7 +29,7 @@ export const SettingsView: React.FC<IProps> = React.memo(({ }) => {
 
   return (
     <>
-      <Backdrop open={open} />
+      {/* <Backdrop open={open} /> */}
       <SpeedDial
         ariaLabel="SpeedDial tooltip example"
         // sx={{ position: 'absolute', bottom: 16, right: 16 }}

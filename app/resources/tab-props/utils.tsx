@@ -8,6 +8,8 @@ import { Service } from "@/basic/models/services/services";
 import { Route } from "@/basic/models/route/route";
 import { TableTataType } from "./hooks";
 import { getValidationResource } from "./validations";
+import { NextRouter } from "next/router";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const enum ResourceTabsEnum {
   Routes = "Routes",
@@ -137,15 +139,16 @@ export const getResourceData = (
   tab: ResourceTabsEnum,
   start: number,
   end: number,
+  router: AppRouterInstance
 ) => {
   switch (tab) {
     case ResourceTabsEnum.Routes:
-      return getRouteResource(start, end);
+      return getRouteResource(start, end, router);
     case ResourceTabsEnum.Services:
-      return getServiceResource(start, end);
+      return getServiceResource(start, end, router);
     case ResourceTabsEnum.Validations:
-      return getValidationResource(start, end);
+      return getValidationResource(start, end, router);
   };
 
-  return getRouteResource(start, end);
+  return getRouteResource(start, end, router);
 }

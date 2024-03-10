@@ -1,19 +1,18 @@
 import { FullScreenDialogController } from "@/app/components/full-screen-dialog-controller";
-import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { Service, ServiceSchema } from "@/basic/models/services/services";
-import React, { useState } from "react";
-import { useServiceFormController, useServiceFormViewController } from "./hooks";
-import { Stack, TextField } from "@mui/material";
+import React from "react";
+import { useServiceFormController_V2 } from "./hooks";
+import { Stack } from "@mui/material";
 import { ServiceForm } from "./form";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
+import { getBasicServiceDoc } from "./utils";
 
 
-type ExtendsControllers = ReturnType<typeof useServiceFormViewController> & ReturnType<typeof useServiceFormController>
+type ExtendsControllers = ReturnType<typeof useServiceFormController_V2>
 
 interface IProps extends ExtendsControllers {
-    // interface IProps {
     saveServiceDoc: (value: MakeCreateOrUpdate<Service>) => Promise<void>;
     deleteServiceDoc: (id: number) => Promise<void>;
     title: string;
@@ -26,25 +25,30 @@ export const EditServiceFormModal: React.FC<IProps> = React.memo((props) => {
         value,
         setValue,
         initSetProps,
-        clearState,
+        setProps,
         getValidation,
-        onClose,
-        onOpen,
-        open
+        getPropState,
     } = props;
 
-    const { name, description } = value || {};
+    const { open } = value
 
 
-    const validator = getValidation(getCreateOrUpdateSchema(ServiceSchema));
+    const validator = getPropState("doc").getValidation(getCreateOrUpdateSchema(ServiceSchema));
     const { getIfValid, getError } = validator;
-    // console.log(validator)
-
+    const onClose = useMemoCall(() => {
+        setValue({
+            open: false,
+            doc: getBasicServiceDoc()
+        })
+    });
+    const onOpen = useMemoCall(() => {
+        setProps("open")(true);
+    });
 
     const onSave = useMemoCall(async () => {
-        const validDoc = getIfValid();
+        const validDoc = getIfValid(true);
+        console.log({ validDoc })
         if (validDoc) {
-
             await saveServiceDoc(validDoc);
         }
     });
@@ -55,6 +59,7 @@ export const EditServiceFormModal: React.FC<IProps> = React.memo((props) => {
     return <FullScreenDialogController
         open={open}
         onClose={onClose}
+        disableEffectClose={validator.hasError()}
         onOpen={onOpen}
         title={title}
         onSave={onSave}
@@ -62,7 +67,7 @@ export const EditServiceFormModal: React.FC<IProps> = React.memo((props) => {
         onDelete={value && "id" in value ? onDelete(value.id) : undefined}
     >
         {open && <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
-            <ServiceForm   {...props} />
+            <ServiceForm   {...getPropState("doc")} />
         </Stack>}
     </FullScreenDialogController>;
 });

@@ -7,8 +7,10 @@ import { Collapse, IconButton } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { TableTataType } from "../hooks";
-import { EditServiceEffectView } from "./save/edit-service-effect-view";
+import { EditServiceView } from "./save/edit-service-view";
 import { AddServiceButton } from "./save/add-button";
+import { serviceStorage } from "./save/utils";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
 
@@ -37,12 +39,20 @@ const columns = [
 ]
 export const getServiceResource = (
     start: number,
-    end: number): ResourceData<Service> => {
+    end: number,
+    router: AppRouterInstance
+): ResourceData<Service> => {
     const serviceDocs = getServiceDocs(start, end);
-    const tabsRightContent = <AddServiceButton
-        saveServiceDoc={saveServiceDoc}
-        deleteServiceDoc={deleteServiceDoc}
-    />
+    const tabsRightContent = <>
+        <EditServiceView
+            saveServiceDoc={saveServiceDoc}
+            deleteServiceDoc={deleteServiceDoc}
+        />
+        <AddServiceButton
+            saveServiceDoc={saveServiceDoc}
+            deleteServiceDoc={deleteServiceDoc}
+        />
+    </>
     return {
         start: start,
         end: end,
@@ -87,20 +97,12 @@ export const getServiceResource = (
                                 return {
                                     content: doc[column.name],
                                     cellProps: {
-                                        onClick: () => {
-                                            setTableData((curr) => { 
-                                                return {
-                                                    ...curr,
-                                                    tabsRightContent: <>
-                                                        {tabsRightContent}
-                                                        <EditServiceEffectView
-                                                            saveServiceDoc={saveServiceDoc}
-                                                            deleteServiceDoc={deleteServiceDoc}
-                                                            initialValue={{ ...doc }}
-                                                        />
-                                                    </>
-                                                }
-                                            });
+                                        onClick: async () => {
+                                            const searchParams = new URLSearchParams(window.location.search);
+                                            const savedDoc = await serviceStorage.add({ ...doc })
+                                            searchParams.set("form", `${savedDoc.INDEXED_DB_SERVICE_ID}`)
+                                            router.push(`${window.location.pathname}?${searchParams}`)
+
                                         }
                                         // align: "left" as const,
                                         // sx: { paddingTop: 0, paddingBottom: 0 }

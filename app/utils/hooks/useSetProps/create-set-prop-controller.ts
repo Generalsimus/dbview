@@ -1,6 +1,6 @@
-import { CreateObjectWithValue, GetObjectNestedValue } from "@/basic/generics"
+import { CreateObjectWithValue, GetObjectNestedValue, JoiSchemaValue } from "@/basic/generics"
 import { validate, validateErrorToObject } from "@/utils"
-import Joi, { AnySchema, ValidationResult } from "joi"
+import Joi, { AnySchema, ValidationResult, boolean } from "joi"
 import { Dispatch, SetStateAction } from "react"
 import { IndexedDBController } from "../../indexedDb"
 import { Anybody } from "next/font/google"
@@ -13,13 +13,16 @@ type Error = {
     helperText: undefined,
 }
 export interface ValidationRes<S> {
-    getError: (...path: PropertyKey[]) => Error
-    getIfValid: (effectErrorView?: boolean) => S
+    getError: (...path: PropertyKey[]) => Error,
+    toggleShowError: (showErrors?: boolean) => boolean
+    hasError: () => boolean
+    getIfValid: (showErrors?: boolean) => S | undefined
     // getPropValidation: <KEYS extends PropertyKey[]>(...propertyKeys: KEYS) => ValidationRes<GetObjectNestedValue<S, KEYS>> 
 }
 export interface SetPropsRes<S> {
     value: S
     setValue: (newValueOrAction: SetStateAction<S>) => S,
+    // saveIndexedDB: (id: string) => void
     setProps: <SetPropKeys extends PropertyKey[]>(...setPropKeys: SetPropKeys) => (newValue: SetStateAction<GetObjectNestedValue<S, SetPropKeys>>) => void
     initSetProps: <InitialKeys extends PropertyKey[]>(
         ...initialValueKeys: InitialKeys
@@ -38,8 +41,10 @@ export const createSetPropController = <S extends any>(
     onChangeState: (newSTate: S) => void,
     cacheUniqId: string,
     prevController?: SetPropsRes<S>,
+    parentController?: SetPropsRes<S>,
     pathHierarchy: PropertyKey[] = [],
 ) => {
+    // console.log("CREATEEEEEEEE", prevController)
     if (prevController) {
         prevController.value = state;
         return prevController;
@@ -48,12 +53,10 @@ export const createSetPropController = <S extends any>(
 
     const childPropControllers: { [K in keyof S]?: SetPropsRes<S[K]> } = {};
     let showErrors = false;
-    // const validationCache: {
-    //     controller: ValidationRes<S>,
-    //     schema: unknown
-    // } | undefined
+    let needValidate = true;
 
-    let prevSchema: AnySchema | undefined
+    let validationResult: Joi.ValidationResult<any> | undefined
+    let validatorCache: ValidationRes<any> | undefined
 
     const controller: SetPropsRes<S> = {
         value: state,
@@ -67,11 +70,19 @@ export const createSetPropController = <S extends any>(
             }
             if (controller.value !== newValue) {
                 showErrors = true
+                needValidate = true;
             }
             controller.value = newValue;
             onChangeState(newValue);
             return newValue;
         },
+        // saveIndexedDB(id = "SAdas") {
+        //     const db = new IndexedDBController(id + "___", 1)
+        //     // db
+        //     console.log(`Object.keys(controller.value || {}) `, Object.keys(controller.value || {}))
+        //     const storage = db.createStorage(id, { autoIncrement: true, keyPath: "KEY_ID" })
+        //     storage.add(controller.value)
+        // },
         setProps(...setPropKeys) {
             return controller.getPropState(...setPropKeys).setValue
         },
@@ -96,6 +107,13 @@ export const createSetPropController = <S extends any>(
         // pathHierarchy: PropertyKey[] = [],
         // cacheUniqId: string,
         // prevController?: SetPropsRes<S>
+
+
+        // state: S,
+        // onChangeState: (newSTate: S) => void,
+        // cacheUniqId: string,
+        // prevController?: SetPropsRes<S>,
+        // pathHierarchy: PropertyKey[] = [],
         getPropState: (...propertyKeys): SetPropsRes<any> => {
             if (propertyKeys.length === 0) return controller;
 
@@ -106,7 +124,7 @@ export const createSetPropController = <S extends any>(
                 controller.setValue(controller.value);
 
                 return newValue
-            }, childPropControllers[propertyKey]);
+            }, cacheUniqId, childPropControllers[propertyKey], controller, [...pathHierarchy, propertyKey]);
 
             childPropControllers[propertyKey] = propertyController;
 
@@ -117,69 +135,69 @@ export const createSetPropController = <S extends any>(
             return propertyController;
         },
         getValidation: (schema) => {
-            // prevSchema = schema
-            // if (!prevSchema || prevSchema !== schema) {
-            //     prevSchema = schema
-            // }
-            console.log({ schema })
-            const validationResult = schema ? validate(schema, {}) : undefined;
-            const errors = validationResult?.error ? validateErrorToObject([validationResult.error]) : undefined
-            const sss = validateErrorToObject()
-            // const validate
-            return {
+            console.log(!!needValidate, !!schema, { value: controller.value, schema })
+            if (needValidate && schema) {
+                validationResult = validate(controller.value, schema)
+                needValidate = false;
+            }
+            if (validatorCache) {
+                return validatorCache
+            }
+
+            const validator: ValidationRes<JoiSchemaValue<typeof schema>> = validatorCache = {
                 getError: (...errorPaths) => {
-                    // let validationResult = refCache.validateResult;
-
-                    if (showErrors && validationResult?.error) {
-
-                        // const key = errorPaths.join("|");
-                        // if (showErrorAfterChange && !isKeyChangeEffect[key]) {
-                        //     // if (isEqual(
-                        //     //     get(stateValue, errorPaths),
-                        //     //     get(stateRefCache.cache?.value, errorPaths)
-                        //     // )) {
-
-                        //     return {
-                        //         error: false,
-                        //         helperText: undefined,
-                        //     } as const
-                        //     // } else {
-                        //     //     isKeyChangeEffect[key] = true;
-                        //     // }
-
-                        // }
-                        const { error: { details } } = validationResult;
-
-                        detailsLoop: for (const detail of details) {
-                            indexingLoop: for (let index = 0; index < errorPaths.length; index++) {
-                                const pathName = errorPaths[index];
-                                if (pathName != detail.path[index]) {
-                                    continue detailsLoop;
-                                    break indexingLoop;
+                    if (validator.hasError()) {
+                        if (showErrors && validationResult?.error) {
+                            const { error: { details } } = validationResult;
+                            console.log(showErrors && validationResult?.error, details, errorPaths, "SSS")
+                            detailsLoop: for (const detail of details) {
+                                indexingLoop: for (let index = 0; index < errorPaths.length; index++) {
+                                    const pathName = errorPaths[index];
+                                    if (pathName != detail.path[index]) {
+                                        continue detailsLoop;
+                                        break indexingLoop;
+                                    }
                                 }
+
+                                return {
+                                    error: true,
+                                    helperText: detail.message,
+                                } as const
                             }
 
-                            return {
-                                error: true,
-                                helperText: detail.message,
-                            } as const
+                        } else if (!validationResult && parentController) {
+                            return parentController.getValidation().getError(...pathHierarchy)
                         }
 
                     }
-
                     return {
                         error: false,
                         helperText: undefined,
                     } as const
                 },
-                // (path) => {
-                //     console.log(pathHierarchy, path)
-                // },
-                getIfValid: (effectErrorView = false): any => { },
-                // getPropValidation: (path: PropertyKey[]) => void
-                // getIfValid: () => S
-                // getPropValidation: <KEYS extends PropertyKey[]>(...propertyKeys: KEYS) => ValidationRes<GetObjectNestedValue<S, KEYS>>
-            }
+                hasError: () => {
+                    return !!(validationResult ? validationResult?.error : parentController?.getValidation().hasError())
+                },
+                toggleShowError: (show) => {
+                    const newShowErrors = show == undefined ? !showErrors : show;
+                    if (showErrors !== newShowErrors) {
+                        showErrors = newShowErrors;
+                        controller.setValue(controller.value)
+                    }
+                    return newShowErrors;
+                },
+                getIfValid: (showErrors): any => {
+                    if (showErrors !== undefined) {
+                        validator.toggleShowError(showErrors)
+                    }
+                    console.log({ validationResult, eee: validator.hasError() })
+                    if (!validator.hasError()) {
+                        return controller.value
+                    }
+                },
+            };
+
+            return validator;
         }
     }
 

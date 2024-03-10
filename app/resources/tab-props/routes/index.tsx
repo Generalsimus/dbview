@@ -1,11 +1,11 @@
 "use client"
-import { RowType } from "@/app/components/table/types";
 import { DeleteRouteDoc, SaveRouteDoc, getRouteDocs } from "./server"
 import { Route } from "@/basic/models/route/route"
-import { ResourceData, ResourceTabsEnum } from "../utils";
-import { Box } from "@mui/material";
+import { ResourceData } from "../utils";
 import { AddRouteButton } from "./save/add-button";
-import { EditRouteEffectView } from "./save/edit-route-effect-view";
+import { routeStorage } from "./save/utils";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { EditRouteView } from "./save/edit-route-view";
 
 const cellProps = {
     colSpan: 1,
@@ -25,12 +25,19 @@ const columns = [
 export const getRouteResource = (
     start: number,
     end: number,
+    router: AppRouterInstance
 ): ResourceData<Route> => {
     const routeDocs = getRouteDocs(start, end);
-    const tabsRightContent = <AddRouteButton
-        saveRouteDoc={SaveRouteDoc}
-        deleteRouteDoc={DeleteRouteDoc}
-    />
+    const tabsRightContent = <>
+        <EditRouteView
+            saveRouteDoc={SaveRouteDoc}
+            deleteRouteDoc={DeleteRouteDoc}
+        />
+        <AddRouteButton
+            saveRouteDoc={SaveRouteDoc}
+            deleteRouteDoc={DeleteRouteDoc}
+        />
+    </>
     return {
         start: start,
         end: end,
@@ -51,20 +58,11 @@ export const getRouteResource = (
                         sx: { cursor: "pointer" },
                         role: "checkbox",
                         tabIndex: -1,
-                        onClick: () => {
-                            setTableData((curr) => {
-                                return {
-                                    ...curr,
-                                    tabsRightContent: <>
-                                        {tabsRightContent}
-                                        <EditRouteEffectView
-                                            saveRouteDoc={SaveRouteDoc}
-                                            deleteRouteDoc={DeleteRouteDoc}
-                                            initialValue={{ ...doc }}
-                                        />
-                                    </>
-                                }
-                            });
+                        onClick: async () => {
+                            const searchParams = new URLSearchParams(window.location.search);
+                            const savedDoc = await routeStorage.add({ ...doc })
+                            searchParams.set("form", `${savedDoc.INDEXED_DB_ROUTE_ID}`)
+                            router.push(`${window.location.pathname}?${searchParams}`)
                         }
                     }
                 }

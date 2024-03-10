@@ -4,7 +4,6 @@ import { useMemoCall } from "../utils/hooks/useMemoCall";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useTableBody, useTableFooter, useTableHeader } from "./hooks";
-import { Backdrop, CircularProgress } from "@mui/material";
 import { ResourceTabsEnum } from "./tab-props/utils";
 import { Table } from "../components/table";
 import { useTableData } from "./tab-props/hooks";

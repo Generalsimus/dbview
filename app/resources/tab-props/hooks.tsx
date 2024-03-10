@@ -1,10 +1,8 @@
 import { ReactNode, useEffect, useState } from "react"
 import { ResourceTabsEnum, getResourceData } from "./utils"
 import { ColumnType, RowType } from "@/app/components/table/types"
-import { useRouter } from "next/router"
-import { useParams } from "next/navigation"
-// import { useRouter } from "next/navigation"
-// import { useRouter } from "next/navigation";
+// import { useRouter } from "next/router"
+import { useParams, useRouter } from "next/navigation";
 
 
 export interface TableTataType {
@@ -34,9 +32,10 @@ export const useTableData = (
     });
 
     const params = useParams();
-    
+    const router = useRouter()
+
     useEffect(() => {
-        const { columns, resource, tabsRightContent, updateRows } = getResourceData(tab, start, end);
+        const { columns, resource, tabsRightContent, updateRows } = getResourceData(tab, start, end, router);
         setData(curr => {
             return {
                 ...curr,

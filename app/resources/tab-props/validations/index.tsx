@@ -1,13 +1,13 @@
 "use client"
 
-import { Service } from "@/basic/models/services/services";
-import { ResourceData, ResourceTabsEnum } from "../utils";
-import { RowType } from "@/app/components/table/types";
+import { ResourceData } from "../utils";
 import { DeleteValidationDoc, SaveValidationDoc, getValidations } from "./server";
-import { EditValidationsEffectView } from "./save/edit-Validationas-effect-view";
+import { EditValidationsView } from "./save/edit-Validationas-view";
 import { Validation } from "@/basic/models/validation/validation";
 import { AddValidationButton } from "./save/add-button";
 import { map } from "lodash";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { validationStorage } from "./save/utils";
 
 
 
@@ -25,12 +25,21 @@ const columns = [
 ]
 export const getValidationResource = (
     start: number,
-    end: number): ResourceData<Validation> => {
+    end: number,
+    router: AppRouterInstance
+): ResourceData<Validation> => {
     const validationDocs = getValidations(start, end);
-    const tabsRightContent = <AddValidationButton
-        saveValidationDoc={SaveValidationDoc}
-        deleteValidationDoc={DeleteValidationDoc}
-    />;
+    const tabsRightContent = <>
+        <EditValidationsView
+            saveValidationDoc={SaveValidationDoc}
+            deleteValidationDoc={DeleteValidationDoc}
+        />
+        <AddValidationButton
+            saveValidationDoc={SaveValidationDoc}
+            deleteValidationDoc={DeleteValidationDoc}
+        />
+    </>
+
 
     return {
         start: start,
@@ -56,20 +65,11 @@ export const getValidationResource = (
                         sx: { cursor: "pointer" },
                         role: "checkbox",
                         tabIndex: -1,
-                        onClick: () => {
-                            setTableData((curr) => {
-                                return {
-                                    ...curr,
-                                    tabsRightContent: <>
-                                        {tabsRightContent}
-                                        <EditValidationsEffectView
-                                            saveValidationDoc={SaveValidationDoc}
-                                            deleteValidationDoc={DeleteValidationDoc}
-                                            initialValue={{ ...doc }}
-                                        />
-                                    </>
-                                }
-                            });
+                        onClick: async () => {
+                            const searchParams = new URLSearchParams(window.location.search);
+                            const savedDoc = await validationStorage.add({ ...doc });
+                            searchParams.set("form", `${savedDoc.INDEXED_DB_Validation_ID}`);
+                            router.push(`${window.location.pathname}?${searchParams}`);
                         }
                     }
                 }

@@ -1,45 +1,36 @@
-import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
-import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
-import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
-import { Route } from "@/basic/models/route/route";
-import { clear } from "console";
-import { StateValueType } from "./modal";
-// import { Route } from "next";
+import { getBasicValidationsDoc, validationStorage } from "./utils";
+import { StateValueType } from "./form";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
-export const useValidationsFormViewController = (initialOpenValue: boolean = false) => {
-
-    const [status, setModalStatus, setModalStatusValue] = useToggleBool(initialOpenValue)
-
-
-    const onOpen = setModalStatus(true);
-    const onClose = setModalStatus(false);
-
-    return {
-        open: status,
-        onOpen: onOpen,
-        onClose: onClose,
-    }
+interface FormType {
+    open: boolean,
+    doc: StateValueType
 }
+export const useValidationFormController_V2 = () => {
+    const form = useSetProps<FormType>(() => ({
+        open: false,
+        doc: getBasicValidationsDoc()
+    }));
 
-const basicState = () => {
-    return {
-        name: "",
-        description: "",
-        validations: []
-    }
-}
+    const searchParams = useSearchParams();
+    const formId = searchParams.get('form');
+    useEffect(() => {
+        if (formId) {
+            const servicePromise = validationStorage.get(Number(formId));
 
-export const useValidationsFormController = (initialStateValue?: MakeCreateOrUpdate<Route>) => {
-
-    const setProsRes = useSetProps<MakeCreateOrUpdate<StateValueType>>(basicState);
-    
-    return {
-        ...setProsRes,
-        clearState: useMemoCall(() => {
-            setProsRes.setValue(basicState)
-
-        })
-    }
+            servicePromise.then((doc) => {
+                if (doc) {
+                    form.setValue({
+                        open: true,
+                        doc: doc
+                    });
+                }
+            })
+        } else {
+            form.setProps("open")(false)
+        }
+    }, [formId]);
+    return form
 }

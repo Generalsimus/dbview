@@ -6,6 +6,7 @@ export const useSetProps = <S extends any>(initialValue: S | (() => S)) => {
     const controllerRef = useRef<SetPropsRes<S> | undefined>()
     const [state, setState] = useState(initialValue)
 
+    // console.log("START_useSetProps")
     return controllerRef.current = createSetPropController(state, setState, "DS", controllerRef.current);
 }
 

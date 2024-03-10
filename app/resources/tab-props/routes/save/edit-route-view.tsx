@@ -12,26 +12,17 @@ import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 interface IProps {
     saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>
     deleteRouteDoc: (ids: number) => Promise<void>
-    initialValue?: MakeCreateOrUpdate<Route>
 }
-export const EditRouteEffectView: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc, initialValue }) => {
+export const EditRouteView: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc }) => {
 
-    const from = useRouteFormController_V2()
+    const form = useRouteFormController_V2()
 
-    useEffect(() => {
-        if (initialValue) {
-            from.setValue({
-                open: true,
-                doc: initialValue
-            })
-        }
-    }, [initialValue])
     return <>
         <SaveRouteForm
             title="Edit Route"
             saveRouteDoc={saveRouteDoc}
             deleteRouteDoc={deleteRouteDoc}
-            {...from}
+            {...form}
         />
     </>
 });

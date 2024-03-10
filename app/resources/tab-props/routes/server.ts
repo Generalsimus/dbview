@@ -7,7 +7,7 @@ import { validate } from "@/utils";
 export async function SaveRouteDoc(value: MakeCreateOrUpdate<Route>): Promise<void> {
     'use server'
     const validateRes = validate(value, getCreateOrUpdateSchema(RouteSchema))
-
+    console.log({ validateRes })
     if (!validateRes.error) {
         const { value } = validateRes;
 

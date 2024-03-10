@@ -17,6 +17,7 @@ import { PickOnTop } from "./pick-on-top";
 
 interface IProps {
     open?: boolean
+    disableEffectClose?: boolean
     title?: string
     onOpen?: () => void
     onClose?: () => void
@@ -33,19 +34,28 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
     children,
     onDelete,
     onSave,
+    disableEffectClose,
     onCancel,
 }) => {
     const [isLoading, initialDefaultValue] = useToggleBool(false);
     const onLoading = initialDefaultValue(true);
     const offLoading = initialDefaultValue(false);
     const router = useRouter();
+    const onCloseAndRouteBack = useMemoCall(() => {
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.delete("form");
+        router.push(`${window.location.pathname}?${searchParams.toString()} `);
+        onClose?.();
+    })
 
     const onSafeSave = useMemoCall(async () => {
         onLoading()
         try {
             await onSave?.()
-            onClose?.();
-            router.refresh();
+            if (!disableEffectClose) {
+                onCloseAndRouteBack?.();
+                router.refresh();
+            }
         } finally {
             offLoading()
         }
@@ -55,8 +65,10 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
         onLoading()
         try {
             await onDelete?.();
-            onClose?.();
-            router.refresh();
+            if (!disableEffectClose) {
+                onCloseAndRouteBack?.();
+                router.refresh();
+            }
         } finally {
             offLoading()
         }
@@ -66,16 +78,16 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
     console.log({
     })
     return <>
-        <Backdrop
+        {/* <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={isLoading}
         >
             <CircularProgress color="inherit" />
-        </Backdrop>
+        </Backdrop> */}
         <Dialog
             fullScreen
             open={open}
-            onClose={onClose}
+            onClose={onCloseAndRouteBack}
             TransitionComponent={Transition}
         >
             <Stack position={"sticky"} top={0} display={"flex"} justifyContent={"space-between"} flexDirection={"row"} alignItems={"center"} padding={1}>
@@ -86,7 +98,7 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
                 <IconButton
                     edge="start"
                     color="inherit"
-                    onClick={onClose}
+                    onClick={onCloseAndRouteBack}
                     aria-label="close"
                     disabled={isDisabled}
                 >

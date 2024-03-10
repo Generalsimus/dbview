@@ -29,16 +29,9 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
     setValue,
     setProps,
     initSetProps,
-    // getBasicRouteDoc,
-    // clearState,
-    // getValidation,
-    // onClose,
-    // onOpen,
-    // open
+    getPropState,
 }) => {
     const { doc: { name, path, method, description }, open } = value;
-
-
 
     const onClose = useMemoCall(() => {
         setValue({
@@ -49,21 +42,20 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
     const onOpen = useMemoCall(() => {
         setProps("open")(true);
     });
-    // const handleClose = useMemoCall(() => {
-    //     clearState();
-    //     onClose();
-    // });
 
 
-
-    // const { getIfValid, getError } = getValidation(getCreateOrUpdateSchema(RouteSchema));
-
+    const { getIfValid, getError } = getPropState("doc").getValidation(getCreateOrUpdateSchema(RouteSchema));
 
     const onSave = useMemoCall(async () => {
-        // const value = getIfValid(true);
-        // if (value) {
-        //     await saveRouteDoc(value)
-        // }
+        const value = getIfValid(true);
+        console.log({ value: value })
+        if (value) {
+            await saveRouteDoc(value)
+            setValue({
+                open: false,
+                doc: getBasicRouteDoc()
+            })
+        }
     })
 
 
@@ -90,7 +82,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
                 type="text"
                 fullWidth
                 variant="filled"
-            // {...getError("name")}
+                {...getError("name")}
             />
             <FormControl variant="filled" fullWidth>
                 <InputLabel id="demo-simple-select-label">Method</InputLabel>
@@ -102,7 +94,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
                     value={method}
                     label="Method"
                     onChange={initSetProps("target", "value")("doc", "method")}
-                // {...getError("method")}
+                    {...getError("method")}
                 >
                     {requestMethods.map((method: RequestMethodType[number]) => {
                         return <MenuItem key={method} value={method}>{method}</MenuItem>
@@ -120,7 +112,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
                 type="text"
                 fullWidth
                 variant="filled"
-            // {...getError("path")}
+                {...getError("path")}
             />
             <TextField
                 autoFocus
@@ -135,7 +127,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
                 fullWidth
                 variant="filled"
                 multiline
-            // {...getError("description")}
+                {...getError("description")}
             />
 
         </Stack>

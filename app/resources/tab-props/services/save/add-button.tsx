@@ -1,11 +1,14 @@
 "use client"
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@mui/material";
 import CreateIcon from '@mui/icons-material/Create';
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
-import { useServiceFormController, useServiceFormViewController } from "./hooks";
+import { useServiceFormController_V2 } from "./hooks";
 import { EditServiceFormModal } from ".";
 import { Service } from "@/basic/models/services/services";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { getBasicServiceDoc, serviceStorage } from "./utils";
+import { useRouter } from "next/navigation";
 
 
 interface IProps {
@@ -13,18 +16,15 @@ interface IProps {
     deleteServiceDoc: (ids: number) => Promise<void>
 }
 export const AddServiceButton: React.FC<IProps> = React.memo(({ saveServiceDoc, deleteServiceDoc }) => {
-    const formViewController = useServiceFormViewController();
-    const formController = useServiceFormController();
-
+    const router = useRouter()
+    const onOpen = useMemoCall(async () => {
+        const searchParams = new URLSearchParams(window.location.search);
+        const savedDoc = await serviceStorage.add(getBasicServiceDoc())
+        searchParams.set("form", `${savedDoc.INDEXED_DB_SERVICE_ID}`)
+        router.push(`${window.location.pathname}?${searchParams}`)
+    })
     return <>
-        <EditServiceFormModal
-            title="Add Service"
-            saveServiceDoc={saveServiceDoc}
-            deleteServiceDoc={deleteServiceDoc}
-            {...formViewController}
-            {...formController}
-        />
-        <Button variant="contained" onClick={formViewController.onOpen} startIcon={<CreateIcon />}>
+        <Button variant="contained" onClick={onOpen} startIcon={<CreateIcon />}>
             Add Service
         </Button>
     </>
