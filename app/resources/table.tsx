@@ -2,7 +2,6 @@
 import React, { } from "react";
 import { useMemoCall } from "../utils/hooks/useMemoCall";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useTableBody, useTableFooter, useTableHeader } from "./hooks";
 import { ResourceTabsEnum } from "./tab-props/utils";
 import { Table } from "../components/table";
@@ -33,6 +32,7 @@ export const ResourceTable: React.FC<IProps> = React.memo(({ start, end, tab }) 
     const body = useTableBody(tableData)
     // console.log({ body, tableData })
     return <>
+
         <Table
             header={header}
             footer={footer}

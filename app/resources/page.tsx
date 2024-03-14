@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'; 
+import React from 'react';
 import { ResourceTable } from './table';
 import { ResourceTabsEnum, resourceTabsEnums } from './tab-props/utils';
 
@@ -12,7 +12,7 @@ interface IProps {
         tab?: ResourceTabsEnum;
     }
 }
-export default  ({ searchParams }: IProps) => {
+export default ({ searchParams }: IProps) => {
     let start = Number(searchParams?.start) || 0;
     let end = Number(searchParams?.end) || 15;
     let tab = searchParams?.tab || ResourceTabsEnum.Routes;

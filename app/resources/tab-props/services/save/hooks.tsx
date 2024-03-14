@@ -1,9 +1,7 @@
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
-import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Service } from "@/basic/models/services/services";
-import { getBasicServiceDoc, serviceStorage } from "./utils";
+import { INDEXED_DB_STORY_SERVICE_KEY_ID, getBasicServiceDoc, serviceStorage } from "./utils";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -20,7 +18,14 @@ export const useServiceFormController_V2 = () => {
 
     const searchParams = useSearchParams();
     const formId = searchParams.get('form');
-    console.log({ formId })
+    useEffect(() => {
+        if (formId) {
+            serviceStorage.put({
+                [INDEXED_DB_STORY_SERVICE_KEY_ID]: formId,
+                ...form.value.doc
+            })
+        }
+    }, [form.value.doc])
     useEffect(() => {
         if (formId) {
             const servicePromise = serviceStorage.get(Number(formId));

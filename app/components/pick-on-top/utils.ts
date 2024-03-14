@@ -3,10 +3,8 @@
 
 import { IndexedDBController } from "@/app/utils/indexedDb";
 
-// export const usePickOnTop = () => {
-//     return useContext(PickOnTopContext)
-// }
-
+export const getFullPath = () =>
+  `${window.location.pathname}${window.location.search}`;
 export interface PickOnTopStoredDoc {
   title: string;
   path: string;

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { PickOnTop } from './components/pick-on-top'
-import { SnackbarProvider } from './components/snack-bar'
+import { BodyContents } from './components/body-portals'
+import { PickOnTopContent } from './components/pick-on-top/pick-on-top-content'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,9 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SnackbarProvider>
-          {children}
-        </SnackbarProvider>
+
+        <PickOnTopContent>
+          <BodyContents>
+            {children}
+          </BodyContents>
+        </PickOnTopContent>
       </body>
     </html>
   )

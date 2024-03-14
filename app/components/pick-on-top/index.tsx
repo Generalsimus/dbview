@@ -1,72 +1,38 @@
 "use client"
-import React, { useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useMemoCall } from '@/app/utils/hooks/useMemoCall';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ButtonBase, IconButton, Paper, Stack, Typography } from '@mui/material';
-import { useToggleBool } from '@/app/utils/hooks/useToggleBool';
-import { useSnackbarContent } from '../snack-bar/hooks';
 import CloseIcon from '@mui/icons-material/Close';
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { createPortal } from 'react-dom';
-import { pIckOnTopIndexedDBStorage } from './utils';
+import { getFullPath, pIckOnTopIndexedDBStorage } from './utils';
 import { useSignalRefresh } from '@/app/utils/hooks/useSignalRefresh';
+import { PickOnTopContentContext } from './pick-on-top-content';
 
 interface IProps {
 }
-export const PickOnTop: React.FC<IProps> = React.memo(async ({ }) => {
-    const [isPined, setIsPined] = useState(false);
-    const unpinRef = useRef(() => { })
-
-    // const addSnackbarContent = useSnackbarContent()
-    // const sectionId = "PickOnTop"
-    const router = useRouter();
-
-    const onTogglePin = useMemoCall(() => {
-
-        pIckOnTopIndexedDBStorage.put({
-            title: "delete",
-            path: `${window.location.pathname}${window.location.search}`
-        })
-
-    })
-    // const stickDocs = 
+export const PickOnTop: React.FC<IProps> = React.memo(({ }) => {
+    const params = useParams();
     const [stickDocs, refreshIndexDbDocs] = useSignalRefresh(async () => {
         return await pIckOnTopIndexedDBStorage.getAll()
-    })
-    // const onRemove = useMemoCall(() => {
+    });
+    useEffect(refreshIndexDbDocs, [params]);
 
-    // });
+    const isPined = useMemo(() => {
+        const currentPath = getFullPath()
+        return !!stickDocs?.some(doc => doc.path === currentPath)
+    }, [stickDocs]);
+    const onTogglePin = useContext(PickOnTopContentContext);
+    const onPin = useMemoCall(() => {
+        onTogglePin();
+        refreshIndexDbDocs();
+    });
 
     return <>
-        <IconButton size="small" onClick={onTogglePin}>
+        <IconButton size="small" onClick={onPin}>
             <PushPinIcon sx={{ transform: `rotate(${isPined ? 0 : 45}deg)`, fill: isPined ? "blue" : undefined, transition: "ease-in-out .2s" }} />
         </IconButton>
-        {createPortal(
-            <Stack position="fixed" bottom={20} left={20} gap={1} zIndex={(theme) => theme.zIndex.tooltip}>
-
-                {stickDocs?.map(doc => {
-
-
-                    return <Paper elevation={4} >
-                        <ButtonBase sx={{ display: "flex", flexDirection: "row", alignItems: "center", padding: '5px 10px' }} onClick={() => {
-                            router.push(doc.path)
-
-                        }}>
-                            <DeleteIcon />
-                            <Typography>{doc.title}</Typography>
-                            <IconButton size="small" onClick={async () => {
-                                await pIckOnTopIndexedDBStorage.delete(doc.INDEXED_DB_PICK_ID);
-                                refreshIndexDbDocs();
-                            }}>
-                                <CloseIcon />
-                            </IconButton>
-                        </ButtonBase>
-                    </Paper>
-                })}
-
-            </Stack>,
-            document.body
-        )}
     </>;
 });

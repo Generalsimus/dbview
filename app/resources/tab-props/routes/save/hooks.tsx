@@ -1,15 +1,10 @@
-// import { useForm } from "@/app/utils/hooks/useSetProps";
-import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
-import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Route } from "@/basic/models/route/route";
-import { clear } from "console";
-import { getBasicRouteDoc, getRouteIndexedDBStorage, routeStorage } from "./utils";
-import { useParams, useSearchParams } from "next/navigation";
+import { INDEXED_DB_STORY_ROUTE_KEY_ID, getBasicRouteDoc, routeStorage } from "./utils";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-// import { Route } from "next";
+
 interface FormType {
     open: boolean,
     doc: MakeCreateOrUpdate<Route>
@@ -27,13 +22,19 @@ export const useRouteFormController_V2 = () => {
 
     const searchParams = useSearchParams();
     const formId = searchParams.get('form');
-    console.log({ formId })
+    useEffect(() => {
+        if (formId) {
+            routeStorage.put({
+                [INDEXED_DB_STORY_ROUTE_KEY_ID]: formId,
+                ...form.value.doc
+            })
+        }
+    }, [form.value.doc])
     useEffect(() => {
         if (formId) {
             const routePromise = routeStorage.get(Number(formId));
 
             routePromise.then((route) => {
-                console.log({ route });
                 if (route) {
                     form.setValue({
                         open: true,

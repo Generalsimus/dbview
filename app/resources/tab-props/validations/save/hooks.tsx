@@ -1,5 +1,5 @@
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
-import { getBasicValidationsDoc, validationStorage } from "./utils";
+import { INDEXED_DB_STORY_VALIDATION_KEY_ID, getBasicValidationsDoc, validationStorage } from "./utils";
 import { StateValueType } from "./form";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -16,6 +16,14 @@ export const useValidationFormController_V2 = () => {
 
     const searchParams = useSearchParams();
     const formId = searchParams.get('form');
+    useEffect(() => {
+        if (formId) {
+            validationStorage.put({
+                [INDEXED_DB_STORY_VALIDATION_KEY_ID]: formId,
+                ...form.value.doc
+            })
+        }
+    }, [form.value.doc])
     useEffect(() => {
         if (formId) {
             const servicePromise = validationStorage.get(Number(formId));

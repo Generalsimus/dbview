@@ -1,7 +1,6 @@
 import { ReactNode, useEffect, useState } from "react"
 import { ResourceTabsEnum, getResourceData } from "./utils"
 import { ColumnType, RowType } from "@/app/components/table/types"
-// import { useRouter } from "next/router"
 import { useParams, useRouter } from "next/navigation";
 
 
