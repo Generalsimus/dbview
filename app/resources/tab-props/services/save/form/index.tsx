@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { NameInput } from "./name-input";
 import { Service } from "@/basic/models/services/services";
 import { InputProps } from "@/basic/generics";
-// import { Validator } from "@/app/utils/hooks/useSetProps/create=validation-controller";
+// import { Validator } from "@/utils/hooks/useSetProps/create=validation-controller";
 import { DescriptionInput } from "./description-input";
 import { MethodsInput } from "./methods-input";
 // import { MethodsInput } from "./trr";

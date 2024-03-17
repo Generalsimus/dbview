@@ -1,12 +1,13 @@
 "use client"
 import React from "react";
-import { Button } from "@mui/material";
-import CreateIcon from '@mui/icons-material/Create';
+import { Fab, Zoom } from "@mui/material";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Route } from "@/basic/models/route/route";
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+// import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
 import { getBasicRouteDoc, routeStorage } from "./utils";
 import { useRouter } from "next/navigation";
+import AddIcon from '@mui/icons-material/Add';
+import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
 
 interface IProps {
     saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>
@@ -21,8 +22,14 @@ export const AddRouteButton: React.FC<IProps> = React.memo(({ saveRouteDoc, dele
         router.push(`${window.location.pathname}?${searchParams}`)
     })
     return <>
-        <Button variant="contained" onClick={onOpen} startIcon={<CreateIcon />}>
-            Add Route
-        </Button>
+        <Zoom in>
+            <Fab color="primary" aria-label="add" onClick={onOpen} sx={{
+                position: 'absolute',
+                bottom: 16,
+                right: 16,
+            }}>
+                <AddIcon />
+            </Fab>
+        </Zoom>
     </>
 });

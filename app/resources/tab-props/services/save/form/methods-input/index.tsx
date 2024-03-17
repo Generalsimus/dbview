@@ -1,4 +1,4 @@
-// import { Validator } from "@/app/utils/hooks/useSetProps/create=validation-controller";
+// import { Validator } from "@/utils/hooks/useSetProps/create=validation-controller";
 import { InputProps } from "@/basic/generics";
 import { Service } from "@/basic/models/services/services";
 import React, { useState } from "react";
@@ -9,14 +9,16 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box, Button, Paper, Stack } from "@mui/material";
 import { MonacoEditor } from "@/app/components/monaco-editor";
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+// import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import Deletecon from '@mui/icons-material/Delete';
 import { AutoResizeField } from "@/app/components/auto-resize-field";
 import { accordionSummaryClasses } from '@mui/material';
 import { MethodNameInput } from "./method-name-input";
-import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
+import { useMemoArgCall } from "@/app/resources/utils/hooks/useMemoArgCall";
+import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
+// import { useMemoArgCall } from "@/utils/hooks/useMemoArgCall";
 // import { MonacoEditor } from "./trr/monaco-editor";
 // import { MonacoEditor } from "./monaco-editor";
 

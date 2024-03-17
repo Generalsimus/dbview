@@ -12,7 +12,7 @@ export interface TableTataType {
     rows: RowType[],
     maxRowCount: number
     collapsedIndex: null | number
-    tabsRightContent?: ReactNode
+    content?: ReactNode
 
 }
 export const useTableData = (
@@ -34,7 +34,7 @@ export const useTableData = (
     const router = useRouter()
 
     useEffect(() => {
-        const { columns, resource, tabsRightContent, updateRows } = getResourceData(tab, start, end, router);
+        const { columns, resource, content, updateRows } = getResourceData(tab, start, end, router);
         setData(curr => {
             return {
                 ...curr,
@@ -42,7 +42,7 @@ export const useTableData = (
                 end: end,
                 currentTab: tab,
                 columns: columns,
-                tabsRightContent: tabsRightContent
+                content: content
             }
         });
         let isEjected = false;

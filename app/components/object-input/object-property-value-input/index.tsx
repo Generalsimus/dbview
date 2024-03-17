@@ -1,14 +1,14 @@
 import React, { Fragment, useMemo, useState } from "react";
 import { ArgPropertiesType, ArgValueType, PropertyNameViews, PropertyNameViewsValue, ValueTypes } from "../types";
 import { AddButton } from "./add-button";
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
 import { Box, Stack } from "@mui/material";
 import { PropertyNameViewContainer } from "./property-name-container";
 import { ValueOf } from "@/basic/generics";
 import e from "express";
 import { useSafeArgValues, useSafeProperties } from "./hooks";
 import { InputsView } from "./input-view";
-import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
+import { useMemoArgCall } from "@/utils/hooks/useMemoArgCall";
 
 
 interface IProps<O extends PropertyNameViews> {

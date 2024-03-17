@@ -28,7 +28,7 @@ export const getRouteResource = (
     router: AppRouterInstance
 ): ResourceData<Route> => {
     const routeDocs = getRouteDocs(start, end);
-    const tabsRightContent = <>
+    const content = <>
         <EditRouteView
             saveRouteDoc={SaveRouteDoc}
             deleteRouteDoc={DeleteRouteDoc}
@@ -38,12 +38,13 @@ export const getRouteResource = (
             deleteRouteDoc={DeleteRouteDoc}
         />
     </>
+
     return {
         start: start,
         end: end,
         resource: routeDocs,
         columns: columns,
-        tabsRightContent: tabsRightContent,
+        content: content,
         updateRows: ({ docs, maxDocsCount }, setTableData) => {
             const rows = docs.map((doc) => {
 

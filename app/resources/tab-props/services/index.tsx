@@ -43,7 +43,7 @@ export const getServiceResource = (
     router: AppRouterInstance
 ): ResourceData<Service> => {
     const serviceDocs = getServiceDocs(start, end);
-    const tabsRightContent = <>
+    const content = <>
         <EditServiceView
             saveServiceDoc={saveServiceDoc}
             deleteServiceDoc={deleteServiceDoc}
@@ -58,7 +58,7 @@ export const getServiceResource = (
         end: end,
         resource: serviceDocs,
         columns: columns,
-        tabsRightContent: tabsRightContent,
+        content: content,
         updateRows: ({ docs, maxDocsCount }, setTableData) => {
 
 

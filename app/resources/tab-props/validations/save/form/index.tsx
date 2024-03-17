@@ -1,4 +1,4 @@
-// import { Validator } from "@/app/utils/hooks/useSetProps/create=validation-controller";
+// import { Validator } from "@/utils/hooks/useSetProps/create=validation-controller";
 import { DeepPartial, InputProps, PartialKeys } from "@/basic/generics";
 import { Validation } from "@/basic/models/validation/validation";
 import { TextField } from "@mui/material";

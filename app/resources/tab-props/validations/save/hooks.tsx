@@ -1,8 +1,9 @@
-import { useSetProps } from "@/app/utils/hooks/useSetProps";
+// import { useSetProps } from "@/utils/hooks/useSetProps";
 import { INDEXED_DB_STORY_VALIDATION_KEY_ID, getBasicValidationsDoc, validationStorage } from "./utils";
 import { StateValueType } from "./form";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { useSetProps } from "@/app/resources/utils/hooks/useSetProps";
 
 interface FormType {
     open: boolean,

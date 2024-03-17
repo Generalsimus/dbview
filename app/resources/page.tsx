@@ -22,7 +22,7 @@ export default ({ searchParams }: IProps) => {
     }
 
 
-    return <>
+    return <> 
         <ResourceTable
             start={start}
             end={end}

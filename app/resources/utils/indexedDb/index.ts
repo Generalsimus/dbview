@@ -1,3 +1,4 @@
+'use client';
 import { IndexedDBStorageController } from "./storage-controller";
 
 // interface IDBObjectStoreParameters {
@@ -8,7 +9,10 @@ export class IndexedDBController {
   request: IDBOpenDBRequest;
   //
   constructor(databaseName: string, version: number) {
-    this.request = indexedDB.open(databaseName, version);
+    if (indexedDB !== undefined) {
+      this.request = indexedDB.open(databaseName, version);
+      console.log("🚀 --> constructor --> indexedDB:", indexedDB);
+    }
   }
 
   createStorage<

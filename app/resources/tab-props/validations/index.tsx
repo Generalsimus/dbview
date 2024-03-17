@@ -8,6 +8,7 @@ import { AddValidationButton } from "./save/add-button";
 import { map } from "lodash";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { validationStorage } from "./save/utils";
+import { TopBar } from "../../../components/top-bar";
 
 
 
@@ -29,7 +30,7 @@ export const getValidationResource = (
     router: AppRouterInstance
 ): ResourceData<Validation> => {
     const validationDocs = getValidations(start, end);
-    const tabsRightContent = <>
+    const content = <>
         <EditValidationsView
             saveValidationDoc={SaveValidationDoc}
             deleteValidationDoc={DeleteValidationDoc}
@@ -46,7 +47,7 @@ export const getValidationResource = (
         end: end,
         resource: validationDocs,
         columns: columns,
-        tabsRightContent: tabsRightContent,
+        content: content,
         updateRows: ({ docs, maxDocsCount }, setTableData) => {
             const rows = docs.map((doc) => {
 

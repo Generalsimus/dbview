@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
-import { useToggleBool } from '@/app/utils/hooks/useToggleBool';
+import { useToggleBool } from '@/utils/hooks/useToggleBool';
 import { SmallIconButton } from '@/app/components/small-icon-button';
 
 

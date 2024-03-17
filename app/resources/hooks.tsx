@@ -6,10 +6,11 @@ import { Stack, Tab, Tabs } from "@mui/material";
 import Link from "next/link";
 import { Pagination } from "@/app/components/pagination";
 import { TableTataType } from "./tab-props/hooks";
+import { TopBar } from "../components/top-bar";
 
 export type InitialPropsTypes = ComponentProps<typeof Table>;
 
-const useHeaderTabsContent = ({ currentTab, tabsRightContent }: TableTataType) => {
+const useHeaderTabsContent = ({ currentTab, content }: TableTataType) => {
   const tabNamesContent = useMemo(() => resourceTabsEnums.map((tab) => {
     return <Tab
       key={tab}
@@ -26,7 +27,7 @@ const useHeaderTabsContent = ({ currentTab, tabsRightContent }: TableTataType) =
       justifyContent="space-between"
       alignItems="baseline"
       spacing={2}
-      padding="10px"
+    // padding="10px"
     >
       <Tabs
         value={currentTab}
@@ -37,9 +38,10 @@ const useHeaderTabsContent = ({ currentTab, tabsRightContent }: TableTataType) =
       >
         {tabNamesContent}
       </Tabs>
-      {tabsRightContent}
+      {content}
+      <TopBar />
     </Stack>
-  }, [currentTab, tabsRightContent])
+  }, [currentTab, content])
 }
 
 export const useTableHeader = (resource: TableTataType) => {

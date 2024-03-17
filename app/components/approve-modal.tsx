@@ -1,10 +1,7 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, Typography } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import React, { Component, ComponentProps, ReactNode, useState } from "react";
-import { useToggleBool } from "../utils/hooks/useToggleBool";
-import { useSetProps } from "../utils/hooks/useSetProps";
-import { useMemoCall } from "../utils/hooks/useMemoCall";
-import { useRouter } from "next/navigation";
+import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
+import { useToggleBool } from "@/utils/hooks/useToggleBool";
+import { Button, Dialog, DialogActions, DialogContent, Typography } from "@mui/material";
+import React, { ComponentProps, ReactNode } from "react";
 
 interface IProps {
     title: string,
@@ -59,7 +56,7 @@ export const ApproveModal: React.FC<IProps> = React.memo(({ onApprove, onReject,
                 <Button
                     variant="contained"
                     autoFocus
-                    color={approveButtonColor} 
+                    color={approveButtonColor}
                     type="submit"
                     disabled={isLoading}
                     onClick={onSafeApprove}

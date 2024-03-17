@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { BodyContents } from './components/body-portals'
 import { PickOnTopContent } from './components/pick-on-top/pick-on-top-content'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,9 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
 
         <PickOnTopContent>
-          <BodyContents>
-            {children}
-          </BodyContents>
+          {children}
         </PickOnTopContent>
       </body>
     </html>

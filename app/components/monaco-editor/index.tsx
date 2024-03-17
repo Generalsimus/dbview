@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useMonacoEditor } from "./hooks";
 import { Box } from "@mui/material";
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
 import * as monaco from "monaco-editor"
 
 interface IProps {

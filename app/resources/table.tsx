@@ -1,6 +1,5 @@
 "use client"
 import React, { } from "react";
-import { useMemoCall } from "../utils/hooks/useMemoCall";
 import { useRouter } from "next/navigation";
 import { useTableBody, useTableFooter, useTableHeader } from "./hooks";
 import { ResourceTabsEnum } from "./tab-props/utils";
@@ -18,19 +17,13 @@ interface IProps {
 }
 
 export const ResourceTable: React.FC<IProps> = React.memo(({ start, end, tab }) => {
-
     const router = useRouter()
 
-    const onPagination = useMemoCall((start: number, end: number) => {
-
-        router.push(`/resources/?start=${start}&end=${end}&tab=${tab}`);
-    });
 
     const tableData = useTableData(tab, start, end);
     const header = useTableHeader(tableData);
     const footer = useTableFooter(tableData);
     const body = useTableBody(tableData)
-    // console.log({ body, tableData })
     return <>
 
         <Table

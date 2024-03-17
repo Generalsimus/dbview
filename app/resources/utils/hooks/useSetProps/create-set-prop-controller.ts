@@ -1,9 +1,7 @@
 import { CreateObjectWithValue, GetObjectNestedValue, JoiSchemaValue } from "@/basic/generics"
-import { validate, validateErrorToObject } from "@/utils"
-import Joi, { AnySchema, ValidationResult, boolean } from "joi"
-import { Dispatch, SetStateAction } from "react"
-import { IndexedDBController } from "../../indexedDb"
-import { Anybody } from "next/font/google"
+import { validate } from "@/utils"
+import Joi, { AnySchema } from "joi"
+import { SetStateAction } from "react"
 // import { ValidationRes } from "./create-validation-controller"
 type Error = {
     error: true,
@@ -76,13 +74,6 @@ export const createSetPropController = <S extends any>(
             onChangeState(newValue);
             return newValue;
         },
-        // saveIndexedDB(id = "SAdas") {
-        //     const db = new IndexedDBController(id + "___", 1)
-        //     // db
-        //     console.log(`Object.keys(controller.value || {}) `, Object.keys(controller.value || {}))
-        //     const storage = db.createStorage(id, { autoIncrement: true, keyPath: "KEY_ID" })
-        //     storage.add(controller.value)
-        // },
         setProps(...setPropKeys) {
             return controller.getPropState(...setPropKeys).setValue
         },

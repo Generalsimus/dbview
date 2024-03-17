@@ -7,13 +7,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import { Stack, useTheme } from "@mui/material";
-import { useMemoCall } from "../utils/hooks/useMemoCall";
-import { useToggleBool } from "../utils/hooks/useToggleBool";
 import { useRouter } from "next/navigation";
-import { Backdrop, CircularProgress } from "@mui/material";
-// import { useTheme } from "@emotion/react";
 import { ApproveModal } from "./approve-modal";
 import { PickOnTop } from "./pick-on-top";
+import { useToggleBool } from "../resources/utils/hooks/useToggleBool";
+import { useMemoCall } from "../resources/utils/hooks/useMemoCall";
 
 interface IProps {
     open?: boolean

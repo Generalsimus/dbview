@@ -1,9 +1,10 @@
-import { useSetProps } from "@/app/utils/hooks/useSetProps";
+// import { useSetProps } from "@/utils/hooks/useSetProps";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Service } from "@/basic/models/services/services";
 import { INDEXED_DB_STORY_SERVICE_KEY_ID, getBasicServiceDoc, serviceStorage } from "./utils";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { useSetProps } from "@/app/resources/utils/hooks/useSetProps";
 
 
 interface FormType {

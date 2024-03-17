@@ -1,7 +1,6 @@
-// import { useContext } from "react"
-// import { PickOnTopContext } from "."
+// import { IndexedDBController } from "@/utils/indexedDb";
 
-import { IndexedDBController } from "@/app/utils/indexedDb";
+import { IndexedDBController } from "@/app/resources/utils/indexedDb";
 
 export const getFullPath = () =>
   `${window.location.pathname}${window.location.search}`;
@@ -15,7 +14,7 @@ const INDEXED_DB_STORY_NAME = `${INDEXED_DB_NAME}_STORY_NAME_1`;
 const INDEXED_DB_STORY_DATABASE_NAME = `${INDEXED_DB_STORY_NAME}_DATABASE`;
 const INDEXED_DB_STORY_STORAGE_NAME = `${INDEXED_DB_STORY_DATABASE_NAME}_STORAGE`;
 
-export const getPIckOnTopIndexedDBStorage = <D>() => {
+export const getPIckOnTopIndexedDBStorage = <D extends any>() => {
   const db = new IndexedDBController(INDEXED_DB_STORY_DATABASE_NAME, 1);
   const params = {
     autoIncrement: true,

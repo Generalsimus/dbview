@@ -1,8 +1,4 @@
-// interface IndexedDBEvents {
-// autoIncrement?: boolean;
-// keyPath?: string | string[] | null;
-// }
-
+"use client"
 import { IndexedDBController } from ".";
 
 type GetModelDoc<M, Params extends IDBObjectStoreParameters> = Params extends {

@@ -133,7 +133,7 @@ export interface ResourceData<DOC extends Record<PropertyKey, undefined | any>, 
   resource: Promise<RES>,
   columns: ColumnType[],
   updateRows: (res: RES, setData: Dispatch<SetStateAction<TableTataType>>) => void,
-  tabsRightContent?: ReactNode
+  content?: ReactNode
 }
 export const getResourceData = (
   tab: ResourceTabsEnum,

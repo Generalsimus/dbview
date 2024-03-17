@@ -1,9 +1,10 @@
-import { useSetProps } from "@/app/utils/hooks/useSetProps";
+// import { useSetProps } from "@/utils/hooks/useSetProps";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Route } from "@/basic/models/route/route";
 import { INDEXED_DB_STORY_ROUTE_KEY_ID, getBasicRouteDoc, routeStorage } from "./utils";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { useSetProps } from "@/app/resources/utils/hooks/useSetProps";
 
 interface FormType {
     open: boolean,

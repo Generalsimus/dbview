@@ -1,20 +1,18 @@
 "use client"
 import React from "react";
-import { Button } from "@mui/material";
-import CreateIcon from '@mui/icons-material/Create';
+import { Fab, Zoom } from "@mui/material";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Validation } from "@/basic/models/validation/validation";
-import { ValidationFormModal } from "./modal";
-import { useValidationFormController_V2 } from "./hooks";
-import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { getBasicValidationsDoc, validationStorage } from "./utils";
 import { useRouter } from "next/navigation";
+import AddIcon from '@mui/icons-material/Add';
+import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
 
 interface IProps {
     saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>
     deleteValidationDoc: (ids: number) => Promise<void>
 }
-export const AddValidationButton: React.FC<IProps> = React.memo(({ saveValidationDoc, deleteValidationDoc }) => {    
+export const AddValidationButton: React.FC<IProps> = React.memo(({ saveValidationDoc, deleteValidationDoc }) => {
     const router = useRouter()
     const onOpen = useMemoCall(async () => {
 
@@ -25,8 +23,14 @@ export const AddValidationButton: React.FC<IProps> = React.memo(({ saveValidatio
     })
 
     return <>
-        <Button variant="contained" onClick={onOpen} startIcon={<CreateIcon />}>
-            Add Validation
-        </Button>
+        <Zoom in>
+            <Fab color="primary" aria-label="add" onClick={onOpen} sx={{
+                position: 'absolute',
+                bottom: 16,
+                right: 16,
+            }}>
+                <AddIcon />
+            </Fab>
+        </Zoom>
     </>
 });
