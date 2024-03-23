@@ -1,6 +1,4 @@
-// import { IndexedDBController } from "@/utils/indexedDb";
-
-import { IndexedDBController } from "@/app/resources/utils/indexedDb";
+import { IndexedDBController } from "@/app/utils/indexedDb";
 
 export const getFullPath = () =>
   `${window.location.pathname}${window.location.search}`;
@@ -20,11 +18,10 @@ export const getPIckOnTopIndexedDBStorage = <D extends any>() => {
     autoIncrement: true,
     keyPath: `${INDEXED_DB_NAME}_ID` as const,
   } as const;
-  //   console.log("SSSSSSasaaaa");
+
   return db.createStorage<PickOnTopStoredDoc, typeof params>(
     INDEXED_DB_STORY_STORAGE_NAME,
     params
   );
 };
 
-export const pIckOnTopIndexedDBStorage = getPIckOnTopIndexedDBStorage();

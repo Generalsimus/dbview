@@ -4,7 +4,7 @@ const nextConfig = {
     ignoreBuildErrors: false,
     tsconfigPath: "./tsconfig.json",
   },
-  output: "standalone",
+  // output: "standalone",
 };
 
 module.exports = nextConfig;

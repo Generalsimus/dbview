@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { PropertyNameViews, PropertyNameViewsValue, PropertyType } from "./types";
+import React from "react";
+import { PropertyNameViews, PropertyType } from "./types";
 import { IconButton, Stack } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
-import { DeepPartial, PartialKeys } from "@/basic/generics";
-import { useMemoArgCall } from "@/utils/hooks/useMemoArgCall";
+import { PartialKeys } from "@/basic/generics";
 import { PropertyInput } from "./property-input";
-import { filter } from "lodash";
-import { CreateObjectValidationSchema } from "./utils";
+import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 interface IProps<V = PartialKeys<PropertyType, "value">> {
     value?: V[],

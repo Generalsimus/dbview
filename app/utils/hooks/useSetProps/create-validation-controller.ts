@@ -1,8 +1,4 @@
-import { CreateObjectWithValue, GetObjectNestedValue } from "@/basic/generics"
-import { validate } from "@/utils"
-import Joi, { AnySchema, ValidationResult } from "joi"
-import { Dispatch, SetStateAction } from "react"
-import { error } from "console"
+import { GetObjectNestedValue } from "@/basic/generics"
 
 // interface State {
 //   //   validation;

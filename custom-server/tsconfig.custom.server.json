@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "NodeNext",
+    "module":"NodeNext",
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "declaration": true,
+    "target": "ES2020",
+    "strictNullChecks": false,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "rootDir": "./",
+    "declarationDir": "./dist",
+    "outDir": "./dist"
+  },
+  "exclude": ["./dist/", "node_modules", "./test"]
+}

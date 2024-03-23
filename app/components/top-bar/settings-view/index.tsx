@@ -1,12 +1,9 @@
 import { ListItemIcon, MenuItem } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import Settings from '@mui/icons-material/Settings';
-// import { useToggleBool } from "@/utils/hooks/useToggleBool";
 import { SettingsModal } from "./modal";
-// import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
-import { createPortal } from "react-dom";
-import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
-import { useToggleBool } from "@/app/resources/utils/hooks/useToggleBool";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
 
 interface IProps {
     onMenuClose: () => void;

@@ -1,13 +1,11 @@
-"use client"
-import React from "react";
+import React, { useMemo } from "react";
 import { Fab, Zoom } from "@mui/material";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Service } from "@/basic/models/services/services";
-// import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
-import { getBasicServiceDoc, serviceStorage } from "./utils";
+import { getBasicServiceDoc, getServicesIndexedDBStorage } from "./utils";
 import { useRouter } from "next/navigation";
 import AddIcon from '@mui/icons-material/Add';
-import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 
 interface IProps {
@@ -16,6 +14,8 @@ interface IProps {
 }
 export const AddServiceButton: React.FC<IProps> = React.memo(({ saveServiceDoc, deleteServiceDoc }) => {
     const router = useRouter()
+
+    const serviceStorage = useMemo(getServicesIndexedDBStorage, [])
     const onOpen = useMemoCall(async () => {
         const searchParams = new URLSearchParams(window.location.search);
         const savedDoc = await serviceStorage.add(getBasicServiceDoc())

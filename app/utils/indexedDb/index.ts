@@ -1,18 +1,16 @@
-'use client';
+
 import { IndexedDBStorageController } from "./storage-controller";
 
-// interface IDBObjectStoreParameters {
-//     autoIncrement?: boolean;
-//     keyPath?: string | string[] | null;
-// }
+
 export class IndexedDBController {
   request: IDBOpenDBRequest;
   //
   constructor(databaseName: string, version: number) {
-    if (indexedDB !== undefined) {
-      this.request = indexedDB.open(databaseName, version);
-      console.log("🚀 --> constructor --> indexedDB:", indexedDB);
-    }
+    console.log("🚀 --> constructor --> indexedDB:", databaseName, version);
+    // if (indexedDB !== undefined) {
+    this.request = indexedDB.open(databaseName, version);
+    // console.log("🚀 --> constructor --> indexedDB:", indexedDB);
+    // }
   }
 
   createStorage<
@@ -28,16 +26,16 @@ export class IndexedDBController {
   get db() {
     return new Promise<IDBDatabase>((resolve, reject) => {
       const { readyState } = this.request;
-      console.log("this.request", readyState, this.request);
+      // console.log("this.r</IDBDatabase>equest", readyState, this.request);
       if (readyState === "done") {
         resolve(this.request.result);
       }
       this.request.addEventListener("upgradeneeded", async (e) => {
-        console.log("upgradeneeded_upgradeneeded");
+        // console.log("upgradeneeded_upgradeneeded");
         resolve(this.request.result);
       });
       this.request.addEventListener("success", (e) => {
-        console.log("success_success");
+        // console.log("success_success");
         resolve(this.request.result);
       });
     });

@@ -29,11 +29,11 @@ export class IndexedDBStorageController<
   get store() {
     const dbThen = this.controller.db;
     return dbThen.then((db) => {
-      console.log(
-        "db.objectStoreNames.",
-        this.storageName,
-        db.objectStoreNames
-      );
+      // console.log(
+      //   "db.objectStoreNames.",
+      //   this.storageName,
+      //   db.objectStoreNames
+      // );
       if (db.objectStoreNames.contains(this.storageName)) {
         const transaction = db.transaction(this.storageName, "readwrite");
         return transaction.objectStore(this.storageName);

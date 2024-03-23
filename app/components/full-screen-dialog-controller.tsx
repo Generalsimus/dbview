@@ -10,8 +10,8 @@ import { Stack, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { ApproveModal } from "./approve-modal";
 import { PickOnTop } from "./pick-on-top";
-import { useToggleBool } from "../resources/utils/hooks/useToggleBool";
-import { useMemoCall } from "../resources/utils/hooks/useMemoCall";
+import { useToggleBool } from "../utils/hooks/useToggleBool";
+import { useMemoCall } from "../utils/hooks/useMemoCall";
 
 interface IProps {
     open?: boolean
@@ -73,8 +73,6 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
     });
     const isDisabled = isLoading;
     const theme = useTheme()
-    console.log({
-    })
     return <>
         {/* <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -105,10 +103,7 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
             </Stack>
             <Stack flex={1}>{children}</Stack>
             <Stack zIndex={theme.zIndex.appBar} bgcolor={theme.palette.background.default} position={"sticky"} bottom={0} display={"flex"} flexDirection={"row"} gap={2} justifyContent={"flex-end"} padding={1}>
-                {onCancel && <Button
-                    onClick={onCancel}
-                    disabled={isDisabled}
-                    variant="outlined">Cancel</Button>}
+                <Button onClick={onCloseAndRouteBack} disabled={isDisabled} autoFocus size="small">Cancel</Button>
                 {onDelete && <ApproveModal
                     title="Are you sure to delete?"
                     approveContent="Delete"

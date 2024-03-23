@@ -1,19 +1,18 @@
-// import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
-// import { useToggleBool } from "@/utils/hooks/useToggleBool";
-import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Stack, Tooltip, Zoom, useTheme } from "@mui/material";
-import React, { RefObject, useRef, useState } from "react";
-import Settings from '@mui/icons-material/Settings';
-import { PersonAdd } from "@mui/icons-material";
+import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, useTheme } from "@mui/material";
+import React, { useRef } from "react";
 import { SettingsView } from "./settings-view";
-import { useToggleBool } from "@/app/resources/utils/hooks/useToggleBool";
-import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
-
+import { useToggleBool } from "@/app/utils/hooks/useToggleBool";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import HistoryIcon from '@mui/icons-material/History';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Switch from '@mui/material/Switch';
+import Tooltip from '@mui/material/Tooltip';
 interface IProps {
 }
 export const TopBar: React.FC<IProps> = React.memo(({ }) => {
     const handleClick = useMemoCall(() => { })
     const theme = useTheme();
-    console.log("🚀 --> constTopBar:React.FC<IProps>=React.memo --> theme:", theme);
+    // console.log("🚀 --> constTopBar:React.FC<IProps>=React.memo --> theme:", theme);
     const [open, initDefaultValue] = useToggleBool(false)
     const toggleOpen = initDefaultValue()
     const onOpen = initDefaultValue(true)
@@ -21,7 +20,7 @@ export const TopBar: React.FC<IProps> = React.memo(({ }) => {
     const anchorEl = useRef<null | HTMLElement>(null)
     // 
     // const open = true
-    return <>
+    return <div>
         {/* <Stack
             flexDirection={"row"}
             justifyContent={"flex-end"}
@@ -30,7 +29,13 @@ export const TopBar: React.FC<IProps> = React.memo(({ }) => {
         // bgcolor={theme.palette.grey[200]}
         // borderBottom={`1px solid ${theme.palette.grey[300]}`}
         > */}
-
+        <Tooltip title={"Auto Build"} arrow>
+            <Switch
+                // size="small"
+                onChange={() => { }}
+                checked={false}
+            />
+        </Tooltip>
         <Tooltip title="Account settings">
             <IconButton
                 onClick={toggleOpen}
@@ -84,6 +89,33 @@ export const TopBar: React.FC<IProps> = React.memo(({ }) => {
             </MenuItem>
             <Divider />
             <SettingsView onMenuClose={onClose} />
+            <MenuItem onClick={onOpen}>
+                <ListItemIcon>
+                    <HistoryIcon fontSize="small" />
+                </ListItemIcon>
+                History
+            </MenuItem>
+            <MenuItem onClick={onOpen}>
+                <ListItemIcon>
+                    <AccountCircleIcon fontSize="small" />
+                </ListItemIcon>
+                Accounts
+            </MenuItem>
+            {/* <MenuItem onClick={onOpen}>
+                <div>
+                    <ListItemIcon>
+                        <WifiIcon />
+                    </ListItemIcon>
+                    Auto Build
+                </div>
+                <Switch
+                    // edge="end"
+                    size="small"
+                    onChange={onOpen}
+                    checked={true}
+                />
+                {/* </ListItem> */}
+            {/* </MenuItem> */}
         </Menu>
-    </>;
+    </div >;
 });

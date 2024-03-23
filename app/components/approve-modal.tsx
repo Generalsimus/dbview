@@ -1,7 +1,7 @@
-import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
-import { useToggleBool } from "@/utils/hooks/useToggleBool";
 import { Button, Dialog, DialogActions, DialogContent, Typography } from "@mui/material";
 import React, { ComponentProps, ReactNode } from "react";
+import { useToggleBool } from "../utils/hooks/useToggleBool";
+import { useMemoCall } from "../utils/hooks/useMemoCall";
 
 interface IProps {
     title: string,

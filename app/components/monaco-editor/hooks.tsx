@@ -1,18 +1,18 @@
-// import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
-import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
-import * as monaco from "monaco-editor"
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
+"use client"
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { editor as monacoEditorModule } from "monaco-editor"
+import { useEffect, useState } from "react";
 
 
 
 
 interface SateType {
     element: HTMLElement | null,
-    editor: null | monaco.editor.IStandaloneCodeEditor
+    editor: null | monacoEditorModule.IStandaloneCodeEditor
 }
-export const useMonacoEditor = (options: monaco.editor.IStandaloneEditorConstructionOptions): {
+export const useMonacoEditor = (options: monacoEditorModule.IStandaloneEditorConstructionOptions): {
     createEditorRef: (el: HTMLDivElement | null) => void,
-    editor: monaco.editor.IStandaloneCodeEditor | null
+    editor: monacoEditorModule.IStandaloneCodeEditor | null
 } => {
     const [data, setData] = useState<SateType>({
         element: null,
@@ -33,7 +33,7 @@ export const useMonacoEditor = (options: monaco.editor.IStandaloneEditorConstruc
 
                 setData({
                     element: el,
-                    editor: monaco.editor.create(el, options)
+                    editor: monacoEditorModule.create(el, options)
                 });
             }
         }),

@@ -1,21 +1,12 @@
-// import { Validator } from "@/utils/hooks/useSetProps/create=validation-controller";
 import { InputProps } from "@/basic/generics";
 import { Service } from "@/basic/models/services/services";
-import React, { MouseEvent, useRef, useState } from "react";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Box, Button, Paper, Stack } from "@mui/material";
-import { MonacoEditor } from "@/app/components/monaco-editor";
-// import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
+import React, { MouseEvent, useRef } from "react";
+import { Stack } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import { AutoResizeField } from "@/app/components/auto-resize-field";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { accordionSummaryClasses } from '@mui/material';
-import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 interface IProps extends InputProps<Service["methods"][number]> {
     onRemove: () => void

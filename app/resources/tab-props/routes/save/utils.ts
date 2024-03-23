@@ -1,7 +1,8 @@
-import { IndexedDBController } from "@/app/resources/utils/indexedDb";
+"use client"
+import { IndexedDBController } from "@/app/utils/indexedDb";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"
 import { Route } from "@/basic/models/route/route"
-// import { IndexedDBController } from "@/utils/indexedDb";
+
 
 export const getBasicRouteDoc = (): MakeCreateOrUpdate<Route> => {
     return {
@@ -30,4 +31,4 @@ export const getRouteIndexedDBStorage = <D extends any>() => {
     return db.createStorage<MakeCreateOrUpdate<Route>, typeof params>(INDEXED_DB_STORY_STORAGE_NAME, params);
 }
 
-export const routeStorage = getRouteIndexedDBStorage();
+// export const routeStorage = getRouteIndexedDBStorage();

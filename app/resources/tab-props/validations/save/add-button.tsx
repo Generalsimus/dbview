@@ -1,12 +1,12 @@
 "use client"
-import React from "react";
+import React, { useMemo } from "react";
 import { Fab, Zoom } from "@mui/material";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Validation } from "@/basic/models/validation/validation";
-import { getBasicValidationsDoc, validationStorage } from "./utils";
+import { getBasicValidationsDoc, getValidationIndexedDBStorage } from "./utils";
 import { useRouter } from "next/navigation";
 import AddIcon from '@mui/icons-material/Add';
-import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 interface IProps {
     saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>
@@ -14,6 +14,9 @@ interface IProps {
 }
 export const AddValidationButton: React.FC<IProps> = React.memo(({ saveValidationDoc, deleteValidationDoc }) => {
     const router = useRouter()
+
+    const validationStorage = useMemo(getValidationIndexedDBStorage, []);
+
     const onOpen = useMemoCall(async () => {
 
         const searchParams = new URLSearchParams(window.location.search);

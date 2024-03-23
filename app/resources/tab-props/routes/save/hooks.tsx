@@ -1,10 +1,10 @@
-// import { useSetProps } from "@/utils/hooks/useSetProps";
+"use client";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Route } from "@/basic/models/route/route";
-import { INDEXED_DB_STORY_ROUTE_KEY_ID, getBasicRouteDoc, routeStorage } from "./utils";
+import { INDEXED_DB_STORY_ROUTE_KEY_ID, getBasicRouteDoc, getRouteIndexedDBStorage } from "./utils";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { useSetProps } from "@/app/resources/utils/hooks/useSetProps";
+import { useEffect, useMemo } from "react";
+import { useSetProps } from "@/app/utils/hooks/useSetProps";
 
 interface FormType {
     open: boolean,
@@ -20,6 +20,7 @@ export const useRouteFormController_V2 = () => {
         open: false,
         doc: getBasicRouteDoc()
     }));
+    const routeStorage = useMemo(getRouteIndexedDBStorage, [])
 
     const searchParams = useSearchParams();
     const formId = searchParams.get('form');

@@ -1,8 +1,8 @@
 import { ExtractTypeWithProp } from "@/basic/generics";
 import React, { ChangeEvent } from "react";
 import { ArgValueType, InputTypes, ValueTypes } from "../../types";
-import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
 import { AutoResizeField } from "@/app/components/auto-resize-field";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 
 
@@ -20,7 +20,7 @@ export const Number: React.FC<IProps> = React.memo(({ type, value, onChange }) =
             value: parseInt(e.target.value)
         })
     })
-    console.log("value", { value })
+    // console.log("value", { value })
     return <>
         <AutoResizeField
             type="number"

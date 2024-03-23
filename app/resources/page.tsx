@@ -2,6 +2,7 @@
 import React from 'react';
 import { ResourceTable } from './table';
 import { ResourceTabsEnum, resourceTabsEnums } from './tab-props/utils';
+import { PickOnTopContent } from '../components/pick-on-top/pick-on-top-content';
 
 
 
@@ -22,11 +23,13 @@ export default ({ searchParams }: IProps) => {
     }
 
 
-    return <> 
-        <ResourceTable
-            start={start}
-            end={end}
-            tab={tab}
-        />
+    return <>
+        <PickOnTopContent>
+            <ResourceTable
+                start={start}
+                end={end}
+                tab={tab}
+            />
+        </PickOnTopContent>
     </>
 }

@@ -1,4 +1,5 @@
-import { IndexedDBController } from "@/app/resources/utils/indexedDb";
+"use client";
+import { IndexedDBController } from "@/app/utils/indexedDb";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"
 import { Validation } from "@/basic/models/validation/validation"
 
@@ -19,7 +20,7 @@ const INDEXED_DB_STORY_DATABASE_NAME = `${INDEXED_DB_STORY_NAME}_DATABASE`;
 const INDEXED_DB_STORY_STORAGE_NAME = `${INDEXED_DB_STORY_DATABASE_NAME}_STORAGE`;
 export const INDEXED_DB_STORY_VALIDATION_KEY_ID = `${INDEXED_DB_NAME}_ID` as const;
 
-const getValidationIndexedDBStorage = <D extends any>() => {
+export const getValidationIndexedDBStorage = <D extends any>() => {
     const db = new IndexedDBController(INDEXED_DB_STORY_DATABASE_NAME, 1);
     const params = {
         autoIncrement: true,
@@ -29,4 +30,4 @@ const getValidationIndexedDBStorage = <D extends any>() => {
     return db.createStorage<MakeCreateOrUpdate<Validation>, typeof params>(INDEXED_DB_STORY_STORAGE_NAME, params);
 }
 
-export const validationStorage = getValidationIndexedDBStorage();
+// export const validationStorage = getValidationIndexedDBStorage();

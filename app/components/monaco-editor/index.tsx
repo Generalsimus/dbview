@@ -1,8 +1,9 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import { useMonacoEditor } from "./hooks";
-import { Box } from "@mui/material";
-import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
-import * as monaco from "monaco-editor"
+import { Box } from "@mui/material";  
+import { editor as monacoEditorModule } from "monaco-editor"
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 
 interface IProps {
     value?: string,
@@ -14,7 +15,7 @@ export const MonacoEditor: React.FC<IProps> = React.memo(({ value = "", onChange
         language: 'typescript',
         theme: 'vs-dark',
     });
-    const onChangeCode = useMemoCall((event: monaco.editor.IModelContentChangedEvent) => {
+    const onChangeCode = useMemoCall((event: monacoEditorModule.IModelContentChangedEvent) => {
         if (editor) {
             onChange?.(editor.getValue())
         }

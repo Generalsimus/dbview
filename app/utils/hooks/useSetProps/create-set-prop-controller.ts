@@ -2,7 +2,7 @@ import { CreateObjectWithValue, GetObjectNestedValue, JoiSchemaValue } from "@/b
 import { validate } from "@/utils"
 import Joi, { AnySchema } from "joi"
 import { SetStateAction } from "react"
-// import { ValidationRes } from "./create-validation-controller"
+
 type Error = {
     error: true,
     helperText: string | undefined,
@@ -126,7 +126,7 @@ export const createSetPropController = <S extends any>(
             return propertyController;
         },
         getValidation: (schema) => {
-            console.log(!!needValidate, !!schema, { value: controller.value, schema })
+            // cons</any>ole.log(!!needValidate, !!schema, { value: controller.value, schema })
             if (needValidate && schema) {
                 validationResult = validate(controller.value, schema)
                 needValidate = false;
@@ -140,7 +140,7 @@ export const createSetPropController = <S extends any>(
                     if (validator.hasError()) {
                         if (showErrors && validationResult?.error) {
                             const { error: { details } } = validationResult;
-                            console.log(showErrors && validationResult?.error, details, errorPaths, "SSS")
+                            // console.log(showErrors && validationResult?.error, details, errorPaths, "SSS")
                             detailsLoop: for (const detail of details) {
                                 indexingLoop: for (let index = 0; index < errorPaths.length; index++) {
                                     const pathName = errorPaths[index];
@@ -181,7 +181,7 @@ export const createSetPropController = <S extends any>(
                     if (showErrors !== undefined) {
                         validator.toggleShowError(showErrors)
                     }
-                    console.log({ validationResult, eee: validator.hasError() })
+                    // console.log({ validationResult, eee: validator.hasError() })
                     if (!validator.hasError()) {
                         return controller.value
                     }

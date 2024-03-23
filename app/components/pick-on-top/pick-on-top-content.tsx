@@ -1,16 +1,13 @@
-"use client"
-import React, { createContext, useState } from "react";
-// import { useMemoCall } from '@/app/resources/utils/hooks/useSignalRefresh';
-import PushPinIcon from '@mui/icons-material/PushPin';
-import DeleteIcon from '@mui/icons-material/Delete';
+
+import React, { createContext, useMemo } from "react";
 import { ButtonBase, IconButton, Paper, Stack, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from "next/navigation";
 import { createPortal } from 'react-dom';
-import { getFullPath, pIckOnTopIndexedDBStorage } from './utils';
-import { useSignalRefresh } from "@/app/resources/utils/hooks/useSignalRefresh";
-import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
-// import { useSignalRefresh } from "@/utils/hooks/useSignalRefresh";
+import { getFullPath, getPIckOnTopIndexedDBStorage } from './utils';
+import { useSignalRefresh } from "@/app/utils/hooks/useSignalRefresh";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 export const PickOnTopContentContext = createContext(() => { })
@@ -18,7 +15,11 @@ interface IProps {
     children: React.ReactNode
 }
 export const PickOnTopContent: React.FC<IProps> = React.memo(({ children }) => {
+    // const pIckOnTopIndexedDBStorage = useMemo(getPIckOnTopIndexedDBStorage, [])
+    // return children
     const router = useRouter();
+    const pIckOnTopIndexedDBStorage = useMemo(getPIckOnTopIndexedDBStorage, [])
+
     const [stickDocs, refreshIndexDbDocs] = useSignalRefresh(async () => {
         return await pIckOnTopIndexedDBStorage.getAll()
     })
@@ -68,24 +69,5 @@ export const PickOnTopContent: React.FC<IProps> = React.memo(({ children }) => {
             </Stack>,
             document.body
         )}
-        {/* {stickDocs?.map(doc => {
-
-
-            return <Paper elevation={4} >
-                <ButtonBase sx={{ display: "flex", flexDirection: "row", alignItems: "center", padding: '5px 10px' }} onClick={() => {
-                    router.push(doc.path)
-
-                }}>
-                    <DeleteIcon />
-                    <Typography>{doc.title}</Typography>
-                    <IconButton size="small" onClick={async () => {
-                        await pIckOnTopIndexedDBStorage.delete(doc.INDEXED_DB_PICK_ID);
-                        refreshIndexDbDocs();
-                    }}>
-                        <CloseIcon />
-                    </IconButton>
-                </ButtonBase>
-            </Paper>
-        })} */}
     </PickOnTopContentContext.Provider>;
 });

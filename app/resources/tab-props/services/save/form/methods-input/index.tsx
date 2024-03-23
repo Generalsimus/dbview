@@ -1,33 +1,20 @@
-// import { Validator } from "@/utils/hooks/useSetProps/create=validation-controller";
+"use client"
 import { InputProps } from "@/basic/generics";
 import { Service } from "@/basic/models/services/services";
-import React, { useState } from "react";
+import React from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Box, Button, Paper, Stack } from "@mui/material";
-import { MonacoEditor } from "@/app/components/monaco-editor";
-// import { useMemoCall } from "@/app/resources/utils/hooks/useSignalRefresh";
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import Deletecon from '@mui/icons-material/Delete';
-import { AutoResizeField } from "@/app/components/auto-resize-field";
+import { Button, Stack } from "@mui/material";
 import { accordionSummaryClasses } from '@mui/material';
 import { MethodNameInput } from "./method-name-input";
-import { useMemoArgCall } from "@/app/resources/utils/hooks/useMemoArgCall";
-import { useMemoCall } from "@/app/resources/utils/hooks/useMemoCall";
-// import { useMemoArgCall } from "@/utils/hooks/useMemoArgCall";
-// import { MonacoEditor } from "./trr/monaco-editor";
-// import { MonacoEditor } from "./monaco-editor";
+import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
+import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import dynamic from 'next/dynamic'
 
-// name: string,
-// descriptions: string,
-// argValidationIds: number[],
-// actionCode: string
 interface IProps extends InputProps<Service["methods"]> {
-    // validator: Validator<Service>
 }
 export const MethodsInput: React.FC<IProps> = React.memo(({ value, getValidation, setValue, initSetProps, getPropState }) => {
     const addEmptyMethod = useMemoCall(() => {
@@ -46,7 +33,8 @@ export const MethodsInput: React.FC<IProps> = React.memo(({ value, getValidation
         newValue.splice(removeIndex, 1);
         setValue(newValue);
     });
-    // const { } = getValidation()
+
+    const MonacoEditor = dynamic(() => import('@/app/components/monaco-editor').then((mod) => mod.MonacoEditor), { ssr: false });
 
     return <>
         <div>

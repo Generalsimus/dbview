@@ -1,9 +1,36 @@
-import { ReactNode, useEffect, useState } from "react"
-import { ResourceTabsEnum, getResourceData } from "./utils"
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
+import { ResourceTabsEnum } from "./utils"
 import { ColumnType, RowType } from "@/app/components/table/types"
-import { useParams, useRouter } from "next/navigation";
-
-
+import { useValidationResource } from "./validations";
+import { useRouteResource } from "./routes";
+import { useServiceResource } from "./services";
+export interface ResourceData<DOC extends Record<PropertyKey, undefined | any>, RES = { docs: DOC[], maxDocsCount: number }> {
+    start: number,
+    end: number,
+    resource: Promise<RES>,
+    columns: ColumnType[],
+    updateRows: (res: RES, setData: Dispatch<SetStateAction<TableTataType>>) => void,
+    content?: ReactNode
+}
+const useResourceData = (
+    start: number,
+    end: number,
+    tab: ResourceTabsEnum
+) => {
+    const validationResource = useValidationResource(start, end, tab)
+    const routeResource = useRouteResource(start, end, tab)
+    const serviceResource = useServiceResource(start, end, tab)
+    // </TableTataType>
+    console.log("🚀 --> validationResource || routeResource || serviceResource:",
+        tab,
+        {
+            validationResource,
+            routeResource,
+            serviceResource
+        }
+    );
+    return validationResource || routeResource || serviceResource
+}
 export interface TableTataType {
     currentTab: ResourceTabsEnum,
     start: number,
@@ -30,11 +57,12 @@ export const useTableData = (
         collapsedIndex: null
     });
 
-    const params = useParams();
-    const router = useRouter()
-
+    // const params = useParams();
+    // const router = useRouter()
+    const resourceData = useResourceData(start, end, tab)
     useEffect(() => {
-        const { columns, resource, content, updateRows } = getResourceData(tab, start, end, router);
+        if (!resourceData) return;
+        const { columns, resource, content, updateRows } = resourceData
         setData(curr => {
             return {
                 ...curr,
@@ -55,6 +83,6 @@ export const useTableData = (
         return () => {
             isEjected = true;
         }
-    }, [tab, start, end, params]);
+    }, [resourceData]);
     return data;
 }
