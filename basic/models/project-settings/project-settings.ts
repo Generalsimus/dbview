@@ -5,10 +5,10 @@ import Joi from "joi";
 
 
 
-export interface UserSetting {
+export interface ProjectSetting {
     buildDirection: string;
 }
 
-export const RouteSchema = Joi.object<UserSetting>({
+export const ProjectSettingSchema = Joi.object<ProjectSetting>({
     buildDirection: Joi.string().optional().default(""),
 }) 

@@ -18,21 +18,16 @@ export const TopBar: React.FC<IProps> = React.memo(({ }) => {
     const onOpen = initDefaultValue(true)
     const onClose = initDefaultValue(false)
     const anchorEl = useRef<null | HTMLElement>(null)
-    // 
-    // const open = true
+
     return <div>
-        {/* <Stack
-            flexDirection={"row"}
-            justifyContent={"flex-end"}
-            alignItems={"center"}
-        // padding={'5px 10px'}
-        // bgcolor={theme.palette.grey[200]}
-        // borderBottom={`1px solid ${theme.palette.grey[300]}`}
-        > */}
+
         <Tooltip title={"Auto Build"} arrow>
             <Switch
                 // size="small"
-                onChange={() => { }}
+                onChange={() => {
+ 
+
+                }}
                 checked={false}
             />
         </Tooltip>
@@ -95,12 +90,12 @@ export const TopBar: React.FC<IProps> = React.memo(({ }) => {
                 </ListItemIcon>
                 History
             </MenuItem>
-            <MenuItem onClick={onOpen}>
+            {/* <MenuItem onClick={onOpen}>
                 <ListItemIcon>
                     <AccountCircleIcon fontSize="small" />
                 </ListItemIcon>
                 Accounts
-            </MenuItem>
+            </MenuItem> */}
             {/* <MenuItem onClick={onOpen}>
                 <div>
                     <ListItemIcon>
@@ -115,7 +110,6 @@ export const TopBar: React.FC<IProps> = React.memo(({ }) => {
                     checked={true}
                 />
                 {/* </ListItem> */}
-            {/* </MenuItem> */}
         </Menu>
     </div >;
 });

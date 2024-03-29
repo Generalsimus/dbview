@@ -11,11 +11,7 @@ interface FormType {
     doc: MakeCreateOrUpdate<Route>
 }
 // const routesStorage = getRouteIndexedDBStorage()
-export const useRouteFormController_V2 = () => {
-    // useForm
-    // console.log(" useSetProps<FormType>(()")
-    // const params = useParams()
-
+export const useRouteFormController = () => {
     const form = useSetProps<FormType>(() => ({
         open: false,
         doc: getBasicRouteDoc()

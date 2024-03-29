@@ -1,5 +1,7 @@
-#!/bin/bash
-npm run next:dev &
+#!/bin/bash 
+
+# npm run electron &
+
 tsc --watch --project ./custom-server/tsconfig.custom.server.json &
-tsc --watch &
+tsc --watch & 
 wait

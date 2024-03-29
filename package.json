@@ -22,6 +22,7 @@
     "@mui/material": "^5.14.16",
     "@types/lodash": "^4.14.201",
     "colby": "^0.2.2",
+    "electron": "^29.1.5",
     "joi": "^17.11.0",
     "lodash": "^4.17.21",
     "monaco-editor": "^0.45.0",
@@ -29,16 +30,16 @@
     "react": "^18",
     "react-dom": "^18",
     "sequelize": "^6.34.0",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.3.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/yargs": "^17.0.32",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.9.1",
-    "electron": "^29.1.5",
     "eslint": "^8",
     "eslint-config-next": "14.0.1",
     "eslint-plugin-prettier": "^5.0.1",

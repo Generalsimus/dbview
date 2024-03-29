@@ -3,7 +3,7 @@ import React, {  } from "react";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { SaveRouteForm } from ".";
 import { Route } from "@/basic/models/route/route";
-import { useRouteFormController_V2 } from "./hooks";
+import { useRouteFormController } from "./hooks";
 
 interface IProps {
     saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>
@@ -11,7 +11,7 @@ interface IProps {
 }
 export const EditRouteView: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc }) => {
 
-    const form = useRouteFormController_V2()
+    const form = useRouteFormController()
 
     return <>
         <SaveRouteForm

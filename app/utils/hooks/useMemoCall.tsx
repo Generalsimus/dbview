@@ -7,3 +7,4 @@ export const useMemoCall = <FN extends ((...args: any[]) => any)>(value: FN): FN
         return callSaveRef.current(...args);
     }).current as FN
 }
+
