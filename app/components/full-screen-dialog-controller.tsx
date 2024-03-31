@@ -102,7 +102,9 @@ export const FullScreenDialogController: React.FC<IProps> = React.memo(({
                 </IconButton>
             </Stack>
             <Stack flex={1}>{children}</Stack>
-            <Stack zIndex={theme.zIndex.appBar} bgcolor={theme.palette.background.default} position={"sticky"} bottom={0} display={"flex"} flexDirection={"row"} gap={2} justifyContent={"flex-end"} padding={1}>
+            <Stack zIndex={theme.zIndex.appBar} 
+            // bgcolor={theme.palette.background.default}
+             position={"sticky"} bottom={0} display={"flex"} flexDirection={"row"} gap={2} justifyContent={"flex-end"} padding={1}>
                 <Button onClick={onCloseAndRouteBack} disabled={isDisabled} autoFocus size="small">Cancel</Button>
                 {onDelete && <ApproveModal
                     title="Are you sure to delete?"

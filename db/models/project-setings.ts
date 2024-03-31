@@ -15,8 +15,12 @@ export const ProjectSettingModel: ModelDefined<
         autoIncrement: true,
         primaryKey: true
     },
-    buildDirection: {
-        type: DataTypes.STRING(1234),
+    backEndBuildDirection: {
+        type: DataTypes.STRING(2234),
+        allowNull: true
+    },
+    frontEndBuildDirection: {
+        type: DataTypes.STRING(2234),
         allowNull: true
     },
 });

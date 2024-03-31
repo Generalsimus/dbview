@@ -6,9 +6,11 @@ import Joi from "joi";
 
 
 export interface ProjectSetting {
-    buildDirection: string;
+    backEndBuildDirection: string | null;
+    frontEndBuildDirection: string | null;
 }
 
 export const ProjectSettingSchema = Joi.object<ProjectSetting>({
-    buildDirection: Joi.string().optional().default(""),
+    backEndBuildDirection: Joi.string().optional().default(null),
+    frontEndBuildDirection: Joi.string().optional().default(null),
 }) 

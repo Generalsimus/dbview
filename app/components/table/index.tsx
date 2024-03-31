@@ -9,6 +9,9 @@ import { BodyType, FooterType, HeaderType, RowType } from './types';
 import { RowLine } from './row-line';
 import { Body } from './body';
 
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
+
 interface IProps {
     header?: HeaderType
     footer?: FooterType
@@ -25,10 +28,12 @@ export const Table = (props: IProps) => {
 
 
     return <>
-        <TableMaterialUi aria-label="table" sx={{ bgcolor: theme.palette.background.paper }}>
-            {header && <Header {...header} />}
-            {body && <Body {...body} />}
-            {footer && <Footer {...footer} />}
-        </TableMaterialUi >
+        <TableContainer component={Paper}>
+            <TableMaterialUi aria-label="table" >
+                {header && <Header {...header} />}
+                {body && <Body {...body} />}
+                {footer && <Footer {...footer} />}
+            </TableMaterialUi >
+        </TableContainer>
     </>
 }

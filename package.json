@@ -1,19 +1,19 @@
 {
   "name": "dbview",
   "version": "0.1.0",
-  "private": true,
+  "license": "Apache-2.0",
   "preferGlobal": true,
   "scripts": {
     "dev": "sh run.sh",
     "next:dev": "next dev",
     "build": "next build && tsc --project ./custom-server/tsconfig.custom.server.json",
     "custom-server-dev": "tsc --watch --project ./custom-server/tsconfig.custom.server.json",
-    "electron": "electron ./custom-server/dist/index.js",
+    "electron": "electron ./custom-server/dist/custom-server/startApp.js",
     "start": "next start",
     "lint": "next lint"
   },
   "bin": {
-    "dbview": "./custom-server/dist/index.js"
+    "dbview": "./custom-server/dist/custom-server/index.js"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -27,6 +27,7 @@
     "lodash": "^4.17.21",
     "monaco-editor": "^0.45.0",
     "next": "14.0.1",
+    "prompts": "^2.4.2",
     "react": "^18",
     "react-dom": "^18",
     "sequelize": "^6.34.0",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/prompts": "^2.4.9",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/yargs": "^17.0.32",

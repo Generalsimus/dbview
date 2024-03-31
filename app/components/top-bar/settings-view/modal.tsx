@@ -27,16 +27,26 @@ interface IProps extends ReturnType<typeof useProjectSettingFormController> {
     onClose: () => void
 }
 export const SettingsModal: React.FC<IProps> = React.memo(({ open, onOpen, onClose, saveProjectSettingsDoc, getPropState, setProps, value }) => {
-    const { doc: { buildDirection }, isLoading } = value;
+    const { doc: { backEndBuildDirection, frontEndBuildDirection }, isLoading } = value;
+    console.log("🚀 --> constSettingsModal:React.FC<IProps>=React.memo --> { backEndBuildDirection, frontEndBuildDirection }:", { backEndBuildDirection, frontEndBuildDirection });
     const theme = useTheme()
-    const onChangeBuildDirectory = useRunOnceAndWaitToEnd(async () => {
+    const onChangeBackEndBuildDirection = useRunOnceAndWaitToEnd(async () => {
         console.log("🚀 --> onChangeBuildDirectory --> async:");
         const response = await fetch("/open-directory-dialog", {
             method: "GET"
         })
         const result = await response.text();
 
-        setProps("doc", "buildDirection")(result.trim());
+        setProps("doc", "backEndBuildDirection")(result.trim());
+    })
+    const onChangeFrontEndBuildDirection = useRunOnceAndWaitToEnd(async () => {
+        console.log("🚀 --> onChangeBuildDirectory --> async:");
+        const response = await fetch("/open-directory-dialog", {
+            method: "GET"
+        })
+        const result = await response.text();
+
+        setProps("doc", "frontEndBuildDirection")(result.trim());
     })
     const { getIfValid, getError } = getPropState("doc").getValidation(getCreateOrUpdateSchema(ProjectSettingSchema));
 
@@ -88,14 +98,15 @@ export const SettingsModal: React.FC<IProps> = React.memo(({ open, onOpen, onClo
                 </Backdrop>
                 <Stack
                     width={300}
-                    flexDirection={"row"}
+                    flexDirection={"column"}
+                    gap={2}
                 >
                     <TextField
-                        id="build-directory"
-                        label="Build Directory"
+                        id="backEndBuildDirection"
+                        label="Back-End Directory"
                         variant="outlined"
                         size="small"
-                        value={buildDirection}
+                        value={backEndBuildDirection}
                         sx={{
                             [`& .${inputBaseClasses.root}`]: {
                                 padding: "0px !important"
@@ -103,7 +114,7 @@ export const SettingsModal: React.FC<IProps> = React.memo(({ open, onOpen, onClo
                         }}
                         type="text"
                         aria-readonly
-                        {...getError("buildDirection")}
+                        {...getError("backEndBuildDirection")}
                         helperText="Please write output Directory path"
                         InputProps={{
                             endAdornment: <InputAdornment position="end">
@@ -113,7 +124,38 @@ export const SettingsModal: React.FC<IProps> = React.memo(({ open, onOpen, onClo
                                     variant="contained"
                                     tabIndex={-1}
                                     endIcon={<FolderIcon />}
-                                    onClick={onChangeBuildDirectory}
+                                    onClick={onChangeBackEndBuildDirection}
+                                >
+                                    Choose
+                                </Button>
+                            </InputAdornment>
+                        }}
+                    />
+
+                    <TextField
+                        id="frontEndBuildDirection"
+                        label="Front-End Directory"
+                        variant="outlined"
+                        size="small"
+                        value={frontEndBuildDirection}
+                        sx={{
+                            [`& .${inputBaseClasses.root}`]: {
+                                padding: "0px !important"
+                            }
+                        }}
+                        type="text"
+                        aria-readonly
+                        {...getError("frontEndBuildDirection")}
+                        helperText="Please write output Directory path"
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">
+                                <Button
+                                    component="label"
+                                    role={undefined}
+                                    variant="contained"
+                                    tabIndex={-1}
+                                    endIcon={<FolderIcon />}
+                                    onClick={onChangeFrontEndBuildDirection}
                                 >
                                     Choose
                                 </Button>

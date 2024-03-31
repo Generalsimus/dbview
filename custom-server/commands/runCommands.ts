@@ -2,6 +2,7 @@ import { createProject } from "./createProject";
 import { ArgumentsCamelCase } from 'yargs';
 
 export const runCommands = async (argv: ArgumentsCamelCase<{}>) => {
+    // console.log("🚀 --> runCommands --> argv:", argv);
 
     switch (argv._[0]) {
         case "new":

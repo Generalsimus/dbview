@@ -7,6 +7,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Switch from '@mui/material/Switch';
 import Tooltip from '@mui/material/Tooltip';
+import { AutoBuild } from "./auto-build";
 interface IProps {
 }
 export const TopBar: React.FC<IProps> = React.memo(({ }) => {
@@ -21,16 +22,8 @@ export const TopBar: React.FC<IProps> = React.memo(({ }) => {
 
     return <div>
 
-        <Tooltip title={"Auto Build"} arrow>
-            <Switch
-                // size="small"
-                onChange={() => {
- 
 
-                }}
-                checked={false}
-            />
-        </Tooltip>
+        <AutoBuild />
         <Tooltip title="Account settings">
             <IconButton
                 onClick={toggleOpen}

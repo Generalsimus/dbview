@@ -9,10 +9,14 @@ interface FormType {
     isLoading: boolean;
     doc: ProjectSetting;
 }
+
+// backEndBuildDirection: string;
+// frontEndBuildDirection: string;
 // const routesStorage = getRouteIndexedDBStorage()
 const getBasicProjectSettingDoc = () => {
     return {
-        buildDirection: "",
+        backEndBuildDirection: "",
+        frontEndBuildDirection: "",
     };
 };
 export const useProjectSettingFormController = () => {
