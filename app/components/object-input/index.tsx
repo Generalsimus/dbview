@@ -51,6 +51,6 @@ export const ObjectInput: React.FC<IProps> = React.memo(({ value = [], onChange,
                     <AddIcon />
                 </IconButton>
             </Stack>
-        </Stack>;
+        </Stack>
     </>;
 });

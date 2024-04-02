@@ -6,7 +6,7 @@ export class IndexedDBController {
   request: IDBOpenDBRequest;
   //
   constructor(databaseName: string, version: number) {
-    console.log("🚀 --> constructor --> indexedDB:", databaseName, version);
+    // console.log("🚀 --> constructor --> indexedDB:", databaseName, version);
     // if (indexedDB !== undefined) {
     this.request = indexedDB.open(databaseName, version);
     // console.log("🚀 --> constructor --> indexedDB:", indexedDB);

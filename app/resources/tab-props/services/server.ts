@@ -1,15 +1,12 @@
 "use server";
-import {
-  MakeCreate,
-  MakeCreateOrUpdate,
-  getCreateOrUpdateSchema,
-} from "@/basic/db-basic-schema";
+import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { Service, ServiceSchema } from "@/basic/models/services/services";
 import { ServiceModel } from "@/db/models/Service";
 import { validate } from "@/utils";
 import { map } from "lodash";
 
 export async function getServiceDocs(startIndex: number, endIndex: number) {
+  "use server";
   const { rows, count } = await ServiceModel.findAndCountAll({
     where: {},
     order: [["createdAt", "DESC"]],
@@ -23,9 +20,7 @@ export async function getServiceDocs(startIndex: number, endIndex: number) {
   };
 }
 
-export async function saveServiceDoc(
-  value: MakeCreateOrUpdate<Service>
-): Promise<void> {
+export async function saveServiceDoc(value: MakeCreateOrUpdate<Service>): Promise<void> {
   "use server";
 
   const validateRes = validate(value, getCreateOrUpdateSchema(ServiceSchema));

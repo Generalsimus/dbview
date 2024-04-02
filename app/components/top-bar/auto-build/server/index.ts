@@ -1,22 +1,20 @@
 "use server"
 
 import { AutoBuild } from ".."
+import { autoBuildState } from "./state"
 
 
 
 
 
-const options = {
-    autoBuild: false
-}
 
 export async function getAutoBuildValue(): Promise<boolean> {
     'use server'
-    return options.autoBuild
+    return autoBuildState.autoBuild
 }
 
 export async function toggleSetAutoBuild(): Promise<boolean> {
     'use server'
-    options.autoBuild = !options.autoBuild;
-    return options.autoBuild;
+    autoBuildState.autoBuild = !autoBuildState.autoBuild;
+    return autoBuildState.autoBuild;
 }
