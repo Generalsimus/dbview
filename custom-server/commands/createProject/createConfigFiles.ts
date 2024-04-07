@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { SupportedLanguages } from './gePromptsAnswers';
 import { getConfigFileContent } from './getConfigFileContent';
-import { writeFileSync } from '../../utils/writeFileSync';
+import { writeFileSync } from '../../../utils/writeFileSync';
 
 
 export const createConfigFiles = (

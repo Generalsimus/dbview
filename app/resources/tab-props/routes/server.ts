@@ -1,4 +1,5 @@
 "use server"
+import { buildRoute } from "@/app/builder/route";
 import { autoBuildState } from "@/app/components/top-bar/auto-build/server/state";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { Route, RouteSchema } from "@/basic/models/route/route";
@@ -7,15 +8,15 @@ import { validate } from "@/utils";
 
 export async function SaveRouteDoc(value: MakeCreateOrUpdate<Route>): Promise<void> {
     'use server'
-    console.log("🚀 --> SaveRouteDoc --> value:", value);
     const validateRes = validate(value, getCreateOrUpdateSchema(RouteSchema))
-    // console.log({ validateRes</void> })
-    console.log("🚀 --> SaveRouteDoc --> autoBuildState:", autoBuildState);
+
+
     if (!validateRes.error) {
         const { value } = validateRes;
 
         const [instance, created] = await RouteModel.upsert(value);
 
+        buildRoute(instance.dataValues)
     }
 
 };

@@ -1,4 +1,4 @@
-import { RequestTypeEnum, requestMethods } from "@/basic/request";
+import { RequestTypeEnum, requestMethods } from "@/basic/types";
 import Joi from "joi";
 
 
@@ -15,5 +15,5 @@ export const RouteSchema = Joi.object<Route>({
     name: Joi.string().required(),
     path: Joi.string().required(),
     description: Joi.string().allow("").default(""),
-    method: Joi.string().required(),
+    method: Joi.string().valid(...requestMethods).required(),
 }) 

@@ -1,4 +1,4 @@
-import { ProjectSettingModel } from "@/db/models/project-setings"
+import { ProjectSettingModel } from "@/db/models/project-settings"
 
 
 

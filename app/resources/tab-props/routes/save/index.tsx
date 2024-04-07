@@ -1,7 +1,7 @@
 "use client"
 import { FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
 import React from "react";
-import { RequestMethodType, requestMethods } from "@/basic/request";
+import { RequestTypeEnum, requestMethods } from "@/basic/types";
 import { Route, RouteSchema } from "@/basic/models/route/route";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema, } from "@/basic/db-basic-schema";
 import { useRouteFormController } from "./hooks";
@@ -95,7 +95,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
                     onChange={initSetProps("target", "value")("doc", "method")}
                     {...getError("method")}
                 >
-                    {requestMethods.map((method: RequestMethodType[number]) => {
+                    {requestMethods.map((method: RequestTypeEnum) => {
                         return <MenuItem key={method} value={method}>{method}</MenuItem>
                     })}
                 </Select>

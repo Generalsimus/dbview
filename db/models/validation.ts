@@ -1,4 +1,4 @@
-import { requestMethods } from "@/basic/request";
+import { requestMethods } from "@/basic/types";
 import { sequelize } from "../init";
 import { DataTypes, ModelDefined } from "sequelize";
 import { MakeAsDbDoc } from "@/basic/db-basic-schema";

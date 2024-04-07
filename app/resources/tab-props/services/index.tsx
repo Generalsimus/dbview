@@ -1,5 +1,3 @@
-"use client"
-
 import { Service } from "@/basic/models/services/services";
 import { ResourceTabsEnum } from "../utils";
 import { deleteServiceDoc, getServiceDocs, saveServiceDoc } from "./server";
