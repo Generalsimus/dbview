@@ -9,7 +9,11 @@ import { FullScreenDialogController } from "@/app/components/full-screen-dialog-
 import { getBasicRouteDoc } from "./utils";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
-
+import { NameInput } from "./form/name-input";
+import { PathInput } from "./form/path-input";
+import { DescriptionInput } from "./form/description-input";
+import { MethodInput } from "./form/method-input";
+import { Form } from "./form";
 
 
 interface IProps extends ReturnType<typeof useRouteFormController> {
@@ -42,8 +46,8 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
         setProps("open")(true);
     });
 
-
-    const { getIfValid, getError } = getPropState("doc").getValidation(getCreateOrUpdateSchema(RouteSchema));
+    const validation = getPropState("doc").getValidation(getCreateOrUpdateSchema(RouteSchema));
+    const { getIfValid, getError } = validation
 
     const onSave = useMemoCall(async () => {
         const value = getIfValid(true);
@@ -70,65 +74,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
         onSave={onSave}
         onDelete={value && "id" in value ? onDelete(value.id) : undefined}
     >
-        <Stack display={"flex"} flexDirection={"column"} gap={3} padding={"0px 30px"}>
-            <TextField
-                value={name}
-                onChange={initSetProps("target", "value")("doc", "name")}
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Name"
-                type="text"
-                fullWidth
-                variant="filled"
-                {...getError("name")}
-            />
-            <FormControl variant="filled" fullWidth>
-                <InputLabel id="demo-simple-select-label">Method</InputLabel>
-                <Select
-                    labelId="method"
-                    id="method"
-                    fullWidth
-                    name="method"
-                    value={method}
-                    label="Method"
-                    onChange={initSetProps("target", "value")("doc", "method")}
-                    {...getError("method")}
-                >
-                    {requestMethods.map((method: RequestTypeEnum) => {
-                        return <MenuItem key={method} value={method}>{method}</MenuItem>
-                    })}
-                </Select>
-            </FormControl>
-            <TextField
-                autoFocus
-                margin="dense"
-                id="path"
-                name="path"
-                value={path}
-                onChange={initSetProps("target", "value")("doc", "path")}
-                label="Path"
-                type="text"
-                fullWidth
-                variant="filled"
-                {...getError("path")}
-            />
-            <TextField
-                autoFocus
-                margin="dense"
-                id="description"
-                label="Description"
-                name="description"
-                value={description}
-                onChange={initSetProps("target", "value")("doc", "description")}
-                minRows={2}
-                type="text"
-                fullWidth
-                variant="filled"
-                multiline
-                {...getError("description")}
-            />
-        </Stack>
+        <Form validation={validation}  {...getPropState("doc")} />
     </FullScreenDialogController>
 });
 

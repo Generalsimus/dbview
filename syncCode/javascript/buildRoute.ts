@@ -17,7 +17,7 @@ export function buildRoute(this: SyncJavaScript, route: MakeAsDbDoc<Route>) {
         return;
     }
     const express = resolveOrInstallModule("express", this.backEndDirectory);
-    // const buildDirectory = path.join(this.frontEndDirectory,)
+
     writeFileSync(path.join(this.backEndDirectory, "server.js"), /* ts */`
     const express = require("express");
 
