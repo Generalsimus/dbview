@@ -5,10 +5,11 @@ import { INDEXED_DB_STORY_ROUTE_KEY_ID, getBasicRouteDoc, getRouteIndexedDBStora
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
+import { SaveRoute } from "@/basic/models/route/types";
 
 interface FormType {
     open: boolean,
-    doc: MakeCreateOrUpdate<Route>
+    doc: MakeCreateOrUpdate<SaveRoute>
 }
 // const routesStorage = getRouteIndexedDBStorage()
 export const useRouteFormController = () => {

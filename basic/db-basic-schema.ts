@@ -21,9 +21,6 @@ export type MakeCreate<M extends any> = M
 
 export type MakeCreateOrUpdate<M extends any> = MakeUpdate<M> | MakeCreate<M>
 
-// export type MakeForState<M extends any> = MakeCreateOrUpdate<MakeStateValue<M>>
-// /akeUpdate<M> | 
-
 ///////////////////////////////////
 const UpdateDocSchemaValues = {
     id: Joi.number().integer().required(),
@@ -53,5 +50,15 @@ export const getCreateOrUpdateSchema = <S extends ObjectSchema>(defined: S): Any
     return defined.when(Joi.object({ id: Joi.exist() }).unknown(), {
         then: Joi.object(UpdateDocSchemaValues),
         otherwise: Joi.object(CreateDocSchemaValues),
+    })
+}
+
+export const getDbDocSchema = <S extends ObjectSchema>(defined: S): AnySchema<MakeAsDbDoc<JoiSchemaValue<S>>> => {
+
+    return defined.append({
+        id: Joi.number().required(),
+        createdAt: Joi.date().required(),
+        updatedAt: Joi.date().required(),
+        deletedAt: Joi.date().allow(null).required(),
     })
 }

@@ -14,15 +14,16 @@ export const NameInput: React.FC<IProps> = React.memo(({ value, validation, init
 
 
     return <TextField
-        value={name}
+        value={value}
         onChange={initSetProps("target", "value")()}
         autoFocus
         margin="dense"
         id="name"
         label="Name"
+        
         type="text"
         fullWidth
-        variant="filled"
+        variant="outlined"
         {...getError("name")}
     />
 })

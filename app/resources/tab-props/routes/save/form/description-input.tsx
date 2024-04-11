@@ -23,7 +23,7 @@ export const DescriptionInput: React.FC<IProps> = React.memo(({ value, validatio
         minRows={2}
         type="text"
         fullWidth
-        variant="filled"
+        variant="outlined"
         multiline
         {...getError("description")}
     />

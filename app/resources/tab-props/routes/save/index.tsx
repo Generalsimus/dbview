@@ -14,10 +14,11 @@ import { PathInput } from "./form/path-input";
 import { DescriptionInput } from "./form/description-input";
 import { MethodInput } from "./form/method-input";
 import { Form } from "./form";
+import { SaveRoute, SaveRouteSchema } from "@/basic/models/route/types";
 
 
 interface IProps extends ReturnType<typeof useRouteFormController> {
-    saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>;
+    saveRouteDoc: (value: MakeCreateOrUpdate<SaveRoute>) => Promise<void>;
     deleteRouteDoc: (id: number) => Promise<void>;
     title: string;
 
@@ -46,12 +47,12 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
         setProps("open")(true);
     });
 
-    const validation = getPropState("doc").getValidation(getCreateOrUpdateSchema(RouteSchema));
+    const validation = getPropState("doc").getValidation(getCreateOrUpdateSchema(SaveRouteSchema));
     const { getIfValid, getError } = validation
 
     const onSave = useMemoCall(async () => {
         const value = getIfValid(true);
-        // console.log({ value: value })
+        // // console.log({ value: value })
         if (value) {
             await saveRouteDoc(value)
             setValue({
@@ -63,7 +64,9 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
 
 
 
-    const onDelete = useMemoArgCall(deleteRouteDoc)
+    const onDelete = useMemoArgCall(deleteRouteDoc);
+
+    console.log("🚀 --> constForm:React.FC<IProps>=React.memo --> Form:");
 
     return <FullScreenDialogController
         open={open}
@@ -74,7 +77,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
         onSave={onSave}
         onDelete={value && "id" in value ? onDelete(value.id) : undefined}
     >
-        <Form validation={validation}  {...getPropState("doc")} />
+        {open && <Form validation={validation}  {...getPropState("doc")} />}
     </FullScreenDialogController>
 });
 

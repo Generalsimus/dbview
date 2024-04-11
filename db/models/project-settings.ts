@@ -1,33 +1,28 @@
-import { sequelize } from "../init";
-import { DataTypes, ModelDefined } from "sequelize";
-import { MakeAsDbDoc } from "@/basic/db-basic-schema";
-import { User } from "@/basic/models/user/user";
+// import { sequelize } from "../init";
+// import {  ModelDefined } from "sequelize";
+// import { MakeAsDbDoc } from "@/basic/db-basic-schema";
+// import { User } from "@/basic/models/user/user";
 import { ProjectSetting } from "@/basic/models/project-settings/project-settings";
-import { codeLanguages } from "@/basic/types";
+import { codeLanguages, CodeLanguagesEnum } from "@/basic/types";
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute } from '@sequelize/core';
+import { PrimaryKey, Attribute, AutoIncrement, NotNull, HasMany, BelongsTo, Table } from '@sequelize/core/decorators-legacy';
+
+@Table
+export class ProjectSettingModel extends Model<InferAttributes<ProjectSettingModel>, InferCreationAttributes<ProjectSettingModel>> implements ProjectSetting {
+    @Attribute(DataTypes.INTEGER)
+    @AutoIncrement
+    @PrimaryKey
+    declare id: CreationOptional<number>;
 
 
+    @Attribute(DataTypes.ENUM(codeLanguages))
+    declare backEndLanguage: ProjectSetting["backEndLanguage"];
 
-export const ProjectSettingModel: ModelDefined<
-    MakeAsDbDoc<ProjectSetting>,
-    {}
-> = sequelize.define('projectSetting', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    backEndLanguage: {
-        type: DataTypes.ENUM,
-        values: codeLanguages,
-        allowNull: true
-    },
-    backEndBuildDirection: {
-        type: DataTypes.STRING(2234),
-        allowNull: true
-    },
-    frontEndBuildDirection: {
-        type: DataTypes.STRING(2234),
-        allowNull: true
-    },
-});
-ProjectSettingModel.sync({ alter: true })
+
+    @Attribute(DataTypes.STRING(1234))
+    declare backEndBuildDirection: ProjectSetting["backEndBuildDirection"];
+
+    @Attribute(DataTypes.STRING(1234))
+    declare frontEndBuildDirection: ProjectSetting["frontEndBuildDirection"];
+}
+ProjectSettingModel.sync({ force: true })

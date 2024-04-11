@@ -1,32 +1,27 @@
-import { requestMethods } from "@/basic/types";
-import { sequelize } from "../init";
-import { DataTypes, ModelDefined } from "sequelize";
-import { MakeAsDbDoc } from "@/basic/db-basic-schema";
-import { Route } from "@/basic/models/route/route";
-import { Validation } from "@/basic/models/validation/validation";
+// import { sequelize } from "../init";
+// import { MakeAsDbDoc } from "@/basic/db-basic-schema";
 import { Service } from "@/basic/models/services/services";
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute } from '@sequelize/core';
+import { PrimaryKey, Attribute, AutoIncrement, NotNull, HasMany, BelongsTo, Table } from '@sequelize/core/decorators-legacy';
 
 
 
-export const ServiceModel: ModelDefined<
-    MakeAsDbDoc<Service>,
-    {}
-> = sequelize.define('service', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    name: {
-        type: DataTypes.STRING(1234),
-        allowNull: false
-    },
-    description: {
-        type: DataTypes.STRING(1234),
-        allowNull: false
-    },
-    methods: {
-        type: DataTypes.JSON
-    }
-});
-ServiceModel.sync({ alter: true })
+@Table
+export class ServiceModel extends Model<InferAttributes<ServiceModel>, InferCreationAttributes<ServiceModel>> implements Service {
+    @Attribute(DataTypes.INTEGER)
+    @AutoIncrement
+    @PrimaryKey
+    declare id: CreationOptional<number>;
+
+
+    @Attribute(DataTypes.STRING(1234))
+    declare name: Service["name"];
+
+    @Attribute(DataTypes.STRING(1234))
+    declare description: Service["description"];
+
+
+    @Attribute(DataTypes.JSON)
+    declare methods: Service["methods"];
+}
+ServiceModel.sync({ force: true })

@@ -7,7 +7,6 @@ import React from "react"
 
 interface IProps extends InputProps<Route["name"]> {
     validation: ValidationRes<MakeCreateOrUpdate<Route>>
-    // validator: Validator<Service>
 }
 export const PathInput: React.FC<IProps> = React.memo(({ value, validation, initSetProps, getPropState }) => {
     const { getError } = validation
@@ -23,7 +22,7 @@ export const PathInput: React.FC<IProps> = React.memo(({ value, validation, init
         label="Path"
         type="text"
         fullWidth
-        variant="filled"
+        variant="outlined"
         {...getError("path")}
     />
 })

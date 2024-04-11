@@ -13,6 +13,7 @@ import { MethodNameInput } from "./method-name-input";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import dynamic from 'next/dynamic'
+// import { MonacoEditor } from "@/app/components/monaco-editor";
 
 interface IProps extends InputProps<Service["methods"]> {
 }
@@ -34,7 +35,7 @@ export const MethodsInput: React.FC<IProps> = React.memo(({ value, getValidation
         setValue(newValue);
     });
 
-    const MonacoEditor = dynamic(() => import('@/app/components/monaco-editor').then((mod) => mod.MonacoEditor), { ssr: false });
+    // const MonacoEditor = dynamic(() => import('../../../../../../components/monaco-editor/index.js').then((mod) => (console.log("dasdasd", mod), mod.MonacoEditor)), { ssr: false });
 
     return <>
         <div>
@@ -61,7 +62,7 @@ export const MethodsInput: React.FC<IProps> = React.memo(({ value, getValidation
                         <MethodNameInput {...getPropState(index)} onRemove={removeMethod(index)} />
                     </AccordionSummary>
                     <AccordionDetails>
-                        <MonacoEditor {...getPropState(index, "actionCode")} />
+                        {/* <MonacoEditor {...getPropState(index, "actionCode")} /> */}
                     </AccordionDetails>
                 </Accordion>
             })}

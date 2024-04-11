@@ -1,38 +1,34 @@
-import { requestMethods } from "@/basic/types";
-import { sequelize } from "../init";
-import { DataTypes, ModelDefined } from "sequelize";
-import { MakeAsDbDoc } from "@/basic/db-basic-schema";
-import { Route } from "@/basic/models/route/route";
+import { requestMethods, RequestTypeEnum } from "@/basic/types";
+import { ValidationModel } from "./validation";
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute } from '@sequelize/core';
+import { PrimaryKey, Attribute, AutoIncrement, HasMany, Table } from '@sequelize/core/decorators-legacy';
+import { Validation } from "@/basic/models/validation/validation";
+// import { sequelize } from "../init";
+
+// console.log("🚀 --> sequelize:", sequelize);
+@Table
+export class RouteModel extends Model<InferAttributes<RouteModel>, InferCreationAttributes<RouteModel>> {
+  @Attribute(DataTypes.INTEGER)
+  @AutoIncrement
+  @PrimaryKey
+  declare id: CreationOptional<number>;
 
 
+  @Attribute(DataTypes.STRING(1234))
+  declare name: string;
 
-export const RouteModel: ModelDefined<
-    MakeAsDbDoc<Route>,
-    {}
-> = sequelize.define('route', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    name: {
-        type: DataTypes.STRING(1234),
-        allowNull: false
-    },
-    path: {
-        type: DataTypes.STRING(1234),
-        allowNull: false
-    },
-    description: {
-        type: DataTypes.STRING(1234),
-        allowNull: false
-    },
-    method: {
-        type: DataTypes.ENUM,
-        values: requestMethods
-    }
-});
-RouteModel.sync({ alter: true })
-// RouteModel.toJSON({
-//     omitNull: true
-// })
+
+  @Attribute(DataTypes.STRING(1234))
+  declare path: string;
+
+  @Attribute(DataTypes.STRING(1234))
+  declare description: string;
+
+  @Attribute(DataTypes.ENUM(requestMethods))
+  declare method: RequestTypeEnum;
+
+  @HasMany(() => ValidationModel, /* foreign key */ 'id')
+  declare validations?: NonAttribute<Validation[]>;
+}
+// RouteModel.sync({ force: true })sequelize
+RouteModel.sync({ force: true })

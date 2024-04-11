@@ -22,6 +22,7 @@ export const MethodInput: React.FC<IProps> = React.memo(({ value, validation, in
             name="method"
             value={value}
             label="Method"
+            variant="outlined"
             onChange={initSetProps("target", "value")()}
             {...getError("method")}
         >
