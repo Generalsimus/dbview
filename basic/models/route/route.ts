@@ -7,8 +7,8 @@ import Joi from "joi";
 export interface Route {
     name: string
     path: string
+    method: RequestTypeEnum
     description: string
-    method: string
 }
 
 export const RouteSchema = Joi.object<Route>({

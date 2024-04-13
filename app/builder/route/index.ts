@@ -3,9 +3,9 @@ import { MakeAsDbDoc } from "@/basic/db-basic-schema";
 import { Route } from "@/basic/models/route/route";
 import { ProjectSettingModel } from "@/db/models/project-settings";
 import { languagesBuilder } from "@/syncCode";
-import { writeFileSync } from "@/utils/writeFileSync";
 import path from "path";
-import resolve from "resolve/sync";
+// sequelize
+// console.log("🚀 --> sequelize:", sequelize);
 
 export const buildRoute = async (routeDoc: MakeAsDbDoc<Route>) => {
   console.log("🚀 --> buildRoute --> routeDoc:", routeDoc);

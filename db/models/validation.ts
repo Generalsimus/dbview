@@ -1,51 +1,94 @@
 // import { sequelize } from "../init";
 // // import { ModelDefined } from "sequelize";
-import { MakeAsDbDoc } from "@/basic/db-basic-schema";
 import { Validation } from "@/basic/models/validation/validation";
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute } from '@sequelize/core';
-import { PrimaryKey, Attribute, AutoIncrement, NotNull, HasMany, BelongsTo, Table } from '@sequelize/core/decorators-legacy';
+import { Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn, CreateDateColumn, UpdateDateColumn } from "typeorm"
+
+@Entity()
+export class ValidationTable implements Validation {
+    @PrimaryGeneratedColumn()
+    id: number
 
 
-@Table
-export class ValidationModel extends Model<InferAttributes<ValidationModel>, InferCreationAttributes<ValidationModel>> implements Validation {
-    @Attribute(DataTypes.INTEGER)
-    @AutoIncrement
-    @PrimaryKey
-    declare id: CreationOptional<number>;
+    @Column()
+    name: Validation["name"];
+
+    @Column()
+    description: Validation["description"];
 
 
-    @Attribute(DataTypes.STRING(1234))
-    declare name: Validation["name"];
+    @Column()
+    validations: Validation["validations"];
 
-    @Attribute(DataTypes.STRING(1234))
-    declare description: Validation["description"];
+    //   @Column()
+    //   name: string
 
+    //   @Column()
+    //   path: string
 
-    @Attribute(DataTypes.JSON)
-    declare validations: Validation["validations"];
+    //   @Column()
+    //   method: RequestTypeEnum
 
+    //   @Column()
+    //   description: string
+
+    @CreateDateColumn()
+    declare createdAt: Date
+
+    @UpdateDateColumn()
+    declare updatedAt: Date
+
+    @DeleteDateColumn()
+    declare deletedAt: Date | null;
 }
-ValidationModel.sync({ force: true })
-// export const ValidationModel: ModelDefined<
-//     MakeAsDbDoc<Validation>,
-//     {}
-// > = sequelize.define('validation', {
-//     id: {
-//         type: DataTypes.INTEGER,
-//         autoIncrement: true,
-//         primaryKey: true
-//     },
-//     name: {
-//         type: DataTypes.STRING(1234),
-//         allowNull: false
-//     },
-//     description: {
-//         type: DataTypes.STRING(1234),
-//         allowNull: false
-//     },
-//     validations: {
-//         type: DataTypes.JSON
-//     }
-// });
-//
-// ValidationModel.sync({ alter: true })
+
+// @Table
+// export class ValidationModel extends Model<InferAttributes<ValidationModel>, InferCreationAttributes<ValidationModel>> {
+//     @Attribute(DataTypes.INTEGER)
+//     @AutoIncrement
+//     @PrimaryKey
+//     declare id: CreationOptional<number>;
+
+
+//     @Attribute(DataTypes.STRING(1234))
+//     declare name: Validation["name"];
+
+//     @Attribute(DataTypes.STRING(1234))
+//     declare description: Validation["description"];
+
+
+//     @Attribute(DataTypes.JSON)
+//     declare validations: Validation["validations"];
+
+//     @CreatedAt
+//     declare createdAt: CreationOptional<Date>;
+
+//     @UpdatedAt
+//     declare updatedAt: CreationOptional<Date>;
+
+//     @DeletedAt
+//     declare deletedAt: Date | null;
+// }
+// sequelize.addModels([ValidationModel]);
+// // export const ValidationModel: ModelDefined<
+// //     MakeAsDbDoc<Validation>,
+// //     {}
+// // > = sequelize.define('validation', {
+// //     id: {
+// //         type: DataTypes.INTEGER,
+// //         autoIncrement: true,
+// //         primaryKey: true
+// //     },
+// //     name: {
+// //         type: DataTypes.STRING(1234),
+// //         allowNull: false
+// //     },
+// //     description: {
+// //         type: DataTypes.STRING(1234),
+// //         allowNull: false
+// //     },
+// //     validations: {
+// //         type: DataTypes.JSON
+// //     }
+// // });
+// //
+// // ValidationModel.sync({ alter: true })

@@ -1,14 +1,48 @@
-// import { sequelize } from "../init";
-// import {  ModelDefined } from "sequelize";
-// import { MakeAsDbDoc } from "@/basic/db-basic-schema";
-// import { User } from "@/basic/models/user/user";
+
 import { ProjectSetting } from "@/basic/models/project-settings/project-settings";
 import { codeLanguages, CodeLanguagesEnum } from "@/basic/types";
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute } from '@sequelize/core';
-import { PrimaryKey, Attribute, AutoIncrement, NotNull, HasMany, BelongsTo, Table } from '@sequelize/core/decorators-legacy';
+import { Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn, CreateDateColumn, UpdateDateColumn } from "typeorm"
 
+@Entity()
+export class ProjectSettingTable implements ProjectSetting {
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column({
+        type: "enum",
+        enum: codeLanguages,
+    })
+    backEndLanguage: CodeLanguagesEnum | null;
+
+    @Column()
+    backEndBuildDirection: ProjectSetting["backEndBuildDirection"];
+
+    @Column()
+    frontEndBuildDirection: ProjectSetting["frontEndBuildDirection"];
+
+    //   @Column()
+    //   name: string
+
+    //   @Column()
+    //   path: string
+
+    //   @Column()
+    //   method: RequestTypeEnum
+
+    //   @Column()
+    //   description: string
+
+    @CreateDateColumn()
+    declare createdAt: Date
+
+    @UpdateDateColumn()
+    declare updatedAt: Date
+
+    @DeleteDateColumn()
+    declare deletedAt: Date | null;
+}
 @Table
-export class ProjectSettingModel extends Model<InferAttributes<ProjectSettingModel>, InferCreationAttributes<ProjectSettingModel>> implements ProjectSetting {
+export class ProjectSettingModel extends Model<InferAttributes<ProjectSettingModel>, InferCreationAttributes<ProjectSettingModel>> {
     @Attribute(DataTypes.INTEGER)
     @AutoIncrement
     @PrimaryKey
@@ -24,5 +58,15 @@ export class ProjectSettingModel extends Model<InferAttributes<ProjectSettingMod
 
     @Attribute(DataTypes.STRING(1234))
     declare frontEndBuildDirection: ProjectSetting["frontEndBuildDirection"];
+
+    @CreatedAt
+    declare createdAt: CreationOptional<Date>;
+
+    @UpdatedAt
+    declare updatedAt: CreationOptional<Date>;
+
+    @DeletedAt
+    declare deletedAt: Date | null;
 }
-ProjectSettingModel.sync({ force: true })
+
+sequelize.addModels([ProjectSettingModel]); 

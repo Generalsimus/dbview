@@ -23,7 +23,7 @@ export const MethodInput: React.FC<IProps> = React.memo(({ value, validation, in
             value={value}
             label="Method"
             variant="outlined"
-            onChange={initSetProps("target", "value")()}
+            onChange={initSetProps("target", "value")() as any}
             {...getError("method")}
         >
             {requestMethods.map((method: RequestTypeEnum) => {

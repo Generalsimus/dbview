@@ -3,6 +3,7 @@ import { IndexedDBController } from "@/app/utils/indexedDb";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"
 import { Route } from "@/basic/models/route/route"
 import { GetRoute, SaveRoute } from "@/basic/models/route/types";
+import { RequestTypeEnum } from "@/basic/types";
 
 
 export const getBasicRouteDoc = (): MakeCreateOrUpdate<SaveRoute> => {
@@ -10,7 +11,7 @@ export const getBasicRouteDoc = (): MakeCreateOrUpdate<SaveRoute> => {
         name: "",
         path: "",
         description: "",
-        method: "",
+        method: RequestTypeEnum.GET,
         validations: []
     }
 }

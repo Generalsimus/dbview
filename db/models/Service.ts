@@ -1,27 +1,71 @@
 // import { sequelize } from "../init";
 // import { MakeAsDbDoc } from "@/basic/db-basic-schema";
 import { Service } from "@/basic/models/services/services";
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute } from '@sequelize/core';
-import { PrimaryKey, Attribute, AutoIncrement, NotNull, HasMany, BelongsTo, Table } from '@sequelize/core/decorators-legacy';
+import { Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn, CreateDateColumn, UpdateDateColumn } from "typeorm"
+
+@Entity()
+export class ServiceTable implements Service {
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column()
+    name: Service["name"];
+
+    @Column()
+    description: Service["description"];
 
 
+    @Column()
+    methods: Service["methods"];
 
-@Table
-export class ServiceModel extends Model<InferAttributes<ServiceModel>, InferCreationAttributes<ServiceModel>> implements Service {
-    @Attribute(DataTypes.INTEGER)
-    @AutoIncrement
-    @PrimaryKey
-    declare id: CreationOptional<number>;
+    //   @Column()
+    //   name: string
 
+    //   @Column()
+    //   path: string
 
-    @Attribute(DataTypes.STRING(1234))
-    declare name: Service["name"];
+    //   @Column()
+    //   method: RequestTypeEnum
 
-    @Attribute(DataTypes.STRING(1234))
-    declare description: Service["description"];
+    //   @Column()
+    //   description: string
 
+    @CreateDateColumn()
+    declare createdAt: Date
 
-    @Attribute(DataTypes.JSON)
-    declare methods: Service["methods"];
+    @UpdateDateColumn()
+    declare updatedAt: Date
+
+    @DeleteDateColumn()
+    declare deletedAt: Date | null;
 }
-ServiceModel.sync({ force: true })
+
+
+// @Table
+// export class ServiceModel extends Model<InferAttributes<ServiceModel>, InferCreationAttributes<ServiceModel>> {
+//     @Attribute(DataTypes.INTEGER)
+//     @AutoIncrement
+//     @PrimaryKey
+//     declare id: CreationOptional<number>;
+
+
+//     @Attribute(DataTypes.STRING(1234))
+//     declare name: Service["name"];
+
+//     @Attribute(DataTypes.STRING(1234))
+//     declare description: Service["description"];
+
+
+//     @Attribute(DataTypes.JSON)
+//     declare methods: Service["methods"];
+
+//     @CreatedAt
+//     declare createdAt: CreationOptional<Date>;
+
+//     @UpdatedAt
+//     declare updatedAt: CreationOptional<Date>;
+
+//     @DeletedAt
+//     declare deletedAt: Date | null;
+// }
+// sequelize.addModels([ServiceModel]);
