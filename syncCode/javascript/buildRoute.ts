@@ -7,7 +7,7 @@ import { resolveOrInstallModule } from "@/utils/resolveOrInstallModule";
 import { writeFileSync } from "fs";
 
 export function buildRoute(this: SyncJavaScript, route: MakeAsDbDoc<Route>) {
-    console.log("🚀 --> buildRoute --> this:", this);
+    // console.log("🚀 --> buildRoute --> this:", this);
     if (!this.backEndDirectory) {
         console.warn("Backend Build Directory is not defined.")
         return;
@@ -31,6 +31,6 @@ export function buildRoute(this: SyncJavaScript, route: MakeAsDbDoc<Route>) {
         console.log(\`app listening on port \${port}\`)
     })
     `)
-    console.log("🚀 --> build\\R/oute --> express:", express);
+    // console.log("🚀 --> build\\R/oute --> express:", express);
 
 }

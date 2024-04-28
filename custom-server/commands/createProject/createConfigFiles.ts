@@ -14,11 +14,11 @@ export const createConfigFiles = (
     configFilename = "dbview.conf"
 ) => {
     const configFIlepath = path.join(rootDir, configFilename)
-    console.log("🚀 --> createConfigFiles --> configFIlepath:", configFIlepath);
+    // console.log("🚀 --> createConfigFiles --> configFIlepath:", configFIlepath);
     const isConfigExits = fs.existsSync(configFIlepath)
     if (isConfigExits) {
         throw new Error(`${configFIlepath} already exists In this directory.`)
     }
     writeFileSync(configFIlepath, getConfigFileContent(projectName, fontEndLanguage, backendLanguage))
-    console.log("🚀 --> createConfigFiles --> isConfigExits:", isConfigExits);
+    // console.log("🚀 --> createConfigFiles --> isConfigExits:", isConfigExits);
 }

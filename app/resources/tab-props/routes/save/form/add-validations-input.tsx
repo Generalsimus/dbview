@@ -10,11 +10,12 @@ import { MakeAsDbDoc, MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Validation } from "@/basic/models/validation/validation";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
-// import { InputProps } from "@mui/material";
 import { ValidationRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller";
 import { Route } from "@/basic/models/route/route";
 import { SaveRoute } from "@/basic/models/route/types";
 import { InputProps } from "@/basic/generics";
+import { groupBy } from "lodash";
+import Chip from '@mui/material/Chip';
 interface StateValueType {
     docs: MakeAsDbDoc<Validation>[]
     searchValue: string | undefined,
@@ -31,12 +32,10 @@ interface IProps extends InputProps<SaveRoute["validations"]> {
     validation: ValidationRes<MakeCreateOrUpdate<SaveRoute>>
 }
 export const AddValidationsInput: React.FC<IProps> = React.memo(({ value, validation, setProps: setPropsRoute }) => {
-    console.log("🚀 --> constAddValidationsInput:React.FC<IProps>=React.memo --> value:", value);
-
     const { value: { searchValue, startIndex, endIndex, documentsPerPage, docs }, setProps, setValue } = useSetProps<StateValueType>(getEmptyState);
 
-    const previousRes = useMemo(() => {
-        return SearchValidationsByName(startIndex, endIndex, searchValue).then((res) => {
+    useEffect(() => {
+        SearchValidationsByName(startIndex, endIndex, searchValue).then((res) => {
             console.log("🚀 --> returnSearchValidationsByName --> res:", res);
             setValue((state) => {
                 return {
@@ -55,10 +54,22 @@ export const AddValidationsInput: React.FC<IProps> = React.memo(({ value, valida
             searchValue: e.target.value,
         }))
     });
+    const onSelectValidation = useMemoArgCall((newValidation: MakeAsDbDoc<Validation>, isChecked: boolean) => {
+        if (isChecked) {
+            setPropsRoute()(value.filter(e => e.id !== newValidation.id))
+        } else {
+            setPropsRoute()([...value, newValidation])
 
-    const onSelectValidation = useMemoArgCall((newValidation: MakeAsDbDoc<Validation>) => {
-        setPropsRoute()([...value, newValidation])
+        }
     });
+
+    const onChangeValue = useMemoCall((event: React.SyntheticEvent<Element, Event>, newValue: MakeAsDbDoc<Validation>[]
+    ) => {
+        setPropsRoute()(newValue);
+    });
+
+    const groupedById = useMemo(() => groupBy(value, "id"), [value]);
+
     return (
         <Autocomplete
             multiple
@@ -66,19 +77,24 @@ export const AddValidationsInput: React.FC<IProps> = React.memo(({ value, valida
             value={value}
             options={docs}
             disableCloseOnSelect
+            onChange={onChangeValue}
             getOptionKey={(option) => option.id}
             getOptionLabel={(option) => option.name}
-            renderOption={(props, option, { selected }) => (
-                <li {...props} onClick={onSelectValidation(option)}>
-                    <Checkbox
-                        icon={icon}
-                        checkedIcon={checkedIcon}
-                        style={{ marginRight: 8 }}
-                        checked={selected}
-                    />
-                    {option.name}
-                </li>
-            )}
+            renderOption={(props, option, { selected }) => {
+                const isChecked = !!groupedById[option.id];
+
+                return (
+                    <li {...props} onClick={onSelectValidation(option, isChecked)}>
+                        <Checkbox
+                            icon={icon}
+                            checkedIcon={checkedIcon}
+                            style={{ marginRight: 8 }}
+                            checked={isChecked}
+                        />
+                        {option.name}
+                    </li>
+                )
+            }}
             renderInput={(params) => (
                 <TextField {...params} label="Add Route Validations" placeholder="Validations" onChange={onSearchValueChange} />
             )}

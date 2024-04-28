@@ -59,13 +59,13 @@ export const SettingsModal: React.FC<IProps> = React.memo(
       doc: { backEndBuildDirection, frontEndBuildDirection, backEndLanguage },
       isLoading,
     } = value;
-    console.log(
-      "🚀 --> constSettingsModal:React.FC<IProps>=React.memo --> { backEndBuildDirection, frontEndBuildDirection }:",
-      { backEndBuildDirection, frontEndBuildDirection, backEndLanguage }
-    );
+    // console.log(
+    //   "🚀 --> constSettingsModal:React.FC<IProps>=React.memo --> { backEndBuildDirection, frontEndBuildDirection }:",
+    //   { backEndBuildDirection, frontEndBuildDirection, backEndLanguage }
+    // );
     const theme = useTheme();
     const onChangeBackEndBuildDirection = useRunOnceAndWaitToEnd(async () => {
-      console.log("🚀 --> onChangeBuildDirectory --> async:");
+      // console.log("🚀 --> onChangeBuildDirectory --> async:");
       const response = await fetch("/open-directory-dialog", {
         method: "GET",
       });
@@ -74,7 +74,7 @@ export const SettingsModal: React.FC<IProps> = React.memo(
       setProps("doc", "backEndBuildDirection")(result.trim());
     });
     const onChangeFrontEndBuildDirection = useRunOnceAndWaitToEnd(async () => {
-      console.log("🚀 --> onChangeBuildDirectory --> async:");
+      // console.log("🚀 --> onChangeBuildDirectory --> async:");
       const response = await fetch("/open-directory-dialog", {
         method: "GET",
       });

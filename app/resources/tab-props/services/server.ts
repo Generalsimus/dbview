@@ -4,7 +4,8 @@ import { Service, ServiceSchema } from "@/basic/models/services/services";
 import { ServiceModel } from "@/db/models/Service";
 import { validate } from "@/utils";
 import { map } from "lodash";
-
+// sequelize
+// console.log("🚀 --> sequelize:", sequelize);
 export async function getServiceDocs(startIndex: number, endIndex: number) {
   "use server";
   const { rows, count } = await ServiceModel.findAndCountAll({

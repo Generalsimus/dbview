@@ -21,14 +21,14 @@ const useResourceData = (
     const routeResource = useRouteResource(start, end, tab)
     const serviceResource = useServiceResource(start, end, tab)
     // </TableTataType>
-    console.log("🚀 --> validationResource || routeResource || serviceResource:",
-        tab,
-        {
-            validationResource,
-            routeResource,
-            serviceResource
-        }
-    );
+    // "🚀 --> validationResource || routeResource || serviceResource:",
+    //     tab,
+    //     {
+    //         validationResource,
+    //         routeResource,
+    //         serviceResource
+    //     }console.log(
+    // );
     return validationResource || routeResource || serviceResource
 }
 export interface TableTataType {

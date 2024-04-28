@@ -1,6 +1,5 @@
 "use server"
 
-import { AutoBuild } from ".."
 import { autoBuildState } from "./state"
 
 

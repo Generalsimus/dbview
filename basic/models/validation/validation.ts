@@ -5,7 +5,6 @@
 // interface {
 
 import Joi from "joi"
-import { ValidateValueSchema, ValidateValueType } from "./data-types/schema"
 import { PropertyType } from "@/app/components/object-input/types";
 import { CreateObjectValidationSchema } from "@/app/components/object-input/utils";
 import { DataTypes } from "./data-types";

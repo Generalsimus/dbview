@@ -11,8 +11,8 @@ export const createProject = async () => {
 
     const rootDir = process.cwd()
 
-    console.log(process.cwd());
+    // console.log(process.cwd());
 
     createConfigFiles(projectName, fontEndLanguage, backendLanguage, rootDir,);
-    console.log({ projectName, fontEndLanguage, backendLanguage, processDir: process.cwd() });
+    // console.log({ projectName, fontEndLanguage, backendLanguage, processDir: process.cwd() });
 }

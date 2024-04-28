@@ -8,7 +8,7 @@ import path from "path";
 // console.log("🚀 --> sequelize:", sequelize);
 
 export const buildRoute = async (routeDoc: MakeAsDbDoc<Route>) => {
-  console.log("🚀 --> buildRoute --> routeDoc:", routeDoc);
+  // console.log("🚀 --> buildRoute --> routeDoc:", routeDoc);
   const settingsModel = await ProjectSettingModel.findOne({ where: {} });
   const settingsDoc = settingsModel?.dataValues;
   if (!settingsDoc) return;
@@ -24,11 +24,11 @@ export const buildRoute = async (routeDoc: MakeAsDbDoc<Route>) => {
     builder.buildRoute(routeDoc);
   }
 
-  console.log("🚀 --> buildRoute --> writeRoteBackPath:", writeRoteBackPath);
-  console.log("🚀 --> buildRoute --> writeRoteBackPath:", {
-    frontEndBuildDirection,
-    backEndBuildDirection,
-  });
+  // console.log("🚀 --> buildRoute --> writeRoteBackPath:", writeRoteBackPath);
+  // console.log("🚀 --> buildRoute --> writeRoteBackPath:", {
+  //   frontEndBuildDirection,
+  //   backEndBuildDirection,
+  // });
   // const expressJsPath = resolve("express", { basedir: __dirname });
   //   writeFileSync(
   //     startBackFile,
@@ -49,5 +49,5 @@ export const buildRoute = async (routeDoc: MakeAsDbDoc<Route>) => {
 
   //     `
   //   );
-  console.log("🚀 --> buildRoute --> __dirname:", __dirname);
+  // console.log("🚀 --> buildRoute --> __dirname:", __dirname);
 };
