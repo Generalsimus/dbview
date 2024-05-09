@@ -10,7 +10,7 @@ export interface User {
     password: string
 }
 
-export const RouteSchema = Joi.object<User>({
+export const UserSchema = Joi.object<User>({
     userName: Joi.string().required(),
     password: Joi.string().required()
 }) 

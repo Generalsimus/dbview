@@ -9,7 +9,7 @@ interface IProps {
 }
 export const AutoBuild: React.FC<IProps> = React.memo(({ }) => {
     const [value, toggleSwitchValue] = useToggleBool(false);
-    console.log("🚀 --> constAutoBuild:React.FC<IProps>=React.memo --> value:", value);
+    // console.log("🚀 --> constAutoBuild:React.FC<IProps>=React.memo --> value:", value);
     useEffect(() => {
         getAutoBuildValue().then(v => toggleSwitchValue(v)());
     }, [value]);

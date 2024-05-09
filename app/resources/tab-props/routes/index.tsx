@@ -8,7 +8,7 @@ import { ResourceData } from "../hooks";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { getRouteIndexedDBStorage } from "./save/utils";
-import { GetRoute } from "@/basic/models/route/types";
+// import { GetRoute } from "@/basic/models/route/types";
 
 const cellProps = {
     colSpan: 1,
@@ -29,7 +29,7 @@ export const useRouteResource = (
     start: number,
     end: number,
     tab: ResourceTabsEnum,
-): ResourceData<GetRoute> | undefined => {
+): ResourceData<Route> | undefined => {
     const router = useRouter()
     const routeStorage = useMemo(getRouteIndexedDBStorage, [])
 

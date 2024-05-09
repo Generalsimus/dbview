@@ -8,12 +8,12 @@ import { SetPropsRes, ValidationRes } from "@/app/utils/hooks/useSetProps/create
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { Route } from "@/basic/models/route/route";
 import { AddValidationsInput } from "./add-validations-input";
-import { SaveRoute } from "@/basic/models/route/types";
+// import { SaveRoute } from "@/basic/models/route/types";
 
 
 interface IProps {
-    validation: ValidationRes<MakeCreateOrUpdate<SaveRoute>>
-    getPropState: SetPropsRes<MakeCreateOrUpdate<SaveRoute>>["getPropState"]
+    validation: ValidationRes<MakeCreateOrUpdate<Route>>
+    getPropState: SetPropsRes<MakeCreateOrUpdate<Route>>["getPropState"]
 }
 export const Form: React.FC<IProps> = React.memo(({ validation, getPropState }) => {
 

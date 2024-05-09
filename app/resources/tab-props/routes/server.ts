@@ -5,25 +5,26 @@ import {
   MakeCreateOrUpdate,
   getCreateOrUpdateSchema,
 } from "@/basic/db-basic-schema";
-import {
-  GetRoute,
-  SaveRoute,
-  SaveRouteSchema,
-} from "@/basic/models/route/types";
+// import { 
+//   SaveRoute,
+//   SaveRouteSchema,
+// } from "@/basic/models/route/types";
 import { validate } from "@/utils";
 import { ValidationModel } from "@/db/models/validation";
+import { Route, RouteSchema } from "@/basic/models/route/route";
+// import { RouteSchema } from "@/basic/models/user/user";
 
 export async function SaveRouteDoc(
-  value: MakeCreateOrUpdate<SaveRoute>
+  value: MakeCreateOrUpdate<Route>
 ): Promise<void> {
   "use server";
-  const validateRes = validate(value, getCreateOrUpdateSchema(SaveRouteSchema));
+  const validateRes = validate(value, getCreateOrUpdateSchema(RouteSchema));
 
   if (!validateRes.error) {
     const {
       value: { validations, ...value },
     } = validateRes;
-    console.log("🚀 --> SaveRouteDoc --> value:", validations);
+    // console.log("🚀 --> SaveRouteDoc --> value:", validations);
 
     const [instance, created] = await RouteModel.upsert(value);
     // await instance.setValidations([]);
@@ -45,7 +46,10 @@ export async function SaveRouteDoc(
     // instance.belongsToMany(created)
     // Player.belongsTo(Team);
     // validateRes.addRefe
-    buildRoute(instance.dataValues);
+    buildRoute({
+      ...instance.dataValues,
+      validations: await instance.getValidations({ raw: true })
+    });
   }
 }
 
@@ -71,7 +75,7 @@ export async function getRouteDocs(startIndex: number, endIndex: number) {
     limit: endIndex - startIndex,
     offset: startIndex,
   } as const);
-  const docs: GetRoute[] = rows.map((el) => {
+  const docs: Route[] = rows.map((el) => {
     return {
       validations: [],
       ...el.toJSON(),

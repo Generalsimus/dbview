@@ -12,7 +12,6 @@ import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { ValidationRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller";
 import { Route } from "@/basic/models/route/route";
-import { SaveRoute } from "@/basic/models/route/types";
 import { InputProps } from "@/basic/generics";
 import { groupBy } from "lodash";
 import Chip from '@mui/material/Chip';
@@ -28,8 +27,8 @@ const getEmptyState = () => ({ docs: [], searchValue: undefined, startIndex: 0, 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-interface IProps extends InputProps<SaveRoute["validations"]> {
-    validation: ValidationRes<MakeCreateOrUpdate<SaveRoute>>
+interface IProps extends InputProps<Route["validations"]> {
+    validation: ValidationRes<MakeCreateOrUpdate<Route>>
 }
 export const AddValidationsInput: React.FC<IProps> = React.memo(({ value, validation, setProps: setPropsRoute }) => {
     const { value: { searchValue, startIndex, endIndex, documentsPerPage, docs }, setProps, setValue } = useSetProps<StateValueType>(getEmptyState);

@@ -1,5 +1,6 @@
 import { SyncController } from "..";
 import { buildRoute } from "./buildRoute";
+import { buildValidation } from "./buildValidation";
 
 export class SyncJavaScript implements SyncController {
     frontEndDirectory: SyncController["frontEndDirectory"]
@@ -14,8 +15,7 @@ export class SyncJavaScript implements SyncController {
     }
     syncAll: () => {}
     syncDependencies: () => {}
-    buildRoute = buildRoute
-    // (route: MakeAsDbDoc<Route>) => {}
-    buildValidation: () => {}
+    buildRoute = buildRoute 
+    buildValidation = buildValidation
     buildService: () => {}
 } 

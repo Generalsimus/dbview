@@ -7,10 +7,10 @@ import { getBasicRouteDoc, getRouteIndexedDBStorage } from "./utils";
 import { useRouter } from "next/navigation";
 import AddIcon from '@mui/icons-material/Add';
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import { SaveRoute } from "@/basic/models/route/types";
+// import { SaveRoute } from "@/basic/models/route/types";
 
 interface IProps {
-    saveRouteDoc: (value: MakeCreateOrUpdate<SaveRoute>) => Promise<void>
+    saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>
     deleteRouteDoc: (ids: number) => Promise<void>
 }
 export const AddRouteButton: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc }) => {

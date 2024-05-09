@@ -26,7 +26,7 @@ import {
 import { ValidationModel } from "./validation";
 import { RouteValidationsModel } from "./routeValidations";
 
-@Table({ modelName: 'routes' })
+@Table({ modelName: "routes" })
 export class RouteModel extends Model<
   InferAttributes<RouteModel>,
   InferCreationAttributes<RouteModel>
@@ -48,11 +48,14 @@ export class RouteModel extends Model<
   @Attribute(DataTypes.ENUM(requestMethods))
   declare method: Route["method"];
 
-
   @BelongsToMany(() => ValidationModel, {
-    through: { model: () => RouteValidationsModel, paranoid: true, timestamps: true },
-    foreignKey: 'routeId',
-    otherKey: 'validationId',
+    through: {
+      model: () => RouteValidationsModel,
+      paranoid: true,
+      timestamps: true,
+    },
+    foreignKey: "routeId",
+    otherKey: "validationId",
   })
   declare validations: NonAttribute<ValidationModel[]>;
   declare getValidations: BelongsToManyGetAssociationsMixin<ValidationModel>;
@@ -70,6 +73,5 @@ export class RouteModel extends Model<
   @DeletedAt
   declare deletedAt: Date | null;
 }
-console.log("🚀 --> sequelize:", RouteModel);
 
 sequelize.addModels([RouteModel]);

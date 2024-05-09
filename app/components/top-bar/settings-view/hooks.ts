@@ -27,7 +27,7 @@ export const useProjectSettingFormController = () => {
     useEffect(() => {
         if (open) {
             GetProjectSettings().then(doc => {
-                console.log("🚀 --> GetProjectSettings --> doc:", doc);
+                // console.log("🚀 --> GetProjectSettings --> doc:", doc);
                 form.setValue((prv) => ({
                     open: true,
                     isLoading: false,

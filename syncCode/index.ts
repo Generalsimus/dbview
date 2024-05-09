@@ -3,13 +3,14 @@ import { Route } from "@/basic/models/route/route";
 import { MakeAsDbDoc } from "@/basic/db-basic-schema";
 import { ProjectSetting } from "@/basic/models/project-settings/project-settings";
 import { SyncJavaScript } from "./javascript/syncJavaScript";
+import { Validation } from "@/basic/models/validation/validation";
 
 export interface SyncController {
     frontEndDirectory?: string;
     backEndDirectory?: string;
     syncDependencies: (settings: MakeAsDbDoc<ProjectSetting>) => void;
     buildRoute: (route: MakeAsDbDoc<Route>) => void,
-    buildValidation: () => void,
+    buildValidation: (validation: MakeAsDbDoc<Validation>) => void,
     buildService: () => void
 }
 export interface SyncControllerConstructor {
