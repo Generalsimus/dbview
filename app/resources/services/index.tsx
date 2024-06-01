@@ -1,14 +1,19 @@
-import { Table } from "@/app/components/table";
-import React, { ComponentProps, useState } from "react";
+"use client"
+import React, { ComponentProps } from "react";
 import { ServicesTable } from "./table";
 import { Pagination } from "@/app/components/pagination";
+import { getServiceDocs } from "./server";
 
-interface IProps
-  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> { }
-export const ModelsPage: React.FC<IProps> = React.memo(({ start, end }) => {
+
+
+export type ServiceTableParams = Pick<ComponentProps<typeof Pagination>, "start" | "end"> & Awaited<ReturnType<typeof getServiceDocs>>
+
+interface IProps extends ServiceTableParams { }
+export const ServicesPage: React.FC<IProps> = React.memo((params) => {
+
   return (
     <>
-      <ServicesTable start={start} end={end} />
+      <ServicesTable {...params} />
     </>
   );
 });

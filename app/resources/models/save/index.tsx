@@ -21,53 +21,50 @@ export interface StateValueType
   objectSchema: PartialKeys<PropertyType, "value">[];
 }
 interface IProps {
-  saveModelDoc: typeof SaveModelDoc;
-  deleteModelDoc: typeof DeleteModelDoc;
   title: string;
   initialValue?: MakeCreateOrUpdate<SaveModelArgs>;
 }
 
-export const SaveModelForm: React.FC<IProps> = React.memo(
-  ({ saveModelDoc, deleteModelDoc, title, initialValue }) => {
-    // console.log("🚀 --> initialValue:", initialValue);
-    const state = useSetProps<MakeCreateOrUpdate<StateValueType>>(
-      () => initialValue || getBasicModelDoc()
-    );
+export const SaveModelForm: React.FC<IProps> = React.memo(({ title, initialValue }) => {
 
-    const validation = state.getValidation(
-      getCreateOrUpdateSchema(saveModelSchema)
-    );
-    const { getIfValid } = validation;
+  const state = useSetProps<MakeCreateOrUpdate<StateValueType>>(
+    () => initialValue || getBasicModelDoc()
+  );
 
-    const router = useRouter();
-    const onSave = useMemoCall(async () => {
-      const value = getIfValid(true);
-      if (value) {
-        await saveModelDoc(value);
-      }
+  const validation = state.getValidation(
+    getCreateOrUpdateSchema(saveModelSchema)
+  );
+  const { getIfValid } = validation;
+
+  const router = useRouter();
+  const onSave = useMemoCall(async () => {
+    const value = getIfValid(true);
+    if (value) {
+      await SaveModelDoc(value);
+    }
+    router.push(`/resources/models`);
+  });
+
+  const onDelete = useMemoCall(async () => {
+    const docId = initialValue?.id;
+    if (typeof docId === "number") {
+      await DeleteModelDoc(docId);
       router.push(`/resources/models`);
-    });
+    }
+  });
 
-    const onDelete = useMemoCall(async () => {
-      const docId = initialValue?.id;
-      if (typeof docId === "number") {
-        await deleteModelDoc(docId);
-        router.push(`/resources/models`);
-      }
-    });
-
-    return (
-      <>
-        <FromContainer
-          isEdit={!!initialValue}
-          title={title}
-          onSave={onSave}
-          onDelete={onDelete}
-          startBreadcrumbs={[{ title: "Models", href: "/resources/models" }]}
-        >
-          <Form {...state} />
-        </FromContainer>
-      </>
-    );
-  }
+  return (
+    <>
+      <FromContainer
+        isEdit={!!initialValue}
+        title={title}
+        onSave={onSave}
+        onDelete={onDelete}
+        startBreadcrumbs={[{ title: "Models", href: "/resources/models" }]}
+      >
+        <Form {...state} />
+      </FromContainer>
+    </>
+  );
+}
 );

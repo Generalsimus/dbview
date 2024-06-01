@@ -5,15 +5,14 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
-// import { SearchValidationsByName } from "../../../validations/server";
 import { MakeAsDbDoc, MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { ValidationRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller";
-import { InputProps } from "@/basic/generics";
+import { GetKyselyModel, InputProps } from "@/basic/generics";
 import { groupBy } from "lodash";
 import Chip from '@mui/material/Chip';
-import { Route, Validation } from "@/db/types";
+import { Model, Route } from "@/db/types";
 import { SaveRouteArgs } from "../../schema";
 import { SearchModelByName } from "@/app/resources/models/server";
 
@@ -54,7 +53,7 @@ export const AddValidationsInput: React.FC<IProps> = React.memo(({ value, valida
             searchValue: e.target.value,
         }))
     });
-    const onSelectValidation = useMemoArgCall((newValidation: MakeAsDbDoc<Validation>, isChecked: boolean) => {
+    const onSelectValidation = useMemoArgCall((newValidation: GetKyselyModel<Model>, isChecked: boolean) => {
         if (isChecked) {
             setPropsRoute()(value.filter(e => e.id !== newValidation.id))
         } else {

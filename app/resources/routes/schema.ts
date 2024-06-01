@@ -3,17 +3,16 @@ import {
   getDbDocSchema,
   MakeAsDbDoc,
 } from "@/basic/db-basic-schema";
-import {   PartialBy, SetValue } from "@/basic/generics";
+import { GetKyselyModel, PartialBy, SetValue } from "@/basic/generics";
 import { RouteSchema } from "@/basic/models/route/route";
-// import { ValidationSchema } from "@/basic/models/validation/validation";
-import { Route, Validation } from "@/db/types";
+import { Model, Route } from "@/db/types";
 import Joi from "joi";
 import { saveModelSchema } from "../models/schema";
 
 export type SaveRouteArgs = SetValue<
-  Route,
+  GetKyselyModel<Route>,
   "validations",
-  PartialBy<MakeAsDbDoc<Validation>, "createdAt" | "updatedAt" | "deletedAt">[]
+  PartialBy<GetKyselyModel<Model>, "createdAt" | "updatedAt" | "deletedAt">[]
 >;
 
 export const SaveRouteSchema = getCreateOrUpdateSchema(

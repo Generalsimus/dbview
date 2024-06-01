@@ -1,24 +1,21 @@
 
-import React, { ComponentProps } from 'react';
-// import { ResourceTable } from './table';
-// import { ResourceTabsEnum, resourceTabsEnums } from './tab-props/utils';
-// import { PickOnTopContent } from '../components/pick-on-top/pick-on-top-content';
-import { ModelsPage } from '.';
-import { Pagination } from '@/app/components/pagination';
+import React from 'react';
+import { ModelsPage, ModelTableParams } from '.';
+import { getModelDocs } from './server';
 
 
 
-// export type RoutePaginationParams = 
 
 interface IProps {
-    searchParams?: Partial<Pick<ComponentProps<typeof Pagination>, "start" | "end">>
+    searchParams?: Partial<Pick<ModelTableParams, "start" | "end">>
 }
-export default ({ searchParams }: IProps) => {
+export default async ({ searchParams }: IProps) => {
     let start = Number(searchParams?.start) || 0;
     let end = Number(searchParams?.end) || 15;
 
+    const data = await getModelDocs(start, end)
 
     return <>
-        <ModelsPage start={start} end={end} />
+        <ModelsPage start={start} end={end} {...data} />
     </>
 }

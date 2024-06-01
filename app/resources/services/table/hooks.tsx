@@ -4,19 +4,17 @@ import { servicesColumns } from "./";
 import { getServiceDocs } from "../server";
 import { usePromise } from "@/app/utils/hooks/usePromise";
 import { useRouter } from "next/navigation";
+import { ServiceTableParams } from "..";
 
 const rowsPerPageOptions = [5, 20, 50, 70, 100];
 
-interface routeTablePaginationArgs
-  extends Pick<
-    ComponentProps<typeof Pagination>,
-    "start" | "end" | "maxRowCount"
-  > { }
+
 export const useServiceTablePagination = ({
   start,
   end,
-  maxRowCount,
-}: routeTablePaginationArgs) => {
+  maxDocsCount,
+}: ServiceTableParams) => {
+  const router = useRouter();
   return useMemo(() => {
     return {
       columns: [
@@ -25,9 +23,11 @@ export const useServiceTablePagination = ({
             <Pagination
               start={start}
               end={end}
-              onPagination={(start, end) => { }}
+              onPagination={(start, end) => {
+                router.push(`/resources/services/?start=${start}&end=${end}`);
+              }}
               rowsPerPageOptions={rowsPerPageOptions}
-              maxRowCount={maxRowCount}
+              maxRowCount={maxDocsCount}
               rowsPerPage={start - end}
             />
           ),
@@ -39,49 +39,38 @@ export const useServiceTablePagination = ({
         },
       ],
     };
-  }, [start, end, maxRowCount]);
+  }, [start, end, maxDocsCount]);
 };
 
-interface routeTableBodyRowsArgs
-  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> { }
-export const useServiceTableBodyRows = ({
-  start,
-  end,
-}: routeTableBodyRowsArgs) => {
-  const documents = usePromise(useMemo(() => getServiceDocs(start, end), []));
-
+export const useServiceTableBodyRows = ({ docs }: ServiceTableParams) => {
   const router = useRouter();
   return useMemo(() => {
-    if (!documents) return;
-    const { docs, maxDocsCount } = documents;
 
-    const rows = docs.map((doc) => {
-      return {
-        columns: servicesColumns.map((column) => {
-          if (column.name === "methods") {
-
-            return {
-              content: doc.methods.map(el => el.name).join(', '),
-            } as const;
-          }
-          return {
-            content: doc[column.name],
-          } as const;
-        }),
-        rowProps: {
-          hover: true,
-          sx: { cursor: "pointer" },
-          role: "checkbox",
-          tabIndex: -1,
-          onClick: async () => {
-            router.push(`/resources/services/save?id=${doc.id}`);
-          },
-        },
-      };
-    });
     return {
-      maxRowCount: maxDocsCount,
-      rows: rows,
+      rows: docs.map((doc) => {
+        return {
+          columns: servicesColumns.map((column) => {
+            if (column.name === "methods") {
+
+              return {
+                content: doc.methods.map(el => el.name).join(', '),
+              } as const;
+            }
+            return {
+              content: doc[column.name],
+            } as const;
+          }),
+          rowProps: {
+            hover: true,
+            sx: { cursor: "pointer" },
+            role: "checkbox",
+            tabIndex: -1,
+            onClick: async () => {
+              router.push(`/resources/services/save?id=${doc.id}`);
+            },
+          },
+        };
+      }),
     };
-  }, [documents]);
+  }, [docs]);
 };

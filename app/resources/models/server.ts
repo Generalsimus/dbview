@@ -11,8 +11,7 @@ import { Model } from "@/db/types";
 import { saveModelSchema } from "./schema";
 import { GetKyselyModel } from "@/basic/generics";
 
-type ss = GetKyselyModel<Model>;
-export interface SaveModelArgs extends GetKyselyModel<Model> {}
+export interface SaveModelArgs extends GetKyselyModel<Model> { }
 export async function SaveModelDoc(
   value: MakeCreateOrUpdate<SaveModelArgs>
 ): Promise<void> {
@@ -53,17 +52,12 @@ export async function DeleteModelDoc(id: number): Promise<void> {
 export async function GetModelDoc(id: number) {
   "use server";
 
-  // return null as any;...........
   const modelDoc = await db
     .selectFrom("Model")
     .selectAll()
     .where("Model.id", "=", id)
     .executeTakeFirst();
 
-  // // if (!routeDoc) return;
-  // console.log("🚀 --> GetRouteDoc --> routeDoc:", typeof routeDoc?.validations);
-  // // const ss = routeDoc;
-  // // const validations = routeDoc.validations;
 
   return modelDoc;
 }
@@ -71,7 +65,7 @@ export async function GetModelDoc(id: number) {
 export async function SearchModelByName(
   startIndex: number,
   endIndex: number,
-  searchValue?: string
+  searchValue: string = ""
 ) {
   "use server";
   const [{ count }] = await db
@@ -81,15 +75,20 @@ export async function SearchModelByName(
   const models = await db
     .selectFrom("Model")
     .selectAll()
+    .where(
+      (eb) => eb.fn("lower", [`Model.name`]),
+      "like",
+      `%${searchValue.trim().toLowerCase().replace(/\s+/, "%")}%`
+    )
     .offset(startIndex)
     .limit(endIndex - startIndex)
     .execute();
 
+
   return {
     docs: models,
     maxDocsCount: count,
-  }; 
-  // await db.deleteFrom("Model").where("Model.id", "=", id).execute();
+  };
 }
 export async function getModelDocs(startIndex: number, endIndex: number) {
   "use server";
@@ -103,6 +102,7 @@ export async function getModelDocs(startIndex: number, endIndex: number) {
     .selectAll()
     .offset(startIndex)
     .limit(endIndex - startIndex)
+    .orderBy("Model.createdAt", "desc")
     .execute();
 
   return {

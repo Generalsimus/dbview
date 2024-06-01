@@ -49,10 +49,9 @@ model RouteValidations {
   createdAt DateTime  @default(now())
   deletedAt DateTime?
 
-  routeId  Int
-  route    Route @relation(fields: [routeId], references: [id])
-  // validationId Int
-  // validation   Validation @rel/ation(fields: [validationId], references: [id])
+  routeId Int
+  route   Route @relation(fields: [routeId], references: [id])
+
   modelsId Int
   models   Model @relation(fields: [modelsId], references: [id])
 
@@ -70,19 +69,6 @@ model Model {
   /// @kyselyType(import("kysely").JSONColumnType<import("../basic/models/validation/validation").ValidationPropertyType>)
   objectSchema      String
   validationsRoutes RouteValidations[]
-}
-
-model Validation {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  name         String
-  description  String?
-  /// @kyselyType(import("../basic/models/validation/validation").ValidationPropertyType)
-  objectSchema String
-  // validationsRoutes RouteValidations[]
 }
 
 model Service {

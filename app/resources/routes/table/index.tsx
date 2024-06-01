@@ -1,13 +1,11 @@
-"use client"
 import { Table } from "@/app/components/table";
-import React, { ComponentProps, useState } from "react";
+import React from "react";
 import { useRouteTableBodyRows, useRouteTablePagination } from "./hooks";
-import { Pagination } from "@/app/components/pagination";
-import LocalHospitalOutlinedIcon from '@mui/icons-material/LocalHospitalOutlined';
-import { Button, Paper, Stack } from "@mui/material";
+import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
+import { Button, Paper, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-// import { Button } from "@mui/material";
+import { RouteTableParams } from "..";
 
 const cellProps = {
     colSpan: 1,
@@ -23,41 +21,38 @@ export const routeColumns = [
     { name: "description", content: "Description", cellProps: cellProps },
 ]
 
-interface IProps extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> {
+interface IProps extends RouteTableParams {
+
 }
-export const RoutesTable: React.FC<IProps> = React.memo(({ start, end }) => {
+export const RoutesTable: React.FC<IProps> = React.memo((params) => {
+    const bodyRows = useRouteTableBodyRows(params);
 
-    const bodyRows = useRouteTableBodyRows({ start: start, end: end })
-
-    const paginationRow = useRouteTablePagination({ start: start, end: end, maxRowCount: bodyRows?.maxRowCount ?? 0 })
+    const paginationRow = useRouteTablePagination(params);
 
     const router = useRouter();
     const onStartCreate = useMemoCall(() => {
-        router.push("/resources/routes/save")
-    })
-    return <>
-        <Paper elevation={3} >
-            <Stack sx={{ p: 1 }} direction="row" useFlexGap justifyContent={"flex-end"}>
+        router.push("/resources/routes/save");
+    });
 
-                <Button variant="contained" startIcon={<LocalHospitalOutlinedIcon />} onClick={onStartCreate} size="small">
-                    Create
-                </Button>
-
-            </Stack>
-            <Table
-                header={{
-                    rows: [
-                        { columns: routeColumns },
-                    ]
-                }}
-                footer={{
-                    rows: [
-                        paginationRow
-                    ]
-                }}
-                body={bodyRows}
-            />
-
-        </Paper>
-    </>;
+    return (
+        <>
+            <Paper elevation={3}>
+                <Stack sx={{ p: 1 }} direction="row" useFlexGap justifyContent={"space-between"} alignItems="center">
+                    <Typography variant="subtitle1" gutterBottom>Routes</Typography>
+                    <Button variant="contained" startIcon={<LocalHospitalOutlinedIcon />} onClick={onStartCreate} size="small">
+                        Create
+                    </Button>
+                </Stack>
+                <Table
+                    header={{
+                        rows: [{ columns: routeColumns }],
+                    }}
+                    footer={{
+                        rows: [paginationRow],
+                    }}
+                    body={bodyRows}
+                />
+            </Paper>
+        </>
+    );
 });

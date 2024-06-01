@@ -18,7 +18,7 @@ export async function SaveRouteDoc(
       value: { validations, ...value },
     } = validateRes;
 
-    await db
+    const doc = await db
       .insertInto("Route")
       .values({
         id: value.id ?? undefined,
@@ -37,7 +37,35 @@ export async function SaveRouteDoc(
           updatedAt: new Date().toString(),
         })
       )
-      .execute();
+      .returningAll()
+      .executeTakeFirst();
+
+
+    if (doc) {
+      await db
+        .insertInto("RouteValidations")
+        .values(validations.map(validation => {
+          return {
+            routeId: doc.id,
+            modelsId: validation.id
+          }
+        })
+        ).onConflict((oc) => oc
+          .column("routeId")
+          .column("modelsId")
+          .doNothing()
+        )
+        .execute();
+
+      const validationIds = validations.map(validation => validation.id);
+
+      await db.deleteFrom("RouteValidations")
+        .where(({ eb, or, and, not, exists, selectFrom }) => and([
+          eb("RouteValidations.routeId", '=', doc.id),
+          not(eb("RouteValidations.modelsId", "in", validationIds))
+        ]))
+        .execute();
+    }
   }
 }
 
@@ -74,12 +102,9 @@ export async function GetRouteDoc(id: number) {
       ];
     })
     .where("Route.id", "=", id)
+    .orderBy("Route.createdAt", "asc")
     .executeTakeFirst();
 
-  // if (!routeDoc) return;
-  console.log("🚀 --> GetRouteDoc --> routeDoc:", typeof routeDoc?.validations);
-  // const ss = routeDoc;
-  // const validations = routeDoc.validations;
 
   return routeDoc;
 }
@@ -118,7 +143,7 @@ export async function getRouteDocs(startIndex: number, endIndex: number) {
     })
     .offset(startIndex)
     .limit(endIndex - startIndex)
-
+    .orderBy("Route.createdAt", "desc")
     .execute();
 
   return {

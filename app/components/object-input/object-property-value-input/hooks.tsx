@@ -41,15 +41,7 @@ export const useSafeArgValues = <O extends PropertyNameViews>(valueOption: O, va
 
                 const safePropertiesValue = { ...safeArgValuesBeforeFilter };
 
-                // for (const key in safePropertiesValue) {
-                //     if (!(key in valueOption)) {
-                //         delete safePropertiesValue[key];
-                //     }
-                // }
 
-                // if (typeof name === "string") {
-                //     delete safePropertiesValue[name]
-                // }
                 return safePropertiesValue;
             }
         }, [value, valueOption]),

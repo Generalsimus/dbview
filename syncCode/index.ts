@@ -1,6 +1,6 @@
 import { MakeAsDbDoc } from "@/basic/db-basic-schema";
 import { SyncJavaScript } from "./javascript/syncJavaScript";
-import { ProjectSettings, Route, Validation } from "@/db/types";
+import { ProjectSettings, Route    } from "@/db/types";
 
 
 
@@ -9,7 +9,7 @@ export interface SyncController {
     backEndDirectory?: string;
     syncDependencies: (settings: MakeAsDbDoc<ProjectSettings>) => void;
     buildRoute: (route: MakeAsDbDoc<Route>) => void;
-    buildValidation: (validation: MakeAsDbDoc<Validation>) => void;
+    buildValidation: (validation: MakeAsDbDoc<null>) => void;
     buildService: () => void;
 }
 export interface SyncControllerConstructor {

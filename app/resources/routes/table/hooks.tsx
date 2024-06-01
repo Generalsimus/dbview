@@ -1,16 +1,14 @@
-import { ComponentProps, useMemo } from "react"
+import { useMemo } from "react"
 import { Pagination } from "@/app/components/pagination";
 import { routeColumns } from ".";
-import { getRouteDocs } from "../server";
-import { usePromise } from "@/app/utils/hooks/usePromise";
 import { useRouter } from "next/navigation";
+import { RouteTableParams } from "..";
 
 const rowsPerPageOptions = [5, 20, 50, 70, 100]
 
-interface routeTablePaginationArgs extends Pick<ComponentProps<typeof Pagination>, "start" | "end" | "maxRowCount"> {
 
-}
-export const useRouteTablePagination = ({ start, end, maxRowCount }: routeTablePaginationArgs) => {
+export const useRouteTablePagination = ({ start, end, maxDocsCount }: RouteTableParams) => {
+    const router = useRouter()
     return useMemo(() => {
         return {
             columns: [
@@ -18,9 +16,11 @@ export const useRouteTablePagination = ({ start, end, maxRowCount }: routeTableP
                     content: <Pagination
                         start={start}
                         end={end}
-                        onPagination={(start, end) => { }}
+                        onPagination={(start, end) => {
+                            router.push(`/resources/routes/?start=${start}&end=${end}`);
+                        }}
                         rowsPerPageOptions={rowsPerPageOptions}
-                        maxRowCount={maxRowCount}
+                        maxRowCount={maxDocsCount}
                         rowsPerPage={start - end}
                     />,
                     cellProps: {
@@ -31,42 +31,35 @@ export const useRouteTablePagination = ({ start, end, maxRowCount }: routeTableP
                 }
             ],
         }
-    }, [start, end, maxRowCount])
+    }, [start, end, maxDocsCount])
 }
 
-interface routeTableBodyRowsArgs extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> {
 
-}
-export const useRouteTableBodyRows = ({ start, end }: routeTableBodyRowsArgs) => {
-    const documents = usePromise(useMemo(() => (getRouteDocs(start, end)), []))
-    console.log("🚀 --> useRouteTableBodyRows --> documents:", documents);
+export const useRouteTableBodyRows = ({ docs }: RouteTableParams) => {
+
     const router = useRouter()
     return useMemo(() => {
-        if (!documents) return
-        const { docs, maxDocsCount } = documents
 
-        const rows = docs.map((doc) => {
+        return {
+            rows: docs.map((doc) => {
 
-            return {
-                columns: routeColumns.map(column => {
-                    return {
-                        content: doc[column.name],
-                    } as const
-                }),
-                rowProps: {
-                    hover: true,
-                    sx: { cursor: "pointer" },
-                    role: "checkbox",
-                    tabIndex: -1,
-                    onClick: async () => {
-                        router.push(`/resources/routes/save?id=${doc.id}`);
+                return {
+                    columns: routeColumns.map(column => {
+                        return {
+                            content: doc[column.name],
+                        } as const
+                    }),
+                    rowProps: {
+                        hover: true,
+                        sx: { cursor: "pointer" },
+                        role: "checkbox",
+                        tabIndex: -1,
+                        onClick: async () => {
+                            router.push(`/resources/routes/save?id=${doc.id}`);
+                        }
                     }
                 }
-            }
-        });
-        return {
-            maxRowCount: maxDocsCount,
-            rows: rows,
+            }),
         }
-    }, [documents])
+    }, [docs])
 }

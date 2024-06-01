@@ -4,7 +4,7 @@ import Joi from "joi";
 import { PropertyType } from "@/app/components/object-input/types";
 import { CreateObjectValidationSchema } from "@/app/components/object-input/utils";
 import { DataTypes } from "./data-types";
-import { Validation } from "@/db/types";
+// import { Validation } from "@/db/types";
 // import { ValidateValueSchema, ValidateValueType } from "./data-types"
 
 export type ValidationPropertyType = PropertyType[];

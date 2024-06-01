@@ -38,10 +38,10 @@ export const createNextServer = async () => {
         })
             // .once("error", (err) => {
             //     console.error(err);
-            //     process.exit(1);
+            //     process.exit(1);http://localhost:3000
             // })
             .listen(port, () => {
-                const startPageUrl = `http://${hostname}:${port}/resources?tab=Routes`
+                const startPageUrl = `http://${hostname}:${port}/resources/routes`
                 console.log(startPageUrl);
                 if (yargs["open"] === OpenWindow.Browser) {
                     shell.openExternal(startPageUrl)

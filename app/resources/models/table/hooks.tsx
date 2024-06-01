@@ -1,23 +1,20 @@
 import { ComponentProps, useMemo } from "react";
 import { Pagination } from "@/app/components/pagination";
-import { modelColumns } from ".";
+import { modelColumns, } from ".";
 import { getModelDocs } from "../server";
 import { usePromise } from "@/app/utils/hooks/usePromise";
 import { useRouter } from "next/navigation";
+import { ModelTableParams } from "..";
 
 const rowsPerPageOptions = [5, 20, 50, 70, 100];
 
-interface routeTablePaginationArgs
-  extends Pick<
-    ComponentProps<typeof Pagination>,
-    "start" | "end" | "maxRowCount"
-  > {}
-export const useRouteTablePagination = ({
+export const useModelTablePagination = ({
   start,
   end,
-  maxRowCount,
-}: routeTablePaginationArgs) => {
+  maxDocsCount,
+}: ModelTableParams) => {
   return useMemo(() => {
+    const router = useRouter();
     return {
       columns: [
         {
@@ -25,9 +22,11 @@ export const useRouteTablePagination = ({
             <Pagination
               start={start}
               end={end}
-              onPagination={(start, end) => {}}
+              onPagination={(start, end) => {
+                router.push(`/resources/models/?start=${start}&end=${end}`);
+              }}
               rowsPerPageOptions={rowsPerPageOptions}
-              maxRowCount={maxRowCount}
+              maxRowCount={maxDocsCount}
               rowsPerPage={start - end}
             />
           ),
@@ -39,48 +38,39 @@ export const useRouteTablePagination = ({
         },
       ],
     };
-  }, [start, end, maxRowCount]);
+  }, [start, end, maxDocsCount]);
 };
 
-interface routeTableBodyRowsArgs
-  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> {}
 export const useModelTableBodyRows = ({
-  start,
-  end,
-}: routeTableBodyRowsArgs) => {
-  const documents = usePromise(useMemo(() => getModelDocs(start, end), []));
-  console.log("🚀 --> useRouteTableBodyRows --> documents:", documents);
+  docs
+}: ModelTableParams) => {
   const router = useRouter();
   return useMemo(() => {
-    if (!documents) return;
-    const { docs, maxDocsCount } = documents;
 
-    const rows = docs.map((doc) => {
-      return {
-        columns: modelColumns.map((column) => {
-          if (column.name === "properties") {
-            return {
-              content: doc.objectSchema.map((el) => el.propertyName).join(", "),
-            } as const;
-          }
-          return {
-            content: doc[column.name],
-          } as const;
-        }),
-        rowProps: {
-          hover: true,
-          sx: { cursor: "pointer" },
-          role: "checkbox",
-          tabIndex: -1,
-          onClick: async () => {
-            router.push(`/resources/models/save?id=${doc.id}`);
-          },
-        },
-      };
-    });
     return {
-      maxRowCount: maxDocsCount,
-      rows: rows,
-    };
-  }, [documents]);
+      rows: docs.map((doc) => {
+        return {
+          columns: modelColumns.map((column) => {
+            if (column.name === "properties") {
+              return {
+                content: doc.objectSchema.map((el) => el.propertyName).join(", "),
+              } as const;
+            }
+            return {
+              content: doc[column.name],
+            } as const;
+          }),
+          rowProps: {
+            hover: true,
+            sx: { cursor: "pointer" },
+            role: "checkbox",
+            tabIndex: -1,
+            onClick: async () => {
+              router.push(`/resources/models/save?id=${doc.id}`);
+            },
+          },
+        };
+      })
+    }
+  }, [docs]);
 };

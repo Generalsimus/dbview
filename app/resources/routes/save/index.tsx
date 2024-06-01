@@ -3,28 +3,22 @@ import React from "react";
 import { getCreateOrUpdateSchema, MakeCreateOrUpdate, } from "@/basic/db-basic-schema";
 import { getBasicRouteDoc } from "./utils";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { Form } from "./form";
 import { DeleteRouteDoc, SaveRouteDoc } from "../server";
 import { SaveRouteArgs, SaveRouteSchema } from "../schema";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
-import { Breadcrumbs, Button, Stack } from "@mui/material";
-import { default as MUILink } from '@mui/material/Link';
-import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FromContainer } from "@/app/components/form-container";
-// import { useRouter } from 'next/router';
+
 
 interface IProps {
-    saveRouteDoc: typeof SaveRouteDoc;
-    deleteRouteDoc: typeof DeleteRouteDoc
     title: string;
     initialValue?: MakeCreateOrUpdate<SaveRouteArgs>
 }
 
 
 export const SaveRouteForm: React.FC<IProps> = React.memo(({
-    saveRouteDoc, deleteRouteDoc, title, initialValue
+    title, initialValue
 }) => {
     const state = useSetProps<MakeCreateOrUpdate<SaveRouteArgs>>(() => (initialValue || getBasicRouteDoc()));
 
@@ -36,7 +30,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
     const onSave = useMemoCall(async () => {
         const value = getIfValid(true);
         if (value) {
-            await saveRouteDoc(value);
+            await SaveRouteDoc(value);
         }
         router.push(`/resources/routes`)
     })
@@ -45,7 +39,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
     const onDelete = useMemoCall(async () => {
         const docId = initialValue?.id
         if (typeof docId === "number") {
-            await deleteRouteDoc(docId);
+            await DeleteRouteDoc(docId);
             router.push(`/resources/routes`)
         }
     })

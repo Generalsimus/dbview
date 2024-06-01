@@ -59,23 +59,10 @@ export type Service = {
      */
     methods: import("kysely").JSONColumnType<import("../basic/models/services/services").ServiceMethod[]>;
 };
-export type Validation = {
-    id: Generated<number>;
-    createdAt: Generated<string>;
-    updatedAt: string;
-    deletedAt: string | null;
-    name: string;
-    description: string | null;
-    /**
-     * @kyselyType(import("../basic/models/validation/validation").ValidationPropertyType)
-     */
-    objectSchema: import("../basic/models/validation/validation").ValidationPropertyType;
-};
 export type DB = {
     Model: Model;
     ProjectSettings: ProjectSettings;
     Route: Route;
     RouteValidations: RouteValidations;
     Service: Service;
-    Validation: Validation;
 };

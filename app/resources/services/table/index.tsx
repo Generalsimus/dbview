@@ -1,12 +1,12 @@
 "use client";
 import { Table } from "@/app/components/table";
-import React, { ComponentProps } from "react";
+import React from "react";
 import { useServiceTableBodyRows, useServiceTablePagination } from "./hooks";
-import { Pagination } from "@/app/components/pagination";
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
-import { Button, Paper, Stack } from "@mui/material";
+import { Button, Paper, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { ServiceTableParams } from "..";
 
 const cellProps = {
   colSpan: 1,
@@ -21,36 +21,24 @@ export const servicesColumns = [
   { name: "methods", content: "Methods", cellProps: cellProps },
 ];
 
-interface IProps
-  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> { }
-export const ServicesTable: React.FC<IProps> = React.memo(({ start, end }) => {
-  const bodyRows = useServiceTableBodyRows({ start: start, end: end });
+interface IProps extends ServiceTableParams { }
+export const ServicesTable: React.FC<IProps> = React.memo((params) => {
+  const bodyRows = useServiceTableBodyRows(params);
 
-  const paginationRow = useServiceTablePagination({
-    start: start,
-    end: end,
-    maxRowCount: bodyRows?.maxRowCount ?? 0,
-  });
+  const paginationRow = useServiceTablePagination(params);
 
   const router = useRouter();
   const onStartCreate = useMemoCall(() => {
     router.push("/resources/services/save");
   });
+
   return (
     <>
       <Paper elevation={3}>
-        <Stack
-          sx={{ p: 1 }}
-          direction="row"
-          useFlexGap
-          justifyContent={"flex-end"}
-        >
-          <Button
-            variant="contained"
-            startIcon={<LocalHospitalOutlinedIcon />}
-            onClick={onStartCreate}
-            size="small"
-          >
+
+        <Stack sx={{ p: 1 }} direction="row" useFlexGap justifyContent={"space-between"} alignItems="center">
+          <Typography variant="subtitle1" gutterBottom>Services</Typography>
+          <Button variant="contained" startIcon={<LocalHospitalOutlinedIcon />} onClick={onStartCreate} size="small">
             Create
           </Button>
         </Stack>

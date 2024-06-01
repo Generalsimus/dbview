@@ -9,7 +9,7 @@ import { Service } from "@/db/types";
 import { saveServiceSchema } from "./schema";
 import { GetKyselyModel } from "@/basic/generics";
 
-export interface SaveServiceArgs extends GetKyselyModel<Service> {}
+export interface SaveServiceArgs extends GetKyselyModel<Service> { }
 export async function SaveServiceDoc(
   value: MakeCreateOrUpdate<SaveServiceArgs>
 ): Promise<void> {
@@ -45,7 +45,7 @@ export async function SaveServiceDoc(
 
 export async function DeleteServiceDoc(id: number): Promise<void> {
   "use server";
-  await db.deleteFrom("Model").where("Model.id", "=", id).execute();
+  await db.deleteFrom("Service").where("Service.id", "=", id).execute();
 }
 
 export async function GetServiceDoc(id: number) {
@@ -55,35 +55,9 @@ export async function GetServiceDoc(id: number) {
   const modelDoc = await db
     .selectFrom("Service")
     .selectAll()
-    //   .select((eb) => {
-    //     return [
-    //       jsonArrayFrom(
-    //         eb
-    //           .selectFrom("Validation")
-    //           .leftJoin(
-    //             "RouteValidations",
-    //             "Validation.id",
-    //             "RouteValidations.validationId"
-    //           )
-    //           .whereRef("RouteValidations.routeId", "=", "Route.id")
-    //           .select([
-    //             "Validation.id",
-    //             "Validation.name",
-    //             "Validation.description",
-    //             "Validation.validations",
-    //             "Validation.createdAt",
-    //             "Validation.deletedAt",
-    //           ])
-    //       ).as("validations"),
-    //     ];
-    //   })
     .where("Service.id", "=", id)
     .executeTakeFirst();
 
-  // // if (!routeDoc) return;
-  // console.log("🚀 --> GetRouteDoc --> routeDoc:", typeof routeDoc?.validations);
-  // // const ss = routeDoc;
-  // // const validations = routeDoc.validations;
 
   return modelDoc;
 }
@@ -98,32 +72,10 @@ export async function getServiceDocs(startIndex: number, endIndex: number) {
   const models = await db
     .selectFrom("Service")
     .selectAll()
-    /////////////
-    // .select((eb) => [
-    //   // pets
-    //   // jsonArrayFrom(
-    //   //   eb
-    //   //     .selectFrom("pet")
-    //   //     .select(["pet.id", "pet.name"])
-    //   //     .whereRef("pet.owner_id", "=", "person.id")
-    //   //     .orderBy("pet.name")
-    //   // ).as("pets"),
-
-    //   // mother
-    //   jsonObjectFrom(
-    //     eb
-    //       .selectFrom("person as mother")
-    //       .select(["mother.id", "mother.first_name"])
-    //       .whereRef("mother.id", "=", "person.mother_id")
-    //   ).as("mother"),
-    // ])
-
-    //////////////
     .offset(startIndex)
     .limit(endIndex - startIndex)
-
+    .orderBy("Service.createdAt", "desc")
     .execute();
-  // console.log("🚀 --> getModelDocs --> models:", models);
 
   return {
     docs: models,
