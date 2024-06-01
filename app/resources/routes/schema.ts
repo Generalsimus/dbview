@@ -5,9 +5,10 @@ import {
 } from "@/basic/db-basic-schema";
 import {   PartialBy, SetValue } from "@/basic/generics";
 import { RouteSchema } from "@/basic/models/route/route";
-import { ValidationSchema } from "@/basic/models/validation/validation";
+// import { ValidationSchema } from "@/basic/models/validation/validation";
 import { Route, Validation } from "@/db/types";
 import Joi from "joi";
+import { saveModelSchema } from "../models/schema";
 
 export type SaveRouteArgs = SetValue<
   Route,
@@ -17,6 +18,6 @@ export type SaveRouteArgs = SetValue<
 
 export const SaveRouteSchema = getCreateOrUpdateSchema(
   RouteSchema.append<SaveRouteArgs>({
-    validations: Joi.array().items(getDbDocSchema(ValidationSchema)).required(),
+    validations: Joi.array().items(getDbDocSchema(saveModelSchema)).required(),
   })
 );

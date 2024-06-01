@@ -15,7 +15,7 @@ import { groupBy } from "lodash";
 import Chip from '@mui/material/Chip';
 import { Route, Validation } from "@/db/types";
 import { SaveRouteArgs } from "../../schema";
-import { SearchValidationsByName } from "@/app/resources/tab-props/validations/server";
+import { SearchModelByName } from "@/app/resources/models/server";
 
 interface StateValueType {
     docs: SaveRouteArgs["validations"]
@@ -36,7 +36,7 @@ export const AddValidationsInput: React.FC<IProps> = React.memo(({ value, valida
     const { value: { searchValue, startIndex, endIndex, documentsPerPage, docs }, setProps, setValue } = useSetProps<StateValueType>(getEmptyState);
 
     useEffect(() => {
-        SearchValidationsByName(startIndex, endIndex, searchValue).then((res) => {
+        SearchModelByName(startIndex, endIndex, searchValue).then((res) => {
             setValue((state) => {
                 return {
                     ...state,

@@ -57,28 +57,6 @@ export async function GetModelDoc(id: number) {
   const modelDoc = await db
     .selectFrom("Model")
     .selectAll()
-    //   .select((eb) => {
-    //     return [
-    //       jsonArrayFrom(
-    //         eb
-    //           .selectFrom("Validation")
-    //           .leftJoin(
-    //             "RouteValidations",
-    //             "Validation.id",
-    //             "RouteValidations.validationId"
-    //           )
-    //           .whereRef("RouteValidations.routeId", "=", "Route.id")
-    //           .select([
-    //             "Validation.id",
-    //             "Validation.name",
-    //             "Validation.description",
-    //             "Validation.validations",
-    //             "Validation.createdAt",
-    //             "Validation.deletedAt",
-    //           ])
-    //       ).as("validations"),
-    //     ];
-    //   })
     .where("Model.id", "=", id)
     .executeTakeFirst();
 
@@ -90,6 +68,29 @@ export async function GetModelDoc(id: number) {
   return modelDoc;
 }
 
+export async function SearchModelByName(
+  startIndex: number,
+  endIndex: number,
+  searchValue?: string
+) {
+  "use server";
+  const [{ count }] = await db
+    .selectFrom("Model")
+    .select((b) => [b.fn.count<number>("id").as("count")])
+    .execute();
+  const models = await db
+    .selectFrom("Model")
+    .selectAll()
+    .offset(startIndex)
+    .limit(endIndex - startIndex)
+    .execute();
+
+  return {
+    docs: models,
+    maxDocsCount: count,
+  }; 
+  // await db.deleteFrom("Model").where("Model.id", "=", id).execute();
+}
 export async function getModelDocs(startIndex: number, endIndex: number) {
   "use server";
 
@@ -100,32 +101,9 @@ export async function getModelDocs(startIndex: number, endIndex: number) {
   const models = await db
     .selectFrom("Model")
     .selectAll()
-    /////////////
-    // .select((eb) => [
-    //   // pets
-    //   // jsonArrayFrom(
-    //   //   eb
-    //   //     .selectFrom("pet")
-    //   //     .select(["pet.id", "pet.name"])
-    //   //     .whereRef("pet.owner_id", "=", "person.id")
-    //   //     .orderBy("pet.name")
-    //   // ).as("pets"),
-
-    //   // mother
-    //   jsonObjectFrom(
-    //     eb
-    //       .selectFrom("person as mother")
-    //       .select(["mother.id", "mother.first_name"])
-    //       .whereRef("mother.id", "=", "person.mother_id")
-    //   ).as("mother"),
-    // ])
-
-    //////////////
     .offset(startIndex)
     .limit(endIndex - startIndex)
-
     .execute();
-  // console.log("🚀 --> getModelDocs --> models:", models);
 
   return {
     docs: models,

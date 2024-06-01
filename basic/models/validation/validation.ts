@@ -18,8 +18,8 @@ export const ValidationPropertySchema = CreateObjectValidationSchema(DataTypes);
 //     validations: ValidationPropertyType
 // }
 
-export const ValidationSchema = Joi.object<Validation>({
-  name: Joi.string().required(),
-  description: Joi.string().allow("").default(""),
-  validations: ValidationPropertySchema.default([]) as any,
-}); 
+// export const ValidationSchema = Joi.object<Validation>({
+//   name: Joi.string().required(),
+//   description: Joi.string().allow("").default(""),
+//   validations: ValidationPropertySchema.default([]) as any,
+// }); 
