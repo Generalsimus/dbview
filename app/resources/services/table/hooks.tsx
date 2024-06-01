@@ -11,7 +11,7 @@ interface routeTablePaginationArgs
   extends Pick<
     ComponentProps<typeof Pagination>,
     "start" | "end" | "maxRowCount"
-  > {}
+  > { }
 export const useServiceTablePagination = ({
   start,
   end,
@@ -25,7 +25,7 @@ export const useServiceTablePagination = ({
             <Pagination
               start={start}
               end={end}
-              onPagination={(start, end) => {}}
+              onPagination={(start, end) => { }}
               rowsPerPageOptions={rowsPerPageOptions}
               maxRowCount={maxRowCount}
               rowsPerPage={start - end}
@@ -43,13 +43,13 @@ export const useServiceTablePagination = ({
 };
 
 interface routeTableBodyRowsArgs
-  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> {}
+  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> { }
 export const useServiceTableBodyRows = ({
   start,
   end,
 }: routeTableBodyRowsArgs) => {
   const documents = usePromise(useMemo(() => getServiceDocs(start, end), []));
-  console.log("🚀 --> useRouteTableBodyRows --> documents:", documents);
+
   const router = useRouter();
   return useMemo(() => {
     if (!documents) return;
@@ -58,6 +58,12 @@ export const useServiceTableBodyRows = ({
     const rows = docs.map((doc) => {
       return {
         columns: servicesColumns.map((column) => {
+          if (column.name === "methods") {
+
+            return {
+              content: doc.methods.map(el => el.name).join(', '),
+            } as const;
+          }
           return {
             content: doc[column.name],
           } as const;

@@ -2,7 +2,7 @@
 import React from 'react';
 // import { SaveRouteForm } from '../../tab-props/routes/save';
 import { GetServiceDoc } from '../server';
-import { SaveRouteForm } from '.';
+import { SaveServiceForm } from '.';
 // import { ResourceTable } from './table';
 // import { ResourceTabsEnum, resourceTabsEnums } from './tab-props/utils';
 // import { PickOnTopContent } from '../components/pick-on-top/pick-on-top-content';
@@ -20,15 +20,8 @@ export default async ({ searchParams }: IProps) => {
     const routeId = Number(searchParams?.id)
 
     const routeDoc = typeof routeId === "number" ? await GetServiceDoc(routeId) : undefined
-    const title = typeof routeDoc?.id === "number" ? `Edit Route "${routeDoc.name}"` : "Create Route"
+    const title = typeof routeDoc?.id === "number" ? `Edit Service "${routeDoc.name}"` : "Create Service"
     return <>
-        <SaveRouteForm title={title} initialValue={routeDoc} />
-        {/* <PickOnTopContent>
-            <ResourceTable
-                start={start}
-                end={end}
-                tab={tab}
-            />
-        </PickOnTopContent> */}
+        <SaveServiceForm title={title} initialValue={routeDoc} />
     </>
 }

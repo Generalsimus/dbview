@@ -23,7 +23,7 @@ interface IProps {
     initialValue?: MakeCreateOrUpdate<SaveServiceArgs>;
 }
 
-export const SaveRouteForm: React.FC<IProps> = React.memo(
+export const SaveServiceForm: React.FC<IProps> = React.memo(
     ({ title, initialValue }) => {
         const state = useSetProps<MakeCreateOrUpdate<SaveServiceArgs>>(
             () => initialValue || getBasicServiceDoc()

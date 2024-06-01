@@ -19,7 +19,7 @@ export const servicesColumns = [
   { name: "name", content: "Name", cellProps: cellProps },
   { name: "description", content: "Description", cellProps: cellProps },
   { name: "methods", content: "Methods", cellProps: cellProps },
-];
+] as const;
 
 interface IProps
   extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> {}
