@@ -1,40 +1,41 @@
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
-import { ProjectSetting } from "@/basic/models/project-settings/project-settings";
 import { GetProjectSettings } from "./server";
 import { useEffect } from "react";
-import { CodeLanguagesEnum } from "@/basic/types";
+import { ProjectSettings } from "@/db/types";
 
 interface FormType {
-    open: boolean;
-    isLoading: boolean;
-    doc: Partial<ProjectSetting>;
+  open: boolean;
+  isLoading: boolean;
+  doc: Partial<ProjectSettings>;
 }
 
 const getBasicProjectSettingDoc = () => {
-    return {
-        backEndBuildDirection: "",
-        backEndLanguage: CodeLanguagesEnum.JavaScript,
-        frontEndBuildDirection: "",
-    };
+  return {
+    backEndBuildDirection: "",
+    backEndLanguage: "JavaScript",
+    frontEndBuildDirection: "",
+  } as const;
 };
 export const useProjectSettingFormController = () => {
-    const form = useSetProps<FormType>(() => ({
-        open: false,
-        isLoading: false,
-        doc: getBasicProjectSettingDoc(),
-    }));
-    const { value: { open } } = form;
-    useEffect(() => {
-        if (open) {
-            GetProjectSettings().then(doc => {
-                // console.log("🚀 --> GetProjectSettings --> doc:", doc);
-                form.setValue((prv) => ({
-                    open: true,
-                    isLoading: false,
-                    doc: doc || getBasicProjectSettingDoc(),
-                }));
-            })
-        }
-    }, [open])
-    return form;
+  const form = useSetProps<FormType>(() => ({
+    open: false,
+    isLoading: false,
+    doc: getBasicProjectSettingDoc(),
+  }));
+  const {
+    value: { open },
+  } = form;
+  useEffect(() => {
+    if (open) {
+      GetProjectSettings().then((doc) => {
+        // console.log("🚀 --> GetProjectSettings --> doc:", doc);
+        form.setValue((prv) => ({
+          open: true,
+          isLoading: false,
+          doc: doc || getBasicProjectSettingDoc(),
+        }));
+      });
+    }
+  }, [open]);
+  return form;
 };

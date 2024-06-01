@@ -1,6 +1,5 @@
 "use client";
 import { DeleteRouteDoc, SaveRouteDoc, getRouteDocs } from "./server"
-import { Route } from "@/basic/models/route/route"
 import { ResourceTabsEnum } from "../utils";
 import { AddRouteButton } from "./save/add-button";
 import { EditRouteView } from "./save/edit-route-view";
@@ -8,7 +7,8 @@ import { ResourceData } from "../hooks";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { getRouteIndexedDBStorage } from "./save/utils";
-// import { GetRoute } from "@/basic/models/route/types";
+import { Route } from "@/db/types";
+
 
 const cellProps = {
     colSpan: 1,
@@ -72,14 +72,13 @@ export const useRouteResource = (
                             tabIndex: -1,
                             onClick: async () => {
                                 const searchParams = new URLSearchParams(window.location.search);
-                                const savedDoc = await routeStorage.add({ ...doc })
-                                searchParams.set("form", `${savedDoc.INDEXED_DB_ROUTE_ID}`)
-                                router.push(`${window.location.pathname}?${searchParams}`)
+                                // const savedDoc = await routeStorage.add({ ...doc })
+                                // searchParams.set("form", `${savedDoc.INDEXED_DB_ROUTE_ID}`)
+                                // router.push(`${window.location.pathname}?${searchParams}`)
                             }
                         }
                     }
                 });
-
 
                 setTableData((curr) => {
 

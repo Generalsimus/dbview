@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
 import { Fab, Zoom } from "@mui/material";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
-import { Service } from "@/basic/models/services/services";
 import { getBasicServiceDoc, getServicesIndexedDBStorage } from "./utils";
 import { useRouter } from "next/navigation";
 import AddIcon from '@mui/icons-material/Add';
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { Service } from "@/db/types";
 
 
 interface IProps {

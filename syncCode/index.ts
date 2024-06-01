@@ -1,22 +1,41 @@
-import { CodeLanguagesEnum } from "@/basic/types";
-import { Route } from "@/basic/models/route/route";
 import { MakeAsDbDoc } from "@/basic/db-basic-schema";
-import { ProjectSetting } from "@/basic/models/project-settings/project-settings";
 import { SyncJavaScript } from "./javascript/syncJavaScript";
-import { Validation } from "@/basic/models/validation/validation";
+import { ProjectSettings, Route, Validation } from "@/db/types";
+
+
 
 export interface SyncController {
     frontEndDirectory?: string;
     backEndDirectory?: string;
-    syncDependencies: (settings: MakeAsDbDoc<ProjectSetting>) => void;
-    buildRoute: (route: MakeAsDbDoc<Route>) => void,
-    buildValidation: (validation: MakeAsDbDoc<Validation>) => void,
-    buildService: () => void
+    syncDependencies: (settings: MakeAsDbDoc<ProjectSettings>) => void;
+    buildRoute: (route: MakeAsDbDoc<Route>) => void;
+    buildValidation: (validation: MakeAsDbDoc<Validation>) => void;
+    buildService: () => void;
 }
 export interface SyncControllerConstructor {
-    new(frontEndDirectory: SyncController["frontEndDirectory"], backEndDirectory: SyncController["backEndDirectory"]): SyncController
+    new(
+        frontEndDirectory: SyncController["frontEndDirectory"],
+        backEndDirectory: SyncController["backEndDirectory"]
+    ): SyncController;
 }
-export const languagesBuilder: Record<any, SyncControllerConstructor> = {
-    [CodeLanguagesEnum.JavaScript]: SyncJavaScript,
-    [CodeLanguagesEnum.TypeScript]: SyncJavaScript
-}
+export const languagesBuilder = {
+    "JavaScript": SyncJavaScript,
+    "TypeScript": SyncJavaScript,
+} as const;
+
+
+export const getBuilder = async () => {
+    // const settingsDoc = await client.projectSettings.findFirst({});
+
+    // if (!settingsDoc) return;
+    // const { frontEndBuildDirection, backEndBuildDirection } = settingsDoc;
+    // if (!backEndBuildDirection) return;
+
+
+    // const BuilderClass = settingsDoc.backEndLanguage ? languagesBuilder[settingsDoc.backEndLanguage] : undefined;
+    // if (BuilderClass) {
+    //     const builder = new BuilderClass(frontEndBuildDirection || undefined, backEndBuildDirection || undefined);
+
+    //     return builder
+    // }
+};

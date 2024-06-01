@@ -19,7 +19,8 @@ import {
   MakeCreateOrUpdate,
 } from "@/basic/db-basic-schema";
 import {
-  ProjectSetting,
+  codeLanguages,
+  // ProjectSetting,
   ProjectSettingSchema,
 } from "@/basic/models/project-settings/project-settings";
 import Backdrop from "@mui/material/Backdrop";
@@ -28,7 +29,7 @@ import { createPortal } from "react-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import { codeLanguages, CodeLanguagesEnum } from "@/basic/types";
+// import { codeLanguages, CodeLanguagesEnum } from "@/basic/types";
 import {
   Select,
   SelectProps,
@@ -36,11 +37,12 @@ import {
   SelectRootSlotProps
 } from '@mui/base/Select';
 import { Option, optionClasses } from '@mui/base/Option';
+import { ProjectSettings } from "@/db/types";
 interface IProps extends ReturnType<typeof useProjectSettingFormController> {
   open: boolean;
   onOpen: () => void;
   saveProjectSettingsDoc: (
-    value: MakeCreateOrUpdate<ProjectSetting>
+    value: MakeCreateOrUpdate<ProjectSettings>
   ) => Promise<void>;
   onClose: () => void;
 }

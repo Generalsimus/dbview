@@ -1,15 +1,14 @@
 "use client";
-import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
-import { Route } from "@/basic/models/route/route";
+import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"; 
 import { INDEXED_DB_STORY_ROUTE_KEY_ID, getBasicRouteDoc, getRouteIndexedDBStorage } from "./utils";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
-// import { SaveRoute } from "@/basic/models/route/types";
+import { SaveRouteArgs } from "../../../routes/schema"; 
 
 interface FormType {
     open: boolean,
-    doc: MakeCreateOrUpdate<Route>
+    doc: MakeCreateOrUpdate<SaveRouteArgs>
 }
 // const routesStorage = getRouteIndexedDBStorage()
 export const useRouteFormController = () => {
@@ -34,12 +33,12 @@ export const useRouteFormController = () => {
             const routePromise = routeStorage.get(Number(formId));
 
             routePromise.then((route) => {
-                if (route) {
-                    form.setValue({
-                        open: true,
-                        doc: route
-                    });
-                }
+                // if (route) {
+                //     form.setValue({
+                //         open: true,
+                //         doc: route
+                //     });
+                // }
             })
         } else {
             form.setProps("open")(false)

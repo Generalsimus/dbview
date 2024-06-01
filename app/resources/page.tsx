@@ -1,4 +1,4 @@
-"use client"
+
 import React from 'react';
 import { ResourceTable } from './table';
 import { ResourceTabsEnum, resourceTabsEnums } from './tab-props/utils';

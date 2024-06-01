@@ -2,8 +2,8 @@
 import React, { useEffect } from "react";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { useServiceFormController_V2 } from "./hooks";
-import { Service } from "@/basic/models/services/services";
 import { EditServiceFormModal } from ".";
+import { Service } from "@/db/types";
 
 interface IProps {
     saveServiceDoc: (value: MakeCreateOrUpdate<Service>) => Promise<void>

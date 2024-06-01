@@ -1,25 +1,36 @@
 import { MakeAsDbDoc } from "@/basic/db-basic-schema";
 import { SyncJavaScript } from "./syncJavaScript";
-import { Validation } from "@/basic/models/validation/validation";
 import path from "path";
-import { writeFileSync } from "original-fs";
 import { resolveOrInstallModule } from "@/utils/resolveOrInstallModule";
+import { writeFileSync } from "@/utils/writeFileSync";
+import { Validation } from "@/db/types";
+// import { Validation } from "@prisma/client";
+// import { Validation } from "@prisma/client";
 
 export function buildValidation(
   this: SyncJavaScript,
   validation: MakeAsDbDoc<Validation>
 ) {
+  console.log("🚀 --> validation:", validation);
   if (!this.backEndDirectory) {
     console.warn("Backend Build Directory is not defined.");
     return;
   }
   const joi = resolveOrInstallModule("joi", this.backEndDirectory);
-  console.log("🚀 --> joi:", joi);
+
+  const filePath = path.join(
+    this.backEndDirectory,
+    "validations",
+    `${this.nameToFileName(validation.name)}.js`
+  );
+  const validationFuncName = this.nameToFunctionName(validation.name);
   writeFileSync(
-    path.join(this.backEndDirectory, "server.js"),
+    filePath,
     `
-         
-        `
+    export const ${validationFuncName} = (data) => {
+
+    }
+    `
   );
   console.log("🚀 --> buildValidation --> validation:", validation);
 }

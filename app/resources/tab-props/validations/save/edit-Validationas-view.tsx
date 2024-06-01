@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
 import { useValidationFormController } from "./hooks";
 import { ValidationFormModal } from "./modal";
-import { Validation } from "@/basic/models/validation/validation";
+import { Validation } from "@/db/types";
 
 interface IProps {
     saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "concurrently --raw \"tsc --preserveWatchOutput --watch --project ./custom-server/tsconfig.custom.server.json\" \"tsc --preserveWatchOutput --watch\"",
     "next:dev": "next dev",
-    "build": "next build && tsc --project ./custom-server/tsconfig.custom.server.json",
+    "build": "next build && tsc --project ./custom-server/tsconfig.custom.server.json && npm run rebuild",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
     "custom-server-dev": "tsc --watch --project ./custom-server/tsconfig.custom.server.json",
     "electron": "electron ./custom-server/dist/custom-server/startApp.js",
     "start": "next start",
@@ -20,15 +21,18 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.16",
-    "@sequelize/core": "^7.0.0-alpha.37",
+    "@prisma/client": "^5.14.0",
     "@types/lodash": "^4.14.201",
+    "better-sqlite3": "^10.0.0",
     "colby": "^0.2.2",
     "electron": "^29.1.5",
     "express": "^4.19.2",
     "joi": "^17.11.0",
+    "kysely": "^0.27.3",
     "lodash": "^4.17.21",
     "monaco-editor": "^0.45.0",
-    "next": "14.0.1",
+    "next": "^14.2.3",
+    "prisma-kysely": "^1.8.0",
     "prompts": "^2.4.2",
     "react": "^18",
     "react-dom": "^18",
@@ -36,6 +40,7 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
+    "@electron/rebuild": "^3.6.0",
     "@types/prompts": "^2.4.9",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -46,6 +51,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.1",
     "eslint-plugin-prettier": "^5.0.1",
+    "prisma": "^5.14.0",
     "typescript": "^5"
   }
 }

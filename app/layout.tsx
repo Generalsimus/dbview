@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { DarMode } from './dark-mode'
+import { Menu } from './menu'
+import { LayoutContent } from './layout-contecnt'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,9 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <DarMode>
+        <LayoutContent>
           {children}
-        </DarMode>
+        </LayoutContent>
       </body>
     </html>
   )

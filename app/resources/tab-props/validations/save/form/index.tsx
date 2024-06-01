@@ -1,13 +1,11 @@
-// import { Validator } from "@/utils/hooks/useSetProps/create=validation-controller";
-import { DeepPartial, InputProps, PartialKeys } from "@/basic/generics";
-import { Validation } from "@/basic/models/validation/validation";
+import { InputProps, PartialKeys } from "@/basic/generics";
 import { TextField } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { ValidationsInput } from "./validations-input";
-// import { StateValueType } from "../modal";
 import { PropertyType } from "@/app/components/object-input/types";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
-// SetPropsRes<MakeCreateOrUpdate<Validation>>
+import { Validation } from "@/db/types";
+
 export interface StateValueType extends Omit<MakeCreateOrUpdate<Validation>, "validations"> {
     validations: PartialKeys<PropertyType, "value">[]
 }

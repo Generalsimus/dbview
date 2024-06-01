@@ -1,4 +1,3 @@
-import { Service } from "@/basic/models/services/services";
 import { ResourceTabsEnum } from "../utils";
 import { deleteServiceDoc, getServiceDocs, saveServiceDoc } from "./server";
 import { Collapse, IconButton } from "@mui/material";
@@ -10,6 +9,7 @@ import { AddServiceButton } from "./save/add-button";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { getServicesIndexedDBStorage } from "./save/utils";
+import { Service } from "@/db/types";
 
 
 
@@ -105,10 +105,10 @@ export const useServiceResource = (
                                         content: doc[column.name],
                                         cellProps: {
                                             onClick: async () => {
-                                                const searchParams = new URLSearchParams(window.location.search);
-                                                const savedDoc = await serviceStorage.add({ ...doc })
-                                                searchParams.set("form", `${savedDoc.INDEXED_DB_SERVICE_ID}`)
-                                                router.push(`${window.location.pathname}?${searchParams}`)
+                                                // const searchParams = new URLSearchParams(window.location.search);
+                                                // const savedDoc = await serviceStorage.add({ ...doc })
+                                                // searchParams.set("form", `${savedDoc.INDEXED_DB_SERVICE_ID}`)
+                                                // router.push(`${window.location.pathname}?${searchParams}`)
 
                                             }
                                             // align: "left" as const,

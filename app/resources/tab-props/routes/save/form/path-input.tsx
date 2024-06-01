@@ -1,7 +1,8 @@
 import { ValidationRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller"
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"
 import { InputProps } from "@/basic/generics"
-import { Route } from "@/basic/models/route/route"
+import { Route } from "@/db/types"
+// import { Route } from "@/basic/models/route/route"
 import { TextField } from "@mui/material"
 import React from "react"
 

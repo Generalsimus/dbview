@@ -1,15 +1,28 @@
 "use client";
 import { IndexedDBController } from "@/app/utils/indexedDb";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"
-import { Validation } from "@/basic/models/validation/validation"
+import { Validation } from "@/db/types";
+// import { Validation } from "@/basic/models/validation/validation"
 
 
 export const getBasicValidationsDoc = (): MakeCreateOrUpdate<Validation> => {
     return {
+        // id: Generated<number>;
+        // createdAt: Generated<string>;
+        // updatedAt: string;
+        // deletedAt: string | null;
+        // name: string;
+        // description: string | null;
+        // /**
+        //  * @kyselyType(import("../basic/models/validation/validation").ValidationPropertyType)
+        //  */
+        // validations:
+
+        // updatedAt: "",
         name: "",
         description: "",
         validations: []
-    }
+    } as const
 }
 
 

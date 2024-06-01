@@ -1,8 +1,10 @@
 import { ValidationRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller"
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"
 import { InputProps } from "@/basic/generics"
-import { Route } from "@/basic/models/route/route"
-import { requestMethods, RequestTypeEnum } from "@/basic/types"
+import { requestMethods } from "@/basic/models/route/route"
+// import { Route } from "@/basic/models/route/route"
+// import { requestMethods, RequestTypeEnum } from "@/basic/types"
+import { Route } from "@/db/types"
 import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import React from "react"
 
@@ -26,7 +28,7 @@ export const MethodInput: React.FC<IProps> = React.memo(({ value, validation, in
             onChange={initSetProps("target", "value")() as any}
             {...getError("method")}
         >
-            {requestMethods.map((method: RequestTypeEnum) => {
+            {requestMethods.map((method) => {
                 return <MenuItem key={method} value={method}>{method}</MenuItem>
             })}
         </Select>

@@ -1,6 +1,6 @@
 "use client"
 import { InputProps } from "@/basic/generics";
-import { Service } from "@/basic/models/services/services";
+
 import React from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -13,7 +13,8 @@ import { MethodNameInput } from "./method-name-input";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import dynamic from 'next/dynamic'
-// import { MonacoEditor } from "@/app/components/monaco-editor";
+import { Service } from "@/db/types";
+
 
 interface IProps extends InputProps<Service["methods"]> {
 }

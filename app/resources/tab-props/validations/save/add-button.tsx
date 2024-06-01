@@ -2,11 +2,11 @@
 import React, { useMemo } from "react";
 import { Fab, Zoom } from "@mui/material";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
-import { Validation } from "@/basic/models/validation/validation";
 import { getBasicValidationsDoc, getValidationIndexedDBStorage } from "./utils";
 import { useRouter } from "next/navigation";
 import AddIcon from '@mui/icons-material/Add';
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { Validation } from "@/db/types";
 
 interface IProps {
     saveValidationDoc: (value: MakeCreateOrUpdate<Validation>) => Promise<void>

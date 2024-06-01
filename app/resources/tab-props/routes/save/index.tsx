@@ -1,24 +1,18 @@
 "use client"
-import { FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
 import React from "react";
-import { RequestTypeEnum, requestMethods } from "@/basic/types";
-import { Route, RouteSchema } from "@/basic/models/route/route";
+import { RouteSchema } from "@/basic/models/route/route";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema, } from "@/basic/db-basic-schema";
 import { useRouteFormController } from "./hooks";
 import { FullScreenDialogController } from "@/app/components/full-screen-dialog-controller";
 import { getBasicRouteDoc } from "./utils";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
-import { NameInput } from "./form/name-input";
-import { PathInput } from "./form/path-input";
-import { DescriptionInput } from "./form/description-input";
-import { MethodInput } from "./form/method-input";
-import { Form } from "./form";
-// import { SaveRoute, SaveRouteSchema } from "@/basic/models/route/types";
+import { Form } from "./form"; 
+import { SaveRouteArgs, SaveRouteSchema } from "../../../routes/schema";
 
 
 interface IProps extends ReturnType<typeof useRouteFormController> {
-    saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>;
+    saveRouteDoc: (value: MakeCreateOrUpdate<SaveRouteArgs>) => Promise<void>;
     deleteRouteDoc: (id: number) => Promise<void>;
     title: string;
 
@@ -47,7 +41,7 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
         setProps("open")(true);
     });
 
-    const validation = getPropState("doc").getValidation(getCreateOrUpdateSchema(RouteSchema));
+    const validation = getPropState("doc").getValidation(getCreateOrUpdateSchema(SaveRouteSchema));
     const { getIfValid, getError } = validation
 
     const onSave = useMemoCall(async () => {
@@ -62,7 +56,8 @@ export const SaveRouteForm: React.FC<IProps> = React.memo(({
         }
     })
 
-
+    /* . 
+     . ასევე ვთვლი რომ ხელისუფლებამ ფილმებზე წვდომა განძრახ აკრძალა ცდილობენ დასავლური გავლენები შეამცირონ, ხელისუფლებას სამუდამო მართველობა სურს ისევე როგორც რუსეთში */
 
     const onDelete = useMemoArgCall(deleteRouteDoc);
 

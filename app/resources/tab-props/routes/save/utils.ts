@@ -1,17 +1,16 @@
 "use client"
 import { IndexedDBController } from "@/app/utils/indexedDb";
-import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"
-import { Route } from "@/basic/models/route/route"
-// import { GetRoute, SaveRoute } from "@/basic/models/route/types";
-import { RequestTypeEnum } from "@/basic/types";
+import { MakeCreateOrUpdate } from "@/basic/db-basic-schema" 
+import { Route } from "@/db/types";
+import { SaveRouteArgs } from "../../../routes/schema";
 
 
-export const getBasicRouteDoc = (): MakeCreateOrUpdate<Route> => {
+export const getBasicRouteDoc = (): MakeCreateOrUpdate<SaveRouteArgs> => {
     return {
         name: "",
         path: "",
         description: "",
-        method: RequestTypeEnum.GET,
+        method: "GET",
         validations: []
     }
 }

@@ -1,5 +1,5 @@
 import { InputProps } from "@/basic/generics";
-import { Service } from "@/basic/models/services/services";
+// import { Service } from "@/basic/models/services/services";
 import React, { MouseEvent, useRef } from "react";
 import { Stack } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { AutoResizeField } from "@/app/components/auto-resize-field";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { Service } from "@/db/types";
 
 interface IProps extends InputProps<Service["methods"][number]> {
     onRemove: () => void

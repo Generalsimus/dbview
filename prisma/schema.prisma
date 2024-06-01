@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator kysely {
+  provider = "prisma-kysely"
+
+  // Optionally provide a destination directory for the generated file
+  // and a filename of your choice
+  output       = "../db"
+  fileName     = "types.ts"
+  // Optionally generate runtime enums to a separate file
+  enumFileName = "enums.ts"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model ProjectSettings {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  /// @kyselyType('TypeScript' | 'JavaScript')
+  backEndLanguage        String?
+  backEndBuildDirection  String?
+  frontEndBuildDirection String?
+}
+
+model Route {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name String
+  path String
+
+  /// @kyselyType('GET' | 'POST'| 'DELETE'| 'PUT')
+  method      String
+  description String?
+
+  routeValidations RouteValidations[]
+}
+
+model RouteValidations {
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  routeId  Int
+  route    Route @relation(fields: [routeId], references: [id])
+  // validationId Int
+  // validation   Validation @rel/ation(fields: [validationId], references: [id])
+  modelsId Int
+  models   Model @relation(fields: [modelsId], references: [id])
+
+  @@id([routeId, modelsId])
+}
+
+model Model {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name              String
+  description       String?
+  /// @kyselyType(import("kysely").JSONColumnType<import("../basic/models/validation/validation").ValidationPropertyType>)
+  objectSchema      String
+  validationsRoutes RouteValidations[]
+}
+
+model Validation {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name         String
+  description  String?
+  /// @kyselyType(import("../basic/models/validation/validation").ValidationPropertyType)
+  objectSchema String
+  // validationsRoutes RouteValidations[]
+}
+
+model Service {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name        String
+  description String?
+  /// @kyselyType(import("kysely").JSONColumnType<import("../basic/models/services/services").ServiceMethod[]>)
+  methods     String
+}

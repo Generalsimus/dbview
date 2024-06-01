@@ -7,16 +7,17 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
 import { SearchValidationsByName } from "../../../validations/server";
 import { MakeAsDbDoc, MakeCreateOrUpdate } from "@/basic/db-basic-schema";
-import { Validation } from "@/basic/models/validation/validation";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { ValidationRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller";
-import { Route } from "@/basic/models/route/route";
 import { InputProps } from "@/basic/generics";
 import { groupBy } from "lodash";
 import Chip from '@mui/material/Chip';
+import { Route, Validation } from "@/db/types";
+import { SaveRouteArgs } from "../../../../routes/schema";
+
 interface StateValueType {
-    docs: MakeAsDbDoc<Validation>[]
+    docs: SaveRouteArgs["validations"]
     searchValue: string | undefined,
     startIndex: number,
     endIndex: number,
@@ -27,7 +28,7 @@ const getEmptyState = () => ({ docs: [], searchValue: undefined, startIndex: 0, 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-interface IProps extends InputProps<Route["validations"]> {
+interface IProps extends InputProps<SaveRouteArgs["validations"]> {
     validation: ValidationRes<MakeCreateOrUpdate<Route>>
 }
 export const AddValidationsInput: React.FC<IProps> = React.memo(({ value, validation, setProps: setPropsRoute }) => {
@@ -62,7 +63,7 @@ export const AddValidationsInput: React.FC<IProps> = React.memo(({ value, valida
         }
     });
 
-    const onChangeValue = useMemoCall((event: React.SyntheticEvent<Element, Event>, newValue: MakeAsDbDoc<Validation>[]
+    const onChangeValue = useMemoCall((event: React.SyntheticEvent<Element, Event>, newValue: SaveRouteArgs["validations"]
     ) => {
         setPropsRoute()(newValue);
     });

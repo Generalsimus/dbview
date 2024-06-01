@@ -3,13 +3,13 @@
 import { ResourceTabsEnum } from "../utils";
 import { DeleteValidationDoc, SaveValidationDoc, getValidations } from "./server";
 import { EditValidationsView } from "./save/edit-Validationas-view";
-import { Validation } from "@/basic/models/validation/validation";
 import { AddValidationButton } from "./save/add-button";
 import { map } from "lodash";
 import { useRouter } from "next/navigation";
 import { ResourceData } from "../hooks";
 import { useMemo } from "react";
 import { getValidationIndexedDBStorage } from "./save/utils";
+import { Validation } from "@/db/types";
 
 
 
@@ -76,9 +76,9 @@ export const useValidationResource = (
                             tabIndex: -1,
                             onClick: async () => {
                                 const searchParams = new URLSearchParams(window.location.search);
-                                const savedDoc = await validationStorage.add({ ...doc });
-                                searchParams.set("form", `${savedDoc.INDEXED_DB_Validation_ID}`);
-                                router.push(`${window.location.pathname}?${searchParams}`);
+                                // const savedDoc = await validationStorage.add({ ...doc });
+                                // searchParams.set("form", `${savedDoc.INDEXED_DB_Validation_ID}`);
+                                // router.push(`${window.location.pathname}?${searchParams}`);
                             }
                         }
                     }

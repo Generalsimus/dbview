@@ -2,15 +2,15 @@
 import React, { useMemo } from "react";
 import { Fab, Zoom } from "@mui/material";
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
-import { Route } from "@/basic/models/route/route";
 import { getBasicRouteDoc, getRouteIndexedDBStorage } from "./utils";
 import { useRouter } from "next/navigation";
 import AddIcon from '@mui/icons-material/Add';
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
-// import { SaveRoute } from "@/basic/models/route/types";
+import { Route } from "@/db/types";
+import { SaveRouteArgs } from "../../../routes/schema";
 
 interface IProps {
-    saveRouteDoc: (value: MakeCreateOrUpdate<Route>) => Promise<void>
+    saveRouteDoc: (value: MakeCreateOrUpdate<SaveRouteArgs>) => Promise<void>
     deleteRouteDoc: (ids: number) => Promise<void>
 }
 export const AddRouteButton: React.FC<IProps> = React.memo(({ saveRouteDoc, deleteRouteDoc }) => {

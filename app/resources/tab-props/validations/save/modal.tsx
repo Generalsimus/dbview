@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import React from "react";
-import { Validation, ValidationSchema } from "@/basic/models/validation/validation";
+import { ValidationSchema } from "@/basic/models/validation/validation";
 import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
 import { Form } from "./form";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import { FullScreenDialogController } from "@/app/components/full-screen-dialog-
 import { getBasicValidationsDoc } from "./utils";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
+import { Validation } from "@/db/types";
 
 
 

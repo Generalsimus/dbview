@@ -1,7 +1,8 @@
 "use server";
 import { MakeAsDbDoc } from "@/basic/db-basic-schema";
-import { Route } from "@/basic/models/route/route";
-import { ProjectSettingModel } from "@/db/models/project-settings";
+import { Route } from "@/db/types";
+// import { Route } from "@/basic/models/route/route";
+// import { /ProjectSettingModel } from "@/db/models/project-settings";
 import { languagesBuilder } from "@/syncCode";
 import path from "path";
 // sequelize
@@ -9,20 +10,20 @@ import path from "path";
 
 export const buildRoute = async (routeDoc: MakeAsDbDoc<Route>) => {
   // console.log("🚀 --> buildRoute --> routeDoc:", routeDoc);
-  const settingsModel = await ProjectSettingModel.findOne({ where: {} });
-  const settingsDoc = settingsModel?.dataValues;
-  if (!settingsDoc) return;
-  const { frontEndBuildDirection, backEndBuildDirection } = settingsDoc;
-  if (!backEndBuildDirection) return;
+  // const settingsModel = await ProjectSettingModel.findOne({ where: {} });
+  // const settingsDoc = settingsModel?.dataValues;
+  // if (!settingsDoc) return;
+  // const { frontEndBuildDirection, backEndBuildDirection } = settingsDoc;
+  // if (!backEndBuildDirection) return;
 
-  const startBackFile = path.join(backEndBuildDirection, "server.ts");
-  const writeRoteBackPath = path.join(backEndBuildDirection, routeDoc.path);
-  const BuilderClass = settingsDoc.backEndLanguage ? languagesBuilder[settingsDoc.backEndLanguage] : undefined;
-  if (BuilderClass) {
-    const builder = new BuilderClass(frontEndBuildDirection || undefined, backEndBuildDirection || undefined);
-    // builder.syncDependencies(settingsDoc);
-    builder.buildRoute(routeDoc);
-  }
+  // const startBackFile = path.join(backEndBuildDirection, "server.ts");
+  // const writeRoteBackPath = path.join(backEndBuildDirection, routeDoc.path);
+  // const BuilderClass = settingsDoc.backEndLanguage ? languagesBuilder[settingsDoc.backEndLanguage] : undefined;
+  // if (BuilderClass) {
+  //   const builder = new BuilderClass(frontEndBuildDirection || undefined, backEndBuildDirection || undefined);
+  //   // builder.syncDependencies(settingsDoc);
+  //   builder.buildRoute(routeDoc);
+  // }
 
   // console.log("🚀 --> buildRoute --> writeRoteBackPath:", writeRoteBackPath);
   // console.log("🚀 --> buildRoute --> writeRoteBackPath:", {

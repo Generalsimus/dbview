@@ -1,7 +1,8 @@
+import { Service } from "@/db/types"
 import Joi from "joi"
 
 
-interface ServiceMethod {
+export interface ServiceMethod {
     name: string,
     description: string,
     argValidationIds: number[],
@@ -17,15 +18,9 @@ export const ServiceMethodSchema = Joi.object({
 
 
 
-export interface Service {
-    name: string
-    description: string
-    methods: ServiceMethod[]
-}
+// export const ServiceSchema = Joi.object<Service>({
+//     name: Joi.string().required(),
+//     description: Joi.string().allow("").default(""),
+//     methods: Joi.array().items(ServiceMethodSchema).default([]),
 
-export const ServiceSchema = Joi.object<Service>({
-    name: Joi.string().required(),
-    description: Joi.string().allow("").default(""),
-    methods: Joi.array().items(ServiceMethodSchema).default([]),
-    
-})
+// })
