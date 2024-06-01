@@ -1,7 +1,7 @@
 "use client";
 import { Table } from "@/app/components/table";
 import React, { ComponentProps } from "react";
-import {    useServiceTableBodyRows, useServiceTablePagination } from "./hooks";
+import { useServiceTableBodyRows, useServiceTablePagination } from "./hooks";
 import { Pagination } from "@/app/components/pagination";
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
 import { Button, Paper, Stack } from "@mui/material";
@@ -19,10 +19,10 @@ export const servicesColumns = [
   { name: "name", content: "Name", cellProps: cellProps },
   { name: "description", content: "Description", cellProps: cellProps },
   { name: "methods", content: "Methods", cellProps: cellProps },
-] as const;
+];
 
 interface IProps
-  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> {}
+  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> { }
 export const ServicesTable: React.FC<IProps> = React.memo(({ start, end }) => {
   const bodyRows = useServiceTableBodyRows({ start: start, end: end });
 

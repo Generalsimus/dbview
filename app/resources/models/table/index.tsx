@@ -20,10 +20,10 @@ export const modelColumns = [
   { name: "name", content: "Name", cellProps: cellProps },
   { name: "description", content: "Description", cellProps: cellProps },
   { name: "properties", content: "Properties", cellProps: cellProps },
-] as const;
+];
 
 interface IProps
-  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> {}
+  extends Pick<ComponentProps<typeof Pagination>, "start" | "end"> { }
 export const ModelsTable: React.FC<IProps> = React.memo(({ start, end }) => {
   const bodyRows = useModelTableBodyRows({ start: start, end: end });
 
