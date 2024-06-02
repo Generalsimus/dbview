@@ -3,7 +3,7 @@ import React from "react";
 import {
   getCreateOrUpdateSchema,
   MakeCreateOrUpdate,
-} from "@/basic/db-basic-schema";
+} from "@/utils/db-basic-schema";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { useSetProps } from "@/app/utils/hooks/useSetProps";
 import { useRouter } from "next/navigation";
@@ -14,7 +14,7 @@ import { Form } from "./form";
 import { saveModelSchema } from "../schema";
 import { Model } from "@/db/types";
 import { PropertyType } from "@/app/components/object-input/types";
-import { PartialKeys } from "@/basic/generics";
+import { PartialKeys } from "@/utils/generics";
 
 export interface StateValueType
   extends Omit<MakeCreateOrUpdate<SaveModelArgs>, "objectSchema"> {

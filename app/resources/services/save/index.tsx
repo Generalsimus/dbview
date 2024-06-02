@@ -3,7 +3,7 @@ import React from "react";
 import {
     getCreateOrUpdateSchema,
     MakeCreateOrUpdate,
-} from "@/basic/db-basic-schema";
+} from "@/utils/db-basic-schema";
 import { getBasicServiceDoc } from "./utils";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { Form } from "./form";

@@ -2,7 +2,7 @@ import React from "react";
 import { PropertyNameViews, PropertyType } from "./types";
 import { IconButton, Stack } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import { PartialKeys } from "@/basic/generics";
+import { PartialKeys } from "@/utils/generics";
 import { PropertyInput } from "./property-input";
 import { useMemoArgCall } from "@/app/utils/hooks/useMemoArgCall";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";

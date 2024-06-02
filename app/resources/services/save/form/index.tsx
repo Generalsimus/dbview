@@ -1,10 +1,10 @@
 import React from "react";
 import { NameInput } from "./name-input"; 
-import { InputProps } from "@/basic/generics";
+import { InputProps } from "@/utils/generics";
 import { DescriptionInput } from "./description-input";
 import { MethodsInput } from "./methods-input";
 import { Service } from "@/db/types";
-import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
+import { MakeCreateOrUpdate } from "@/utils/db-basic-schema";
 import { SaveServiceArgs } from "../../server";
 
 interface IProps extends InputProps<MakeCreateOrUpdate<SaveServiceArgs>> {

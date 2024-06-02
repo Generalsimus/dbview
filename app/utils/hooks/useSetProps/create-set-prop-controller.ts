@@ -1,4 +1,4 @@
-import { CreateObjectWithValue, GetObjectNestedValue, JoiSchemaValue } from "@/basic/generics"
+import { CreateObjectWithValue, GetObjectNestedValue, JoiSchemaValue } from "@/utils/generics"
 import { validate } from "@/utils"
 import Joi, { AnySchema } from "joi"
 import { SetStateAction } from "react"

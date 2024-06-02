@@ -1,4 +1,4 @@
-import { ExtractTypeWithProp } from "@/basic/generics";
+import { ExtractTypeWithProp } from "@/utils/generics";
 import React, { ChangeEvent } from "react";
 import { ArgValueType, InputTypes, ValueTypes } from "../../types";
 import { Autocomplete, Box } from "@mui/material";

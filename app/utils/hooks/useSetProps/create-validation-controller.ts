@@ -1,4 +1,4 @@
-import { GetObjectNestedValue } from "@/basic/generics"
+import { GetObjectNestedValue } from "@/utils/generics"
 
 // interface State {
 //   //   validation;

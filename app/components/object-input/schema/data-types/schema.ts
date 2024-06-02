@@ -1,7 +1,7 @@
 import Joi, { AnySchema, ObjectSchema } from "joi";
 import { getDataTypeEntitiesSchema, getDataTypeSchema } from "./scheam-generators";
 import { EntityValidateEnums, ValidateDataTypesEnums } from "./enums";
-import { DeepUnion, ExtractTypeWithProp, JoiSchemaValue, ValueOf } from "@/basic/generics";
+import { DeepUnion, ExtractTypeWithProp, JoiSchemaValue, ValueOf } from "@/utils/generics";
 
 
 

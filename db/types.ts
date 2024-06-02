@@ -1,3 +1,4 @@
+import { ValidationPropertyType } from "@/app/components/object-input/schema/validation";
 import type { ColumnType } from "kysely";
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
@@ -12,9 +13,9 @@ export type Model = {
     name: string;
     description: string | null;
     /**
-     * @kyselyType(import("kysely").JSONColumnType<import("../basic/models/validation/validation").ValidationPropertyType>)
+     * @kyselyType(import("kysely").JSONColumnType<import("@/app/components/object-input/schema/validation").ValidationPropertyType>)
      */
-    objectSchema: import("kysely").JSONColumnType<import("../basic/models/validation/validation").ValidationPropertyType>;
+    objectSchema: import("kysely").JSONColumnType<ValidationPropertyType>;
 };
 export type ProjectSettings = {
     id: Generated<number>;

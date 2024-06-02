@@ -1,7 +1,7 @@
 "use server"
 
-import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/basic/db-basic-schema";
-import { ProjectSettingSchema } from "@/basic/models/project-settings/project-settings";
+import { ProjectSettingSchema } from "@/app/settings/schema";
+import { MakeCreateOrUpdate, getCreateOrUpdateSchema } from "@/utils/db-basic-schema"; 
 import { db } from "@/db/init";
 import { ProjectSettings } from "@/db/types";
 import { validate } from "@/utils";

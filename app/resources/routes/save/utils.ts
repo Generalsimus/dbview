@@ -1,6 +1,6 @@
 "use client"
 import { IndexedDBController } from "@/app/utils/indexedDb";
-import { MakeCreateOrUpdate } from "@/basic/db-basic-schema" 
+import { MakeCreateOrUpdate } from "@/utils/db-basic-schema" 
 import { Route } from "@/db/types";
 import { SaveRouteArgs } from "../schema";
 // import { SaveRouteArgs } from "../../../routes/schema";

@@ -39,12 +39,3 @@ export const stringToRoutePath = (stringArg: string | number) => {
 }
 
 
-export const includes = <E extends any[]>(arr: E, el: any): el is E[number] => {
-    for (const vl of arr) {
-        if (vl === el) {
-            return true;
-        }
-    }
-
-    return false;
-}

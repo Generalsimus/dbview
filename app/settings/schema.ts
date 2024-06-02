@@ -1,4 +1,4 @@
-import { GetKyselyModel } from "@/basic/generics";
+import { GetKyselyModel } from "@/utils/generics";
 import { ProjectSettings, Service } from "@/db/types";
 import Joi from "joi";
 

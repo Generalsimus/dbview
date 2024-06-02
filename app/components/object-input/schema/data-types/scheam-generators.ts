@@ -1,4 +1,4 @@
-import { JoiSchemaValue } from "@/basic/generics";
+import { JoiSchemaValue } from "@/utils/generics";
 import Joi, { AnySchema } from "joi";
 
 type ReturnDataTypeValue<V extends object> = ({

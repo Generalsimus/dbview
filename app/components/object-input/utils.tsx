@@ -1,6 +1,6 @@
 import Joi, { AnySchema, ObjectSchema } from "joi";
 import { InputTypes, PropertyNameViews, PropertyNameViewsValue, PropertyType, ValueTypes } from "./types";
-import { DeepPartial, ValueOf } from "@/basic/generics";
+import { DeepPartial, ValueOf } from "@/utils/generics";
 
 
 const createInputValuesValidation = () => {

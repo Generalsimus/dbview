@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { getCreateOrUpdateSchema, MakeCreateOrUpdate, } from "@/basic/db-basic-schema";
+import { getCreateOrUpdateSchema, MakeCreateOrUpdate, } from "@/utils/db-basic-schema";
 import { getBasicRouteDoc } from "./utils";
 import { useMemoCall } from "@/app/utils/hooks/useMemoCall";
 import { Form } from "./form";

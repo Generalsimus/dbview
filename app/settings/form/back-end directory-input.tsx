@@ -1,4 +1,4 @@
-import { InputProps } from "@/basic/generics";
+import { InputProps } from "@/utils/generics";
 import { Button, inputBaseClasses, TextField } from "@mui/material";
 import React, { useState } from "react";
 import InputAdornment from "@mui/material/InputAdornment";

@@ -1,4 +1,4 @@
-import { MakeAsDbDoc } from "@/basic/db-basic-schema";
+import { MakeAsDbDoc } from "@/utils/db-basic-schema";
 import { SyncJavaScript } from "./syncJavaScript";
 import path from "path";
 import { resolveOrInstallModule } from "@/utils/resolveOrInstallModule";
@@ -12,12 +12,8 @@ export function buildRoute(this: SyncJavaScript, route: MakeAsDbDoc<Route>) {
     console.warn("Backend Build Directory is not defined.");
     return;
   }
-  // if (!this.frontEndDirectory) {
-  //   console.warn("FontEnd Build Directory is not defined.");
-  //   return;
-  // }
+
   const express = resolveOrInstallModule("express", this.backEndDirectory);
-  // console.log("🚀 --> buildRoute --> express:", express);
 
   const method = route.method.toLowerCase();
   const nicePath = `/${route.path}`.replace(/\'|\"|\\/gm, "\\$&");

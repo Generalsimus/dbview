@@ -3,7 +3,7 @@ import { ValueTypes, InputTypes, ArgValueType } from "../../types";
 import { Number } from "./number";
 import { String } from "./string";
 import { Select } from "./select";
-import { JoiSchemaValue } from "@/basic/generics";
+import { JoiSchemaValue } from "@/utils/generics";
 
 // export type InputValue<T extends ValueTypes> = T extends any ? T & {
 //     value?: JoiSchemaValue<T["validate"]>,

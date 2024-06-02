@@ -1,5 +1,5 @@
 "use client"
-import { InputProps } from "@/basic/generics";
+import { InputProps } from "@/utils/generics";
 
 import React from "react";
 import Accordion from '@mui/material/Accordion';

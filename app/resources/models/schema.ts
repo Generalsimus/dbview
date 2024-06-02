@@ -1,5 +1,5 @@
-import { GetKyselyModel } from "@/basic/generics";
-import { ValidationPropertySchema } from "@/basic/models/validation/validation";
+import { ValidationPropertySchema } from "@/app/components/object-input/schema/validation";
+import { GetKyselyModel } from "@/utils/generics";
 import { Model } from "@/db/types";
 import Joi from "joi";
 

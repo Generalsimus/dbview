@@ -1,8 +1,8 @@
 import React from "react";
-import { InputProps, PartialKeys } from "@/basic/generics";
-import { ObjectInput } from "@/app/components/object-input";
-import { DataTypes } from "@/basic/models/validation/data-types";
+import { InputProps, PartialKeys } from "@/utils/generics";
+import { ObjectInput } from "@/app/components/object-input"; 
 import { PropertyType } from "@/app/components/object-input/types";
+import { DataTypes } from "@/app/components/object-input/schema/data-types";
 
 
 

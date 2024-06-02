@@ -1,4 +1,4 @@
-import { InputProps } from "@/basic/generics";
+import { InputProps } from "@/utils/generics";
 import { Service } from "@/db/types";
 import { TextField } from "@mui/material";
 import React, { useState } from "react";

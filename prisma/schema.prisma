@@ -66,7 +66,7 @@ model Model {
 
   name              String
   description       String?
-  /// @kyselyType(import("kysely").JSONColumnType<import("../basic/models/validation/validation").ValidationPropertyType>)
+  /// @kyselyType(import("kysely").JSONColumnType<import("@/app/components/object-input/schema/validation").ValidationPropertyType>)
   objectSchema      String
   validationsRoutes RouteValidations[]
 }

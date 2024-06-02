@@ -2,12 +2,12 @@
 import {
   MakeCreateOrUpdate,
   getCreateOrUpdateSchema,
-} from "@/basic/db-basic-schema";
+} from "@/utils/db-basic-schema";
 import { validate } from "@/utils";
 import { db } from "@/db/init";
 import { Service } from "@/db/types";
 import { saveServiceSchema } from "./schema";
-import { GetKyselyModel } from "@/basic/generics";
+import { GetKyselyModel } from "@/utils/generics";
 
 export interface SaveServiceArgs extends GetKyselyModel<Service> { }
 export async function SaveServiceDoc(

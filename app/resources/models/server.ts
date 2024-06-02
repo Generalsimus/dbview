@@ -2,14 +2,14 @@
 import {
   MakeCreateOrUpdate,
   getCreateOrUpdateSchema,
-} from "@/basic/db-basic-schema";
+} from "@/utils/db-basic-schema";
 import { validate } from "@/utils";
 import { db } from "@/db/init";
 // import { SaveRouteArgs, SaveRouteSchema } from "./schema";
 import { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/sqlite";
 import { Model } from "@/db/types";
 import { saveModelSchema } from "./schema";
-import { GetKyselyModel } from "@/basic/generics";
+import { GetKyselyModel } from "@/utils/generics";
 
 export interface SaveModelArgs extends GetKyselyModel<Model> { }
 export async function SaveModelDoc(

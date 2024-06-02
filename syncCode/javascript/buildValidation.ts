@@ -1,15 +1,17 @@
-import { MakeAsDbDoc } from "@/basic/db-basic-schema";
+import { MakeAsDbDoc } from "@/utils/db-basic-schema";
 import { SyncJavaScript } from "./syncJavaScript";
 import path from "path";
 import { resolveOrInstallModule } from "@/utils/resolveOrInstallModule";
 import { writeFileSync } from "@/utils/writeFileSync";
+import { GetKyselyModel } from "@/utils/generics";
+import { Model } from "@/db/types";
 // import { Validation } from "@/db/types";
 // import { Validation } from "@prisma/client";
 // import { Validation } from "@prisma/client";
 
 export function buildValidation(
   this: SyncJavaScript,
-  // validation: MakeAsDbDoc<Validation>
+  model: GetKyselyModel<Model>
 ) {
   // console.log("🚀 --> validation:", validation);
   // if (!this.backEndDirectory) {

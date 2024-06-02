@@ -1,4 +1,4 @@
-import { InputProps } from "@/basic/generics";
+import { InputProps } from "@/utils/generics";
 import { TextField } from "@mui/material";
 import React from "react";
 import { ValidationsInput } from "./validations-input";

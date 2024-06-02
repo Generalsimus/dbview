@@ -1,6 +1,6 @@
 import { ValidationRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller"
-import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"
-import { InputProps } from "@/basic/generics"
+import { MakeCreateOrUpdate } from "@/utils/db-basic-schema"
+import { InputProps } from "@/utils/generics"
 import { Route } from "@/db/types"
 import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import React from "react"

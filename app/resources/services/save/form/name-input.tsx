@@ -1,5 +1,5 @@
 // import { Validator } from "@/utils/hooks/useSetProps/create=validation-controller";
-import { InputProps } from "@/basic/generics";
+import { InputProps } from "@/utils/generics";
 import { Service } from "@/db/types";
 // import { Service } from "@/db/types";
 // import { Service } from "@/basic/models/services/services";

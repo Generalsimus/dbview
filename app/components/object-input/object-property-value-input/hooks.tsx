@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { ArgValueType, ArgValueTypeGen, PropertyNameViews, PropertyNameViewsValue, ValueTypes } from "../types";
 // import { InputValue } from "./input-view";
-import { DeepUnion } from "@/basic/generics";
+import { DeepUnion } from "@/utils/generics";
 
 
 

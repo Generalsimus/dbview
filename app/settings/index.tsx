@@ -6,7 +6,7 @@ import { Form } from "./form";
 import { getBasicProjectSettingDoc } from "./utils";
 import { SaveProjectSettingsArgs, SaveProjectSettingsDoc } from "./server";
 import { useMemoCall } from "../utils/hooks/useMemoCall";
-import { getCreateOrUpdateSchema, MakeCreateOrUpdate } from "@/basic/db-basic-schema";
+import { getCreateOrUpdateSchema, MakeCreateOrUpdate } from "@/utils/db-basic-schema";
 import { ProjectSettingSchema } from "./schema";
 import { FromContainer } from "../components/form-container";
 import { Stack } from "@mui/material";
@@ -37,7 +37,7 @@ export const SettingsPage: React.FC<IProps> = React.memo(({ initialValue }) => {
                 title={"Settings"}
                 onSave={onSave}
             >
-                <Stack sx={{ gap: 2 }}>
+                <Stack sx={{ gap: 2, pt: 1 }}>
                     <Form  {...form} />
                 </Stack>
             </FromContainer>

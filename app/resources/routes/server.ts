@@ -2,7 +2,7 @@
 import {
   MakeCreateOrUpdate,
   getCreateOrUpdateSchema,
-} from "@/basic/db-basic-schema";
+} from "@/utils/db-basic-schema";
 import { validate } from "@/utils";
 import { db } from "@/db/init";
 import { SaveRouteArgs, SaveRouteSchema } from "./schema";

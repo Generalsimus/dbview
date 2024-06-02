@@ -1,4 +1,4 @@
-import { JoiSchemaValue, ValueOf } from "@/basic/generics"
+import { JoiSchemaValue, ValueOf } from "@/utils/generics"
 import Joi, { AnySchema } from "joi"
 import { ReactNode } from "react"
 

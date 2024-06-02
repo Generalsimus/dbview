@@ -2,8 +2,8 @@ import {
   getCreateOrUpdateSchema,
   getDbDocSchema,
   MakeAsDbDoc,
-} from "@/basic/db-basic-schema";
-import { GetKyselyModel, PartialBy, SetValue } from "@/basic/generics";
+} from "@/utils/db-basic-schema";
+import { GetKyselyModel, PartialBy, SetValue } from "@/utils/generics";
 // import { RouteSchema } from "@/basic/models/route/route";
 import { Model, Route } from "@/db/types";
 import Joi from "joi";

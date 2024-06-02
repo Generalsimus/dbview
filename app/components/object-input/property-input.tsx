@@ -1,7 +1,7 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import React from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { PartialKeys } from "@/basic/generics";
+import { PartialKeys } from "@/utils/generics";
 import { PropertyNameViews, PropertyNameViewsValue, PropertyType } from "./types";
 import { ObjectPropertyValueInput } from "./object-property-value-input";
 import { PropertyNameInput } from "./property-name-input";

@@ -17,12 +17,12 @@ import { useRunOnceAndWaitToEnd } from "@/app/utils/hooks/useRunOnceAndWaitToEnd
 import {
   getCreateOrUpdateSchema,
   MakeCreateOrUpdate,
-} from "@/basic/db-basic-schema";
-import {
-  codeLanguages,
-  // ProjectSetting,
-  ProjectSettingSchema,
-} from "@/basic/models/project-settings/project-settings";
+} from "@/utils/db-basic-schema";
+// import {
+//   codeLanguages,
+//   // ProjectSetting,
+//   ProjectSettingSchema,
+// } from "@/basic/models/project-settings/project-settings";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { createPortal } from "react-dom";
@@ -38,6 +38,7 @@ import {
 } from '@mui/base/Select';
 import { Option, optionClasses } from '@mui/base/Option';
 import { ProjectSettings } from "@/db/types";
+import { codeLanguages, ProjectSettingSchema } from "@/app/settings/schema";
 interface IProps extends ReturnType<typeof useProjectSettingFormController> {
   open: boolean;
   onOpen: () => void;

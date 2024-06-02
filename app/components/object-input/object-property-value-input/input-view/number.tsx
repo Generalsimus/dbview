@@ -1,4 +1,4 @@
-import { ExtractTypeWithProp } from "@/basic/generics";
+import { ExtractTypeWithProp } from "@/utils/generics";
 import React, { ChangeEvent } from "react";
 import { ArgValueType, InputTypes, ValueTypes } from "../../types";
 import { AutoResizeField } from "@/app/components/auto-resize-field";

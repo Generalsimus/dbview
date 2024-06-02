@@ -5,7 +5,7 @@ import { MethodInput } from "./method-input";
 import { PathInput } from "./path-input";
 import { DescriptionInput } from "./description-input";
 import { SetPropsRes, ValidationRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller";
-import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
+import { MakeCreateOrUpdate } from "@/utils/db-basic-schema";
 import { AddValidationsInput } from "./add-validations-input";
 import { Route } from "@/db/types";
 import { SaveRouteArgs } from "../../schema";

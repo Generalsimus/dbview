@@ -1,4 +1,4 @@
-import { InputProps } from "@/basic/generics";
+import { InputProps } from "@/utils/generics";
 // import { Service } from "@/basic/models/services/services";
 import React, { MouseEvent, useRef } from "react";
 import { Stack } from "@mui/material";

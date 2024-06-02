@@ -1,6 +1,6 @@
 import React from "react";
-import { InputProps } from "@/basic/generics";
-import { MakeCreateOrUpdate } from "@/basic/db-basic-schema";
+import { InputProps } from "@/utils/generics";
+import { MakeCreateOrUpdate } from "@/utils/db-basic-schema";
 import { SaveProjectSettingsArgs } from "../server";
 import { BackEndLanguageInput } from "./back-end-language-input";
 import { BackEndDirectoryInput } from "./back-end directory-input";
