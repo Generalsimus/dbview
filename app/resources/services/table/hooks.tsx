@@ -28,7 +28,7 @@ export const useServiceTablePagination = ({
               }}
               rowsPerPageOptions={rowsPerPageOptions}
               maxRowCount={maxDocsCount}
-              rowsPerPage={start - end}
+              rowsPerPage={end - start}
             />
           ),
           cellProps: {

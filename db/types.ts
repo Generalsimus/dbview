@@ -55,9 +55,9 @@ export type Service = {
     name: string;
     description: string | null;
     /**
-     * @kyselyType(import("kysely").JSONColumnType<import("../basic/models/services/services").ServiceMethod[]>)
+     * @kyselyType(import("kysely").JSONColumnType<import("@/app/resources/services/schema").ServiceMethod[]>)
      */
-    methods: import("kysely").JSONColumnType<import("../basic/models/services/services").ServiceMethod[]>;
+    methods: import("kysely").JSONColumnType<import("@/app/resources/services/schema").ServiceMethod[]>;
 };
 export type DB = {
     Model: Model;

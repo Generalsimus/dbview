@@ -27,7 +27,7 @@ export const useModelTablePagination = ({
               }}
               rowsPerPageOptions={rowsPerPageOptions}
               maxRowCount={maxDocsCount}
-              rowsPerPage={start - end}
+              rowsPerPage={end - start}
             />
           ),
           cellProps: {

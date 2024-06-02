@@ -1,13 +1,10 @@
 import { ValidationRes } from "@/app/utils/hooks/useSetProps/create-set-prop-controller"
 import { MakeCreateOrUpdate } from "@/basic/db-basic-schema"
 import { InputProps } from "@/basic/generics"
-import { requestMethods } from "@/basic/models/route/route"
-// import { Route } from "@/basic/models/route/route"
-// import { requestMethods, RequestTypeEnum } from "@/basic/types"
 import { Route } from "@/db/types"
 import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import React from "react"
-import { SaveRouteArgs } from "../../schema"
+import { requestMethods, SaveRouteArgs } from "../../schema"
 
 interface IProps extends InputProps<SaveRouteArgs["method"]> {
     validation: ValidationRes<MakeCreateOrUpdate<SaveRouteArgs>>

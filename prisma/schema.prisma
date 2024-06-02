@@ -79,6 +79,6 @@ model Service {
 
   name        String
   description String?
-  /// @kyselyType(import("kysely").JSONColumnType<import("../basic/models/services/services").ServiceMethod[]>)
+  /// @kyselyType(import("kysely").JSONColumnType<import("@/app/resources/services/schema").ServiceMethod[]>)
   methods     String
 }

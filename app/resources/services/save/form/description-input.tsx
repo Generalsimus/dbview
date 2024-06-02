@@ -1,12 +1,9 @@
-// import { Validator } from "@/utils/hooks/useSetProps/create=validation-controller";
 import { InputProps } from "@/basic/generics";
 import { Service } from "@/db/types";
-// import { Service } from "@/basic/models/services/services";
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 
 interface IProps extends InputProps<Service["description"]> {
-    // validator: Validator<Service>
 }
 export const DescriptionInput: React.FC<IProps> = React.memo(({ value, getValidation, initSetProps, getPropState }) => {
     const { getError } = getValidation()

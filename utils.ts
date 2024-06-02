@@ -1,9 +1,4 @@
-// import { Allow, IsDate, IsEmpty, IsEnum, IsIn, IsNumber, IsString, MinLength, isDate, isNumber, ValidationError, validateSync } from "class-validator";
-import { Children } from "react";
-// import { ClassToObject, DeepPartial, MakeStateValue } from "./basic/generics";
-import Joi, { AnySchema, ObjectSchema, ValidationOptions, ValidationResult, any } from "joi";
-import { RouteSchema } from "./basic/models/route/route";
-import { mapValues } from "lodash";
+import { AnySchema, ValidationOptions, ValidationResult } from "joi";
 
 
 export type ErrorsObject = Partial<{
@@ -41,4 +36,15 @@ export const validate = <V extends any>(value: any, schema: AnySchema<V>, option
 export const stringToRoutePath = (stringArg: string | number) => {
 
     return (`/${stringArg}/`).toLowerCase().trim().replace(/\s+/gm, "-").replace(/[^\w\-]+/gm, "/");
-} 
+}
+
+
+export const includes = <E extends any[]>(arr: E, el: any): el is E[number] => {
+    for (const vl of arr) {
+        if (vl === el) {
+            return true;
+        }
+    }
+
+    return false;
+}

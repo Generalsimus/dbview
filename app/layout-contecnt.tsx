@@ -11,6 +11,7 @@ import SourceIcon from '@mui/icons-material/Source';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import SchemaIcon from '@mui/icons-material/Schema';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const menu: MenuItemtype[] = [
     {
@@ -38,6 +39,11 @@ const menu: MenuItemtype[] = [
     {
         name: "VIsualization",
         icon: <AccountTreeIcon />,
+    },
+    {
+        name: "Settings",
+        href: "/settings",
+        icon: <SettingsIcon />,
     }
 ]
 interface IProps {

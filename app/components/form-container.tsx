@@ -7,19 +7,20 @@ import { usePathname, useSearchParams } from "next/navigation";
 interface IProps {
     children: React.ReactNode
     title: string,
-    onDelete: () => void
-    onSave: () => void,
+    onDelete?: () => void
+    onSave?: () => void,
     startBreadcrumbs?: { title: string, href: string }[]
-    isEdit: boolean
+    isEdit?: boolean
 }
-export const FromContainer: React.FC<IProps> = React.memo(({ isEdit, title, startBreadcrumbs, children, onDelete, onSave }) => {
+export const FromContainer: React.FC<IProps> = React.memo(({ isEdit, title, startBreadcrumbs = [], children, onDelete, onSave }) => {
 
     const searchParams = useSearchParams();
+
     const pathname = usePathname();
-    const currantRouteLocation = `${pathname}?${searchParams}`
+    const currantRouteLocation = `${pathname}${searchParams.size ? `?${searchParams}` : ""}`
     return <>
         <Stack position={"sticky"} bottom={0} display={"flex"} flexDirection={"column"} gap={2} height={"100%"} justifyContent={"flex-end"} padding={"30px 30px"}>
-            {startBreadcrumbs ? <Breadcrumbs maxItems={2} aria-label="breadcrumb">
+            <Breadcrumbs maxItems={2} aria-label="breadcrumb">
                 {startBreadcrumbs.map(breadcrumbs => {
                     return <MUILink component={Link} underline="hover" color="inherit" href={breadcrumbs.href}>
                         {breadcrumbs.title}
@@ -29,13 +30,12 @@ export const FromContainer: React.FC<IProps> = React.memo(({ isEdit, title, star
                 <MUILink component={Link} underline="hover" color="inherit" href={currantRouteLocation}>
                     {title}
                 </MUILink>
-            </Breadcrumbs> : undefined
-            }
+            </Breadcrumbs>
             <Stack display={"flex"} flexDirection={"column"} gap={1} overflow={"auto"} height={"100%"}>
                 {children}
             </Stack>
-            <Stack direction={"row"} gap={2} justifyContent={"flex-end"}>
-                {isEdit && <Button
+            <Stack direction={"row"} gap={2} justifyContent={"flex-end"} alignItems={"flex-end"}>
+                {isEdit && onDelete && <Button
                     onClick={onDelete}
                     disabled={false}
                     variant="contained"
@@ -46,7 +46,7 @@ export const FromContainer: React.FC<IProps> = React.memo(({ isEdit, title, star
                 <Button
                     onClick={onSave}
                     disabled={false}
-                    size="small"
+                    size="medium"
                     variant="contained">Save</Button>
             </Stack>
         </Stack>

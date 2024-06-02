@@ -19,21 +19,22 @@ export const Pagination: React.FC<IProps> = React.memo(({
     rowsPerPage,
     onPagination
 }) => {
-    const page = Math.floor(start / (end - start))
+    const page = Math.floor(start / (end - start));
 
     const onPageChange = useMemoCall((event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
-
         const pageDiff = newPage - page;
         const pagDocSize = (end - start) * pageDiff;
 
 
         onPagination(start + pagDocSize, end + pagDocSize);
-    })
+    });
 
     const onRowsPerPageChange = useMemoCall((event: React.ChangeEvent<HTMLInputElement>) => {
-        const newRowsPerPage = parseInt(event.target.value)
-        onPagination(start, start + newRowsPerPage)
-    })
+        const newRowsPerPage = parseInt(event.target.value);
+
+        onPagination(start, start + newRowsPerPage);
+    });
+
     return <>
         <TablePagination
             rowsPerPageOptions={rowsPerPageOptions}

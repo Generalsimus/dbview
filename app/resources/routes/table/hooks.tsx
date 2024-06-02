@@ -21,7 +21,7 @@ export const useRouteTablePagination = ({ start, end, maxDocsCount }: RouteTable
                         }}
                         rowsPerPageOptions={rowsPerPageOptions}
                         maxRowCount={maxDocsCount}
-                        rowsPerPage={start - end}
+                        rowsPerPage={end - start}
                     />,
                     cellProps: {
                         padding: "none" as const,
